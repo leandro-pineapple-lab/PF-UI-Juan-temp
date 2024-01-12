@@ -1,0 +1,15 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Daily Intake'"></app-title>
+  <app-daily-intake-filters
+  [reportFilters]="reportFilters"
+  (hideFirstAppointmentEvent)="hideFirstAppointment($event)"
+  (getReportsEvent)="pagination.page = 1; getReports()"></app-daily-intake-filters>
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="true"
+      (exportExcelEvent)="getReports()"
+      (paginationChangeEvent)="paginationChange()"
+      [pagination]="pagination" [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Daily Intake reports found!'"></app-table>
+  </div>
+</div>

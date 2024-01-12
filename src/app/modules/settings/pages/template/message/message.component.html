@@ -1,0 +1,475 @@
+<div class="container margin-top-separation-sm">
+  <h4 class="text-success">Message Templates</h4>
+  <div class="card">
+    <div class="card-header bg-gradient-info">
+      <button *ngIf="messageShowComponentsModel.formCollapsed" (click)="messageShowComponentsModel.formCollapsed = !messageShowComponentsModel.formCollapsed" type="button" class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#formCardBody" aria-expanded="false" aria-controls="messagesCardBody">
+        <i class="fa fa-chevron-right color-white fa-2x" aria-hidden="true"></i>
+      </button>
+      <button *ngIf="!messageShowComponentsModel.formCollapsed" (click)="messageShowComponentsModel.formCollapsed = !messageShowComponentsModel.formCollapsed" type="button" class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#formCardBody" aria-expanded="false" aria-controls="messagesCardBody">
+          <i class="fa fa-chevron-down color-white fa-2x" aria-hidden="true"></i>
+      </button>
+      <h4 class="color-white margin-top-separation-sm display-inline">{{!messageModel.id ? 'Add Template' : 'Update Template - ' + messageModel.title}}</h4>
+    </div>
+    <div class="collapse" id="formCardBody">
+      <div class="card-body">
+        <div [formGroup]="messageForm" class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <label class="text-secondary bold">
+              Template Description
+              <span class="text-danger">*</span>
+            </label>
+            <input formControlName="messageTitle" [(ngModel)]="messageModel.title" class="form-control input-sm" type="text">
+            <label *ngIf="messageTitle && messageTitle.invalid && messageTitle.touched" class="text-danger">Template Description is required</label>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-separation-sm">
+            <label class="text-secondary bold margin-right-separation-sm">
+              Delivery Method
+              <span class="text-danger">*</span>
+            </label>
+            <input formControlName="messageDeliveryMethod" type="radio" name="messageDeliveryMethod" value="E">
+            <label class="bold margin-left-separation-sm">Email</label>
+            &nbsp;
+            <input formControlName="messageDeliveryMethod" type="radio" name="messageDeliveryMethod" value="I">
+            <label class="bold margin-left-separation-sm">Internal Message</label>
+            &nbsp;
+            <input formControlName="messageDeliveryMethod" type="radio" name="messageDeliveryMethod" value="S">
+            <label class="bold margin-left-separation-sm">SMS</label>
+            &nbsp;
+            <input formControlName="messageDeliveryMethod" type="radio" name="messageDeliveryMethod" value="A">
+            <label class="bold margin-left-separation-sm">Workflow Alert</label>
+            &nbsp;
+            <input formControlName="messageDeliveryMethod" type="radio" name="messageDeliveryMethod" value="W">
+            <label class="bold margin-left-separation-sm">Website</label>
+          </div>
+          <label *ngIf="messageDeliveryMethod && messageDeliveryMethod.invalid && messageDeliveryMethod.touched" class="text-danger">Delivery Method is required</label>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-separation-sm">
+            <label class="text-secondary bold">
+              Message Subject
+              <span class="text-danger">*</span>
+            </label>
+            <input formControlName="messageSubject" class="form-control input-sm" type="text" [(ngModel)]="messageModel.emailSubject">
+            <label *ngIf="messageSubject && messageSubject.invalid && messageSubject.touched" class="text-danger">Message subject is required</label>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-separation-sm">
+            <label class="text-secondary bold margin-right-separation-sm">
+              Used in Automated Process
+              <span class="text-danger">*</span>
+            </label>
+            <input formControlName="messageAutoResponse" type="radio" name="messageAutoResponse" [value]="true">
+            <label class="bold margin-left-separation-sm">Yes</label>
+            &nbsp;
+            <input formControlName="messageAutoResponse" type="radio" name="messageAutoResponse" [value]="false">
+            <label class="bold margin-left-separation-sm">No</label>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-separation-sm">
+            <ng-template #changeStatusTooltip>
+              When a message is sent <b>manually</b> with that template, the prospect/patient's status code will be changed to the status selected in the dropdown.
+              <br />
+              When sent from an automated job, that status won't be used as there may be a status change attached to the workflow rule.
+            </ng-template>
+            <label class="text-secondary bold">
+              <i [ngbTooltip]="changeStatusTooltip" style="color: maroon; font-size: 22px;" class="fa fa-info-circle" aria-hidden="true"></i>
+              Change Status To
+            </label>
+            <select formControlName="messageChangeStatus" class="input-sm form-control">
+              <option selected="selected" value="">-- no change --</option>
+              <option *ngFor="let status of statusList" [value]="status.combinedStatus">{{status.description}}</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-separation-sm">
+            <label class="text-secondary bold">
+              Message
+              <span class="text-danger">*</span>
+            </label>
+            <div *ngIf="messageShowComponentsModel.showTextArea">
+              <textarea [(ngModel)]="messageModel.templateText" cols="30" rows="10" formControlName="messageText" class="form-control input-sm"></textarea>
+            </div>
+            <div *ngIf="!messageShowComponentsModel.showTextArea">
+              <ckeditor [(ngModel)]="messageModel.templateText" formControlName="messageText" [config]="{ autoParagraph: false }" debounce="500"></ckeditor>
+            </div>
+            <label *ngIf="messageText && messageText.invalid && messageText.touched" class="text-danger">Message is required</label>
+          </div>
+        </div>
+
+        <div *ngIf="messageForm.get('messageDeliveryMethod')?.value !== ''" class="card margin-top-separation-sm">
+          <div class="card-body">
+            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs justify-content-center col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <li [ngbNavItem]="1">
+                <a ngbNavLink>
+                    Keywords
+                </a>
+                <ng-template ngbNavContent>
+                  <table id="keywordTable">
+                    <div *ngFor="let keyword of keywordsList" class="w-100">
+                      <tr>
+                        <td>
+                          <span style="color: maroon;">
+                            <b>
+                              {{keyword.name}}
+                            </b>
+                          </span>
+                        </td>
+                        <td *ngFor="let item of keyword.items">
+                          <a (click)="$event.preventDefault(); addKeyword(item.code);" class="pointer decoration-none" [href]="item.code">
+                            {{item.label}}
+                          </a>
+                        </td>
+                      </tr>
+                      <hr>
+                    </div>
+                  </table>
+                </ng-template>
+              </li>
+              <li *ngIf="messageForm.get('messageAutoResponse')?.value === false" [ngbNavItem]="2">
+                  <a ngbNavLink>
+                      Options List
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div>
+                      <div #optionsRow class="row margin-top-separation-sm">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                          <input placeholder="option 1" class="form-control input-sm options-input">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                          <input placeholder="option 2" type="text" class="form-control input-sm options-input">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                          <input placeholder="option 3" type="text" class="form-control input-sm options-input">
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-md-offset-1 col-lg-offset-1 col-lg-3">
+                          <button class="btn btn-primary" (click)="addOptionsRow()">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row margin-top-separation-sm">
+                      <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+                        <input [(ngModel)]="messageFieldModel.listField" placeholder="field name" type="text" class="form-control input-sm">
+                      </div>
+                      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <button class="btn btn-secondary" (click)="addOptionsList();">Add Options</button>
+                      </div>
+                    </div>
+                  </ng-template>
+              </li>
+              <li *ngIf="messageForm.get('messageAutoResponse')?.value === false" [ngbNavItem]="3">
+                  <a ngbNavLink>
+                      Fields
+                  </a>
+                  <ng-template ngbNavContent>
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label for="">Date Field</label>
+                        <div class="input-group mb-3">
+                          <input [(ngModel)]="messageFieldModel.dateField" type="text" class="form-control" placeholder="field name" aria-label="field name" aria-describedby="basic-addon2">
+                          <div class="input-group-append">
+                            <button (click)="addField('Date')" class="btn btn-secondary" type="button">Add Date</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label for="">Time Field</label>
+                        <div class="input-group mb-3">
+                          <input [(ngModel)]="messageFieldModel.timeField" type="text" class="form-control" placeholder="field name" aria-label="field name" aria-describedby="basic-addon2">
+                          <div class="input-group-append">
+                            <button (click)="addField('Time')" class="btn btn-secondary" type="button">Add Time</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <label for="">Text Field</label>
+                        <div class="input-group mb-3">
+                          <input [(ngModel)]="messageFieldModel.textField" type="text" class="form-control" placeholder="field name" aria-label="field name" aria-describedby="basic-addon2">
+                          <div class="input-group-append">
+                            <button (click)="addField('Text')" class="btn btn-secondary" type="button">Add Text</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+              </li>
+          </ul>
+            <div [ngbNavOutlet]="nav" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-separation-sm"></div>
+          </div>
+        </div>
+
+        <div *ngIf="messageModel.id > 0" class="card margin-top-separation-sm">
+          <div class="card-header bg-gradient-warning">&nbsp;&nbsp;<strong>Attach File to Template</strong></div>
+          <div class="card-block padding-10">
+            <table class="table table-sm table-bordered">
+              <thead class="bg-gradient-olive">
+                <tr>
+                  <th class="color-white">Attachment File Name</th>
+                  <th class="color-white">Size</th>
+                  <th class="color-white text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let attachment of messageModel.attachedFiles; let i = index">
+                  <td>
+                    <a class="decoration-none" [href]="apiUrl + attachment.relativeUrl" target="_blank">{{ attachment.fileName }}</a>
+                  </td>
+                  <td>{{ attachment.size | fileSize }}</td>
+                  <td class="text-center">
+                    <ng-template #detachActionTooltip>
+                      <b>
+                          Detach
+                      </b>
+                    </ng-template>
+                    <a (click)="removeFile(attachment.id, attachment.shortName, i)" [ngbTooltip]="detachActionTooltip">
+                      <i style="font-size: 20px; margin-left: 5px; cursor: pointer;" class="fa fa-trash text-danger" aria-hidden="true"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="input-group margin-left-separation-sm">
+              <input name="fUploadFile" type="file" id="fUploadFile" class="padding-10" (change)="showUploadButton($event)">
+            </div>
+            <div class="padding-10">
+              <input type="submit" name="btnUpload" value="Upload" (click)="uploadFile()" [disabled]="messageShowComponentsModel.uploading" id="btnUpload" class="btn btn-sm btn-warning" style="display:none">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-separation-sm text-center">
+          <button *ngIf="!messageModel.id" class="btn btn-success" (click)="addMessageTemplate()">Add Template</button>
+          <button *ngIf="messageModel.id > 0" class="btn btn-primary" (click)="updateMessageTemplate()">Update Template</button>
+          &nbsp;
+          <button *ngIf="messageModel.id > 0" class="btn btn-info" (click)="newMessageTemplate()">Add New Template</button>
+          &nbsp;
+          <button *ngIf="messageModel.id > 0" class="btn btn-success" (click)="testMessageTemplate(messageModel.id)">Test Template</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card margin-top-separation-sm">
+    <div class="card-header bg-gradient-secondary">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3">
+              <label class="color-white">
+                <b>
+                  Method:
+                </b>
+              </label>
+              <select [(ngModel)]="messageFilters.deliveryMethod" id="selectMethod" class="form-control">
+                <option value="">All</option>
+                <option value="I">Internal</option>
+                <option value="E">Email</option>
+                <option value="S">SMS</option>
+                <option value="A">Workflow Alert</option>
+              </select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3">
+              <label class="color-white">
+                <b>
+                  Auto Message:
+                </b>
+              </label>
+              <select [(ngModel)]="messageFilters.autoResponseEmail" id="selectAutoMessage" class="form-control">
+                <option value="">All</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3">
+              <label class="color-white">
+                <b>
+                  Keyword:
+                </b>
+              </label>
+              <input [(ngModel)]="messageFilters.keyword" type="text" class="form-control input-sm">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3">
+               <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8">
+                  <label for="">&nbsp;</label>
+                  <button class="form-control btn btn-warning" (click)="search()">Search</button>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                  <label for="">&nbsp;</label>
+                  <div>
+                    <button *ngIf="messageShowComponentsModel.tableCollapsed"  (click)="messageShowComponentsModel.tableCollapsed = !messageShowComponentsModel.tableCollapsed" type="button" class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#messagesCardBody" aria-expanded="false" aria-controls="messagesCardBody">
+                      <i class="fa fa-plus text-fuchsia fa-2x" aria-hidden="true"></i>
+                    </button>
+                    <button *ngIf="!messageShowComponentsModel.tableCollapsed" (click)="messageShowComponentsModel.tableCollapsed = !messageShowComponentsModel.tableCollapsed" type="button" class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#messagesCardBody" aria-expanded="false" aria-controls="messagesCardBody">
+                        <i class="fa fa-minus text-fuchsia fa-2x" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="collapse show" id="messagesCardBody">
+      <div class="card-body">
+          <div *ngIf="!messageShowComponentsModel.loading && messageTemplatesList.length > 0" class="table-container">
+            <div style="margin-bottom: 5px;" class="row">
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="dt-buttons btn-group flex-wrap">
+                      <div ngbDropdown class="d-inline-block">
+                        <button style="border-top-right-radius: unset; border-bottom-right-radius: unset" class="btn btn-secondary buttons-copy buttons-html5" id="dropdownMenuButton" ngbDropdownToggle>
+                            Column visibility
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                            <button class="table-dropdown-item-visibility" (click)="messageShowComponentsModel.isTemplateVisible = !messageShowComponentsModel.isTemplateVisible" [ngStyle]="messageShowComponentsModel.isTemplateVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Template</button>
+                            <button class="table-dropdown-item-visibility" (click)="messageShowComponentsModel.isDeliveryMethodVisible = !messageShowComponentsModel.isDeliveryMethodVisible" [ngStyle]="messageShowComponentsModel.isDeliveryMethodVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Delivery Method</button>
+                            <button class="table-dropdown-item-visibility" (click)="messageShowComponentsModel.isAutoResponseEmailVisible = !messageShowComponentsModel.isAutoResponseEmailVisible" [ngStyle]="messageShowComponentsModel.isAutoResponseEmailVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Used in Automated Process</button>
+                            <button class="table-dropdown-item-visibility" (click)="messageShowComponentsModel.isUploadedFileVisible = !messageShowComponentsModel.isUploadedFileVisible" [ngStyle]="messageShowComponentsModel.isUploadedFileVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Attached file</button>
+                            <button class="table-dropdown-item-visibility" (click)="messageShowComponentsModel.isDateSavedVisible = !messageShowComponentsModel.isDateSavedVisible" [ngStyle]="messageShowComponentsModel.isDateSavedVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Date Saved</button>
+                            <button class="table-dropdown-item-visibility" (click)="messageShowComponentsModel.isSavedByVisible = !messageShowComponentsModel.isSavedByVisible" [ngStyle]="messageShowComponentsModel.isSavedByVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Saved By</button>
+                            <button class="table-dropdown-item-visibility" (click)="messageShowComponentsModel.isActionButtonVisible = !messageShowComponentsModel.isActionButtonVisible" [ngStyle]="messageShowComponentsModel.isActionButtonVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Action</button>
+                        </div>
+                      </div>
+                      <button (click)="exportExcel();" class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblLeads" type="button">
+                          <span>Excel</span>
+                      </button>
+                  </div>
+              </div>
+            </div>
+            <table id="tblMessage" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th *ngIf="messageShowComponentsModel.isTemplateVisible">
+                          Template
+                          <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'template')" aria-hidden="true"></i>
+                          <i class="fa fa-arrow-up active-order-by order-column float-right" (click)="orderBy($event, 'template')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="messageShowComponentsModel.isDeliveryMethodVisible">
+                          Delivery Method
+                          <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'deliveryMethod')" aria-hidden="true"></i>
+                          <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'deliveryMethod')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="messageShowComponentsModel.isAutoResponseEmailVisible">
+                          Used in Automated Process
+                          <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'autoResponseEmail')" aria-hidden="true"></i>
+                          <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'autoResponseEmail')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="messageShowComponentsModel.isUploadedFileVisible"></th>
+                        <th *ngIf="messageShowComponentsModel.isDateSavedVisible">
+                          Date Saved
+                          <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'dateSaved')" aria-hidden="true"></i>
+                          <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'dateSaved')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="messageShowComponentsModel.isSavedByVisible">
+                          Saved By
+                          <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'savedBy')" aria-hidden="true"></i>
+                          <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'savedBy')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="messageShowComponentsModel.isActionButtonVisible" appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let messageTemplate of messageTemplatesList | paginate: { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.totalNumberOfRecords }; let i = index;">
+                        <td *ngIf="messageShowComponentsModel.isTemplateVisible">
+                            {{messageTemplate.title}}
+                        </td>
+                        <td *ngIf="messageShowComponentsModel.isDeliveryMethodVisible">
+                            {{messageTemplate.deliveryMethod}}
+                        </td>
+                        <td *ngIf="messageShowComponentsModel.isAutoResponseEmailVisible">
+                            {{messageTemplate.autoResponseEmail ? 'Yes' : 'No'}}
+                        </td>
+                        <td style="width: 30px;" *ngIf="messageShowComponentsModel.isUploadedFileVisible">
+                          <i *ngIf="messageTemplate.attachedFiles.length > 0" class="fa fa-paperclip fa-lg"></i>
+                        </td>
+                        <td *ngIf="messageShowComponentsModel.isDateSavedVisible">
+                          {{messageTemplate.loadedOn | date: 'MM/dd/yyyy HH:mm:ss a'}}
+                        </td>
+                        <td *ngIf="messageShowComponentsModel.isSavedByVisible">
+                          {{messageTemplate.loadedBy}}
+                        </td>
+                        <td *ngIf="messageShowComponentsModel.isActionButtonVisible">
+                          <ng-template #editActionTooltip>
+                              <b>
+                                  Edit
+                              </b>
+                          </ng-template>
+                          <ng-template #deleteActionTooltip>
+                              <b>
+                                  Delete
+                              </b>
+                          </ng-template>
+                          <a (click)="setMessageTemplateModel(messageTemplate);" [ngbTooltip]="editActionTooltip">
+                            <i class="fa fa-pencil-square-o text-primary icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                          </a>
+                          <a (click)="openMessageTemplateDeleteModal(messageTemplateDeleteModal, messageTemplate);" [ngbTooltip]="deleteActionTooltip">
+                            <i style="font-size: 20px; margin-left: 5px; cursor: pointer;" class="fa fa-trash text-danger" aria-hidden="true"></i>
+                          </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+              <div class="col-6">
+                  Showing {{showingFrom}} to {{showingTo}} of {{pagination.totalNumberOfRecords}} entries
+                  <br>
+                  <select [(ngModel)]="pagination.tableSize" (change)="onTableSizeChange($event)">
+                      <option [value]="size" [selected]="pagination.tableSize == size" *ngFor="let size of pagination.tableSizes">
+                          {{size}}
+                      </option>
+                  </select>
+              </div>
+              <div class="col-6">
+                  <pagination-controls
+                      style="float: right;"
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange($event)"
+                  >
+                  </pagination-controls>
+              </div>
+            </div>
+          </div>
+          <div class="row margin-top-separation-sm">
+            <div *ngIf="!messageShowComponentsModel.loading && messageTemplatesList.length === 0" class="col-xs-12 alert alert-danger alert-dismissible fade show text-center" role="alert">
+                <span>No message templates found!</span>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+
+<ng-template #messageTemplateDeleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Homework Template Delete Confirmation</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+      <div class="mb-3">
+          <p>
+              Template: <b>{{messageDeleteModel.title}}</b>
+          </p>
+      </div>
+      <div class="mb-3">
+          <p>
+              Delivery Method: <b>{{messageDeleteModel.deliveryMethod}}</b>
+          </p>
+      </div>
+      <div class="mb-3">
+          <p>
+              Used in Automated Process: <b>{{messageDeleteModel.autoResponseEmail ? 'Yes' : 'No'}}</b>
+          </p>
+      </div>
+      <div class="mb-3">
+        <p>
+            Date Saved: <b>{{messageDeleteModel.loadedOn | date: 'MM/dd/yyyy HH:mm:ss a'}}</b>
+        </p>
+      </div>
+      <div class="mb-3">
+        <p>
+            Saved By: <b>{{messageDeleteModel.loadedBy}}</b>
+        </p>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="deleteMessageTemplate(messageDeleteModel.id)">Confirm</button>
+  </div>
+</ng-template>

@@ -1,0 +1,137 @@
+<div appCanSaveSettings id="insurance-company-container" class="container">
+    <div id="add-update-insurance" class="card">
+        <div class="card-header add-insurance-company-card-header" (click)="showInsuranceAddUpdateBody = !showInsuranceAddUpdateBody" data-bs-toggle="collapse" data-bs-target="#insuranceAddUpdateBody" aria-expanded="false" aria-controls="insuranceAddUpdateBody" style="cursor: pointer;">
+            <h2>
+                <i *ngIf="!showInsuranceAddUpdateBody" class="fa fa-chevron-right" aria-hidden="true"></i> 
+                <i *ngIf="showInsuranceAddUpdateBody" class="fa fa-chevron-down" aria-hidden="true"></i>
+                {{!insuranceCompanyModel.id ? "Add Insurance Company" : "Update - " + insuranceCompanyModel.name}}
+            </h2>
+        </div>
+        <div id="insuranceAddUpdateBody" class="card-body collapse">
+            <div class="row">
+                <div class="col-3 text-right">
+                    <label><span class="text-danger">*</span>Name</label>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="insuranceCompanyModel.name" name="txtName" type="text" id="txtName" class="form-control" placeholder="insurance company name">
+                    <span controltovalidate="txtName" errormessage="* Description Required" display="Dynamic" id="rfvname" evaluationfunction="RequiredFieldValidatorEvaluateIsValid" initialvalue="" style="display:none;">* Description Required</span>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <label>Parent Name</label>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="insuranceCompanyModel.parentName" name="txtName2" type="text" id="txtName2" class="form-control" placeholder="insurance company parent name">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <label>Address</label>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="insuranceCompanyModel.street" name="txtAddress1" type="text" id="txtAddress1" class="form-control" placeholder="address">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <label>Address 2</label>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="insuranceCompanyModel.street2" name="txtAddress2" type="text" id="txtAddress2" class="form-control" placeholder="address 2">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right"><label>City</label></div>
+                <div class="col-9">
+                      <input [(ngModel)]="insuranceCompanyModel.city" name="txtCity" type="text" id="txtCity" class="form-control" placeholder="city">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right"><label>State</label></div>
+                <div class="col-9">
+                    <select [(ngModel)]="insuranceCompanyModel.state" name="ddlState" id="ddlState" class="form-control">
+                        <option selected="selected" value="">-- select state --</option>
+                        <option *ngFor="let state of statesList" [value]="state.stateProvinceCD" >{{state.stateProvinceName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <label>Zip Code</label>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="insuranceCompanyModel.zip" name="txtZip" type="text" id="txtZip" class="form-control" placeholder="zip code">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <label>Phone</label>
+                </div>
+                <div class="col-9">
+                    <input name="txtInsurancePhone" type="text" maxlength="12" id="txtInsurancePhone" class="form-control" [inputMask]="phoneMask" placeholder="___-___-____" >
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right"><label>Insurance Type</label></div>
+                <div class="col-9">
+                    <select [(ngModel)]="insuranceCompanyModel.type" name="ddlInsuranceType" id="ddlInsuranceType" class="form-control">
+                        <option selected="selected" value="">-- select Type --</option>
+                        <option value="Self-Pay">Self-Pay</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Medicaid">Medicaid</option>
+                        <option value="Medicare">Medicare</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top: 10px;" class="col-12 text-center">
+                <button *ngIf="!insuranceCompanyModel.id" (click)="addUpdateInsuranceCompany()" name="btnSave" id="btnSave" class="btn btn-sm btn-primary">Add Insurance Company</button>
+                <button *ngIf="insuranceCompanyModel.id" (click)="addUpdateInsuranceCompany()" name="btnSave" id="btnSave" class="btn btn-sm btn-primary">Update Insurance Company</button>
+                <button id="btnAddNewInsuranceCompany" (click)="resetInsuranceCompanyModel();" *ngIf="insuranceCompanyModel.id" class="btn btn-secondary btn-sm">Add New Insurance Company</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="insurance-company-container" class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-success">Set up Insurance Companies</h1>
+        </div>
+        <div class="card-body">
+            <table id="tblInsCo" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Name</th>
+                        <th>Street</th>
+                        <th>Street2</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Zip</th>
+                        <th>Phone</th>
+                        <th>Type</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let insuranceCompany of insuranceCompaniesList">
+                        <td>{{insuranceCompany.name}}</td>
+                        <td>{{insuranceCompany.street}}</td>
+                        <td>{{insuranceCompany.street2}}</td>
+                        <td>{{insuranceCompany.city}}</td>
+                        <td>{{insuranceCompany.state}}</td>
+                        <td>{{insuranceCompany.zip}}</td>
+                        <td>{{insuranceCompany.phone}}</td>
+                        <td>{{insuranceCompany.type}}</td>
+                        <td appCanSaveSettings>
+                            <a href="insurance-company#add-update-insurance">
+                                <i (click)="editInsuranceCompany(insuranceCompany)" class="fa fa-pencil-square-o text-success edit-insurance-button" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

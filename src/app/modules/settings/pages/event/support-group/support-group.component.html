@@ -1,0 +1,448 @@
+<ngx-spinner bdColor = "grey" size="large" color="#934d4d" [fullScreen]="false" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header bg-secondary">
+            <h4 (click)="showEventAddBody = !showEventAddBody" class="text-white" data-bs-toggle="collapse" data-bs-target="#supportGroupAddBody" aria-expanded="false" aria-controls="supportGroupAddBody" style="cursor: pointer;">
+                <i *ngIf="!showEventAddBody" class="fa fa-chevron-right" aria-hidden="true"></i> 
+                <i *ngIf="showEventAddBody" class="fa fa-chevron-down" aria-hidden="true"></i> 
+                Add Support Group
+            </h4>
+        </div>
+        <div id="supportGroupAddBody" class="card-body collapse">
+            <div [formGroup]="addEventForm" class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtEventTitle">
+                            <span class="text-danger">*</span>
+                            Support Group Title:
+                        </label>
+                    </b>
+                    <input formControlName="addEventTitle" [(ngModel)]="newEvent.eventTitle" id="txtEventTitle" class="form-control input-sm" type="text">
+                    <label *ngIf="addEventTitle && addEventTitle.invalid && addEventTitle.touched" class="text-danger">Support Group Title is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>
+                            Support Group Status:
+                        </label>
+                    </b>
+                    <select formControlName="addEventStatus" [(ngModel)]="newEvent.eventStatus" class="form-control input-sm">
+                        <option selected="selected" value="O">Open</option>
+                        <option value="C">Close</option>
+                        <option value="X">Cancelled</option>
+                    </select>
+                    <label *ngIf="addEventStatus && addEventStatus.invalid && addEventStatus.touched" class="text-danger">Support Group Status is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtEventDate">
+                            <span class="text-danger">*</span>
+                            Date/Time:
+                        </label>
+                    </b>
+                    <input formControlName="addEventDate" [(ngModel)]="newEvent.eventDate" id="txtEventDate" class="form-control input-sm" type="datetime-local">
+                    <label *ngIf="addEventDate && addEventDate.invalid && addEventDate.touched" class="text-danger">Support Group Date is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label>Duration:</label>
+                    </b>
+                    <select formControlName="addEventDuration" [(ngModel)]="newEvent.eventDuration" class="form-control input-sm">
+                        <option value=""></option>
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">1 hour</option>
+                        <option value="75">1 hour 15 minutes</option>
+                        <option value="90">1 hour 30 minutes</option>
+                        <option value="105">1 hour 45 minutes</option>
+                        <option value="120">2 hours</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtEventPresenter">Presenter:</label>
+                    </b>
+                    <input formControlName="addEventPresenter" [(ngModel)]="newEvent.eventPresenter" id="txtEventPresenter" class="form-control input-sm" type="text">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtEventLocation">
+                            <span class="text-danger">*</span>
+                            Location:
+                        </label>
+                    </b>
+                    <input formControlName="addEventLocation" [(ngModel)]="newEvent.eventLocation" id="txtEventLocation" class="form-control input-sm" type="text">
+                    <label *ngIf="addEventLocation && addEventLocation.invalid && addEventLocation.touched" class="text-danger">Support Group Location is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtEventAddress1">
+                            <span class="text-danger">*</span>
+                            Address:
+                        </label>
+                    </b>
+                    <input formControlName="addEventAddress" [(ngModel)]="newEvent.eventAddress1" id="txtEventAddress1" class="form-control input-sm" type="text">
+                    <label *ngIf="addEventAddress && addEventAddress.invalid && addEventAddress.touched" class="text-danger">Support Group Address is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtEventAddress2">Address 2:</label>
+                    </b>
+                    <input formControlName="addEventAddress2" [(ngModel)]="newEvent.eventAddress2" id="txtEventAddress2" class="form-control input-sm" type="text">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtEventCity">
+                            <span class="text-danger">*</span>
+                            City:
+                        </label>
+                    </b>
+                    <input formControlName="addEventCity" [(ngModel)]="newEvent.eventCity" id="txtEventCity" class="form-control input-sm" type="text">
+                    <label *ngIf="addEventCity && addEventCity.invalid && addEventCity.touched" class="text-danger">Support Group City is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>
+                            State:
+                        </label>
+                    </b>
+                    <select formControlName="addEventState" [(ngModel)]="newEvent.eventState" name="ddlState" id="ddlState" class="form-control input-sm">
+                        <option selected="selected" value="">-- select state --</option>
+                        <option *ngFor="let state of statesList" [value]="state.stateProvinceCD" >{{state.stateProvinceName}}</option>
+                    </select>
+                    <label *ngIf="addEventState && addEventState.invalid && addEventState.touched" class="text-danger">Support Group State is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtEventZip">
+                            <span class="text-danger">*</span>
+                            Zip Code:
+                        </label>
+                    </b>
+                    <input formControlName="addEventZip" [(ngModel)]="newEvent.eventZip" id="txtEventZip" class="form-control input-sm" type="text">
+                    <label *ngIf="addEventZip && addEventZip.invalid && addEventZip.touched" class="text-danger">Support Group Zip Code is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <span class="text-danger">*</span>
+                        <label for="txtEventCapacity">Capacity:</label>
+                    </b>
+                    <input formControlName="addEventCapacity" [(ngModel)]="newEvent.eventCapacity" id="txtEventCapacity" class="form-control input-sm" type="text">
+                    <label *ngIf="addEventCapacity && addEventCapacity.invalid && addEventCapacity.touched" class="text-danger">Support Group Capacity is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtEventPhone">Phone:</label>
+                    </b>
+                    <input formControlName="addEventPhone" [(ngModel)]="newEvent.eventPhone" id="txtEventPhone" class="form-control input-sm" type="text" [inputMask]="phoneMask" placeholder="___-___-____">
+                </div>
+            </div>
+            <div class="col-xs-12 text-center margin-top-separation-sm">
+                <button (click)="addSupportGroup()" class="btn btn-sm btn-success">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card margin-top-separation-sm">
+        <div class="card-header bg-primary">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="txtEventFrom" class="text-white">
+                       <b>From:</b>
+                    </label>
+                    <input [(ngModel)]="supportGroupFilter.from" type="text" id="txtEventFrom" class="form-control input-sm dtpick crit" bsDatepicker>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="txtEventTo" class="text-white">
+                        <b>
+                            To:
+                        </b>
+                    </label>
+                    <input [(ngModel)]="supportGroupFilter.to" id="txtEventTo" type="text" class="form-control input-sm dtpick crit" bsDatepicker>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="txtEventCity" class="text-white">
+                        <b>
+                            City:
+                        </b>
+                    </label>
+                    <input [(ngModel)]="supportGroupFilter.city" type="text" id="txtEventCity" class="form-control input-sm">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="ddlEventStatus" class="text-white">
+                        <b>
+                            Status:
+                        </b>
+                    </label>
+                    <select [(ngModel)]="supportGroupFilter.status" id="ddlEventStatus" class="form-control input-sm">
+                        <option value="">All</option>
+                        <option value="O">Open</option>
+                        <option value="C">Closed</option>
+                        <option value="X">Cancelled</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="ddlEventPresenter" class="text-white">
+                       <b>
+                            Presenter:
+                       </b>
+                    </label>
+                    <select [(ngModel)]="supportGroupFilter.presenter" class="form-control input-sm" id="ddlEventPresenter">
+                        <option value="All">All</option>
+                        <option value="No">No Presenter</option>
+                        <option *ngFor="let presenter of presentersList" [value]="presenter">{{presenter}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 margin-top-separation-md">
+                    <button (click)="getSupportGroups()" style="margin-top: 23px;" class="btn btn-warning">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <button (click)="exportExcel();" class="btn btn-secondary buttons-excel buttons-html5 margin-bottom-separation-sm" tabindex="0" aria-controls="tblLeads" type="button">
+                <span>Excel</span>
+            </button>
+            <table id="tblPicture" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-info">
+                        <th>
+                            Date
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'date')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right active-order-by" (click)="orderBy($event, 'date')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            Title
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'title')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'title')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            Location
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'location')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'location')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            City
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'city')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'city')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            Presenter
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'presenter')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'presenter')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            Capacity
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'capacity')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'capacity')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            Status
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'status')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'status')" aria-hidden="true"></i>
+                        </th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let event of eventsList; let i = index">
+                        <td>
+                            {{event.eventDate | date: 'M/d/yyyy h:mm a'}}
+                        </td>
+                        <td>
+                            {{event.eventTitle}}
+                        </td>
+                        <td>
+                            {{event.eventLocation}}
+                        </td>
+                        <td>
+                            {{event.eventCity}}
+                        </td>
+                        <td>
+                            {{event.eventPresenter}}
+                        </td>
+                        <td>
+                            {{event.eventCapacity}}
+                        </td>
+                        <td>
+                            {{event.eventStatus === "O" ? "Open" : event.eventStatus === "C" ? "Closed" : "Cancelled"}}
+                        </td>
+                        <ng-template #deleteFileTooltipTemplate>
+                            <b>Delete File</b>
+                        </ng-template>
+                        <ng-template #downloadFileTooltipTemplate>
+                            <b>Download Picture</b>
+                        </ng-template>
+                        <td appCanSaveSettings class="text-center">
+                            <a>
+                                <i style="font-size: 20px; margin-right: 5px; cursor: pointer;" class="fa fa-users text-success" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="openUpdateSupportGroupConfirmationModal(supportGroupToUpdateModal, event, true)">
+                                <i style="font-size: 20px; margin-right: 5px; cursor: pointer;" class="fa fa-files-o text-danger" aria-hidden="true"></i>
+                            </a>
+                            <a href="{{'http://maps.google.com/?q=' + event.mapLocation }}" target="_blank">
+                                <i style="font-size: 20px; margin-right: 5px; cursor: pointer;" class="fa fa-map-marker text-info" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="openUpdateSupportGroupConfirmationModal(supportGroupToUpdateModal, event)">
+                                <i style="font-size: 20px; margin-left: 5px; cursor: pointer;" class="fa fa-pencil-square-o text-primary" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-xs-12">
+                    <span style="color:maroon; font-weight:bold">R: Registered,&nbsp;&nbsp;&nbsp;G: Guests,&nbsp;&nbsp;&nbsp;P: Present,&nbsp;&nbsp;&nbsp;W: Walk-In</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #supportGroupToUpdateModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">{{selectedEvent.id !== 0 ? 'Edit Support Group' : 'Clone Support Group'}}</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div [formGroup]="updateEventForm" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtUpdateEventTitle">
+                        <span class="text-danger">*</span>
+                        Support Group Title:
+                    </label>
+                </b>
+                <input formControlName="updateEventTitle" [(ngModel)]="selectedEvent.eventTitle" id="txtUpdateEventTitle" class="form-control input-sm" type="text" #seminarUpdateTitle required>
+                <label *ngIf="updateEventTitle && updateEventTitle.invalid && updateEventTitle.touched" class="text-danger">Seminar Title is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label>
+                        <span class="text-danger">*</span>
+                        Support Group Status:
+                    </label>
+                </b>
+                <select formControlName="updateEventStatus" [(ngModel)]="selectedEvent.eventStatus" class="form-control input-sm">
+                    <option selected="selected" value="O">Open</option>
+                    <option value="C">Close</option>
+                    <option value="X">Cancelled</option>
+                </select>
+                <label *ngIf="updateEventStatus && updateEventStatus.invalid && updateEventStatus.touched" class="text-danger">Support Group Status is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtUpdateEventDate">
+                        <span class="text-danger">*</span>
+                        Date/Time:
+                    </label>
+                </b>
+                <input formControlName="updateEventDate" [(ngModel)]="selectedEvent.eventDate" id="txtEventDate" class="form-control input-sm" type="datetime-local">
+                <label *ngIf="updateEventDate && updateEventDate.invalid && updateEventDate.touched" class="text-danger">Support Group Date is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label>Duration:</label>
+                </b>
+                <select formControlName="updateEventDuration" [(ngModel)]="selectedEvent.eventDuration" class="form-control input-sm">
+                    <option value=""></option>
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="75">1 hour 15 minutes</option>
+                    <option value="90">1 hour 30 minutes</option>
+                    <option value="105">1 hour 45 minutes</option>
+                    <option value="120">2 hours</option>
+                </select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtUpdateEventPresenter">Presenter:</label>
+                </b>
+                <input formControlName="updateEventPresenter" [(ngModel)]="selectedEvent.eventPresenter" id="txtUpdateEventPresenter" class="form-control input-sm" type="text">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtUpdateEventLocation">
+                        <span class="text-danger">*</span>
+                        Location:
+                    </label>
+                </b>
+                <input formControlName="updateEventLocation" [(ngModel)]="selectedEvent.eventLocation" id="txtUpdateEventLocation" class="form-control input-sm" type="text">
+                <label *ngIf="updateEventLocation && updateEventLocation.invalid && updateEventLocation.touched" class="text-danger">Support Group Location is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtUpdateEventAddress1">
+                        <span class="text-danger">*</span>
+                        Address:
+                    </label>
+                </b>
+                <input formControlName="updateEventAddress" [(ngModel)]="selectedEvent.eventAddress1" id="txtUpdateEventAddress1" class="form-control input-sm" type="text">
+                <label *ngIf="updateEventAddress && updateEventAddress.invalid && updateEventAddress.touched" class="text-danger">Support Group Address is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtUpdateEventAddress2">Address 2:</label>
+                </b>
+                <input formControlName="updateEventAddress2" [(ngModel)]="selectedEvent.eventAddress2" id="txtUpdateEventAddress2" class="form-control input-sm" type="text">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtUpdateEventCity">
+                        <span class="text-danger">*</span>
+                        City:
+                    </label>
+                </b>
+                <input formControlName="updateEventCity" [(ngModel)]="selectedEvent.eventCity" id="txtUpdateEventCity" class="form-control input-sm" type="text">
+                <label *ngIf="updateEventCity && updateEventCity.invalid && updateEventCity.touched" class="text-danger">Support Group City is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label>
+                        <span class="text-danger">*</span>
+                        State:
+                    </label>
+                </b>
+                <select formControlName="updateEventState" [(ngModel)]="selectedEvent.eventState" name="ddlUpdateState" id="ddlUpdateEventState" class="form-control input-sm">
+                    <option selected="selected" value="">-- select state --</option>
+                    <option *ngFor="let state of statesList" [value]="state.stateProvinceCD" >{{state.stateProvinceName}}</option>
+                </select>
+                <label *ngIf="updateEventState && updateEventState.invalid && updateEventState.touched" class="text-danger">State is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtSelectedEventZip">
+                        <span class="text-danger">*</span>
+                        Zip Code:
+                    </label>
+                </b>
+                <input formControlName="updateEventZip" [(ngModel)]="selectedEvent.eventZip" id="txtUpdateEventZip" class="form-control input-sm" type="text">
+                <label *ngIf="updateEventZip && updateEventZip.invalid && updateEventZip.touched" class="text-danger">Support Group Zip Code is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <span class="text-danger">*</span>
+                    <label for="txtUpdateEventCapacity">Capacity:</label>
+                </b>
+                <input formControlName="updateEventCapacity" [(ngModel)]="selectedEvent.eventCapacity" id="txtUpdateEventCapacity" class="form-control input-sm" type="text">
+                <label *ngIf="updateEventCapacity && updateEventCapacity.invalid && updateEventCapacity.touched" class="text-danger">Support Group Capacity is required</label>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <b>
+                    <label for="txtUpdateEventPhone">Phone:</label>
+                </b>
+                <input formControlName="updateEventPhone" [(ngModel)]="selectedEvent.eventPhone" id="txtUpdateEventPhone" class="form-control input-sm" type="text" [inputMask]="phoneMask" placeholder="___-___-____">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="updateSupportGroup();" type="button" class="btn btn-primary">Confirm</button>
+    </div>
+</ng-template>

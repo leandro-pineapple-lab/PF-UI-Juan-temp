@@ -1,0 +1,22 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Long Hospital Stays'"></app-title>
+  <app-long-hospital-stays-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="pagination.page = 1; getReports()"
+  ></app-long-hospital-stays-filters>
+
+  <div class="margin-top-separation-sm">
+    <app-table
+      [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      [pagination]="pagination"
+      [headerCssClass]="'table-info'"
+      [tableInfo]="table"
+      [noDataFoundText]="'No Long Hospital Stays reports found!'"
+      (paginationChangeEvent)="getReports()"
+      (exportExcelEvent)="getReports()"
+    ></app-table>
+  </div>
+</div>
+
+

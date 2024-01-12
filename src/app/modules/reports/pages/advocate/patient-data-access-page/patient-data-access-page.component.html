@@ -1,0 +1,17 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Patient Data Access'"></app-title>
+  <app-patient-data-access-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="refreshTable()"
+  ></app-patient-data-access-filters>
+
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      (paginationChangeEvent)="getReports()"
+      [pagination]="pagination" [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Patient Data Access reports found!'"></app-table>
+  </div>
+</div>
+

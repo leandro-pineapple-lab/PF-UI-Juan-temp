@@ -1,0 +1,43 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectSurgeryYear" class="bold text-white">Surgery Year:</label>
+        <select id="selectSurgeryYear" class="form-control input-sm" [(ngModel)]="reportFilters.year.value">
+          <option *ngFor="let year of lastYearsList">{{year}}</option>
+          <option value="5">Last 5 years</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label class="bold text-white">Status:</label>
+        <br />
+        <input (change)="setStatusCustomValue()" type="radio" name="radioStatus" id="radioDetailAll" value="A"
+          [(ngModel)]="reportFilters.reportType.value">
+        <label for="radioDetailAll" class="bold text-white">All</label>
+        &nbsp;
+        <input (change)="setStatusCustomValue()" type="radio" name="radioStatus" id="radioDetailBySurgeon" value="S"
+          [(ngModel)]="reportFilters.reportType.value">
+        <label for="radioDetailBySurgeon" class="bold text-white">Detail by Surgeon</label>
+        &nbsp;
+        <input (change)="setStatusCustomValue()" type="radio" name="radioStatus" id="radioDetailByFacility" value="H"
+          [(ngModel)]="reportFilters.reportType.value">
+        <label for="radioDetailByFacility" class="bold text-white">Detail by Facility</label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top-separation-md">
+        <app-report-actions title="Surgical Summary" [reportFilters]="reportFilters" [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports" (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"></app-report-actions>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <label class="bold text-white">Procedure Type:</label>
+        <br />
+        <ng-container *ngFor="let procedureType of procedureTypes">
+          <input (change)="setProcedureTypeValue()" type="checkbox" name="checkProcedureType" [id]="procedureType.value" [value]="procedureType.checked"
+            [(ngModel)]="procedureType.checked">
+          <label [for]="procedureType.value" class="bold text-white">{{procedureType.value}}</label>
+          &nbsp;
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

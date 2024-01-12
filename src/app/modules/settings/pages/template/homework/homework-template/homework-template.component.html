@@ -1,0 +1,226 @@
+<div class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header bg-gradient-info">
+            <h4 (click)="showTemplateAddBody = !showTemplateAddBody" class="text-white" data-bs-toggle="collapse" data-bs-target="#templateAddBody" aria-expanded="false" aria-controls="templateAddBody" style="cursor: pointer;">
+                <i *ngIf="!showTemplateAddBody" class="fa fa-chevron-right" aria-hidden="true"></i>
+                <i *ngIf="showTemplateAddBody" class="fa fa-chevron-down" aria-hidden="true"></i>
+                {{!editingPatientId ? 'Add Template' : 'Update Template - ' + selectedHomeworkTemplate.hospitalName}}
+            </h4>
+        </div>
+        <div id="templateAddBody" class="card-body collapse">
+            <div [formGroup]="addHomeworkTemplateForm" class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <b>
+                        <label for="txtTemplateName">
+                            <span class="text-danger">*</span>
+                            Template Name:
+                        </label>
+                    </b>
+                    <input formControlName="addHomeworkTemplateName" [(ngModel)]="selectedHomeworkTemplate.hospitalName" id="txtTemplateName" class="form-control input-sm" type="text">
+                    <label *ngIf="addHomeworkTemplateName && addHomeworkTemplateName.invalid && addHomeworkTemplateName.touched" class="text-danger">Template name is required</label>
+                </div>
+            </div>
+            <div class="row margin-top-separation-sm">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <table id="tblHomeworkCategories" class="table table-bordered table-striped table-sm table-responsive">
+                        <thead>
+                            <tr class="table-dark">
+                                <th></th>
+                                <th class="text-center">Needed</th>
+                                <th>Category</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let homeworkCategory of homeworkCategoriesList; let i = index">
+                            <tr class="bg-gradient-secondary">
+                                <td class="text-center">
+                                    <button (click)="homeworkCategory.isRowOpen = !homeworkCategory.isRowOpen"
+                                            [attr.disabled]="!homeworkCategory.selected ? true : null"
+                                            class="btn btn-sm btn-warning"
+                                            data-bs-toggle="collapse"
+                                            attr.data-bs-target="{{'#homeworkDetailRow' + i}}"
+                                            aria-expanded="false"
+                                            attr.aria-controls="{{'homeworkDetailRow' + i}}"
+                                            id="{{'btnHomeworkRowCollapse' + i}}"
+                                    >
+                                        <i *ngIf="!homeworkCategory.isRowOpen" class="fa fa-plus" aria-hidden="true"></i>
+                                        <i *ngIf="homeworkCategory.isRowOpen" class="fa fa-minus" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                                <td class="text-center">
+                                    <input (click)="collapseSelectedRow(homeworkCategory, i);" type="checkbox" [(ngModel)]="homeworkCategory.selected">
+                                </td>
+                                <td class="text-bold text-white">
+                                    {{homeworkCategory.name}}
+                                </td>
+                                <td style="color: maroon;">
+                                    {{homeworkCategory.titleNote}}
+                                </td>
+                            </tr>
+                            <tr *ngFor="let homeworkCategoryDetail of homeworkCategory.homeworkCategoryDetails;"
+                                class="collapse" id="{{'homeworkDetailRow' + i}}">
+                                <td colspan="4">
+                                    <label *ngIf="homeworkCategoryDetail.itemType === 'checkbox'">
+                                        <input type="checkbox" [(ngModel)]="homeworkCategoryDetail.selected">
+                                        <b>
+                                            {{homeworkCategoryDetail.itemDescription}}
+                                        </b>
+                                    </label>
+                                    <span *ngIf="homeworkCategoryDetail.itemType === 'textbox'">
+                                        {{homeworkCategoryDetail.itemHeader}}
+                                        <input type="text" size="{{homeworkCategoryDetail.itemOptions}}" [(ngModel)]="homeworkCategoryDetail.answer">
+                                    </span>
+                                    <span *ngIf="homeworkCategoryDetail.itemType === 'textbox2'">
+                                        <input (keyup)="setEmptyAnswer2(homeworkCategoryDetail)" type="text" size="{{homeworkCategoryDetail.itemOptions.split('|')[0]}}" [(ngModel)]="homeworkCategoryDetail.answer">
+                                        {{
+                                            homeworkCategoryDetail.itemTrailer != null && homeworkCategoryDetail.itemTrailer.length > 0 ?
+                                            homeworkCategoryDetail.itemTrailer.split('|')[0] : ''
+                                        }}
+                                        <span style="color: maroon;" class="float-right">
+                                            {{
+                                                homeworkCategoryDetail.itemHeader != null && homeworkCategoryDetail.itemHeader.length > 0 ?
+                                                homeworkCategoryDetail.itemHeader.split('|')[1] : ''
+                                            }}
+                                            <input [attr.disabled]="!homeworkCategoryDetail.answer || homeworkCategoryDetail.answer.length === 0 ? true : null"
+                                                    type="text" size="{{homeworkCategoryDetail.itemOptions.split('|')[1]}}"
+                                                    [(ngModel)]="homeworkCategoryDetail.answer2">
+                                            {{
+                                                homeworkCategoryDetail.itemTrailer != null && homeworkCategoryDetail.itemTrailer.length > 0 ?
+                                                homeworkCategoryDetail.itemTrailer.split('|')[1] : ''
+                                            }}
+                                        </span>
+                                    </span>
+                                    <label *ngIf="homeworkCategoryDetail.itemType === 'textboxpriv'">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                Private Note
+                                            </span>
+                                            <input size="{{homeworkCategoryDetail.itemOptions}}" type="text" class="form-control input-sm" [(ngModel)]="homeworkCategoryDetail.answer">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-user-secret" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </label>
+                                    <label *ngIf="homeworkCategoryDetail.itemType === 'checktext'">
+                                        <input type="checkbox" [(ngModel)]="homeworkCategoryDetail.selected">
+                                        <b>
+                                            {{homeworkCategoryDetail.itemDescription}}
+                                        </b>
+                                        {{homeworkCategoryDetail.itemHeader}}
+                                        <input type="text" size="{{homeworkCategoryDetail.itemOptions}}" [(ngModel)]="homeworkCategoryDetail.answer">
+                                    </label>
+                                    <label *ngIf="homeworkCategoryDetail.itemType === 'checktext2'">
+                                        <input type="checkbox" [(ngModel)]="homeworkCategoryDetail.selected">
+                                        <b>
+                                            {{homeworkCategoryDetail.itemDescription}}
+                                        </b>
+                                        {{homeworkCategoryDetail.itemHeader}}
+                                        <input type="text" size="{{homeworkCategoryDetail.itemOptions.split('|')[0]}}" [(ngModel)]="homeworkCategoryDetail.answer">
+                                        {{homeworkCategoryDetail.itemTrailer}}
+                                        <input *ngIf="!homeworkCategoryDetail.box2Format" type="text" size="{{homeworkCategoryDetail.itemOptions.split('|')[1]}}" [(ngModel)]="homeworkCategoryDetail.answer2">
+                                        <input *ngIf="homeworkCategoryDetail.box2Format === 'D'" type="text" placeholder="Select Date" [(ngModel)]="homeworkCategoryDetail.answer2" bsDatepicker>
+                                    </label>
+                                    <label *ngIf="homeworkCategoryDetail.itemType === 'checkboxlist' && homeworkCategoryDetail.checkboxList.length > 0">
+                                        <label class="text-bold" *ngFor="let checkbox of homeworkCategoryDetail.checkboxList; let j = index">
+                                            <input type="checkbox" [(ngModel)]="checkbox.selected">
+                                            {{checkbox.name}}
+                                            &nbsp;
+                                        </label>
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label>
+                        <b>
+                            Personal Notes
+                        </b>
+                        <span class="text-danger">(Content not shared with patient)</span>
+                    </label>
+                    <textarea [(ngModel)]="selectedHomeworkTemplate.notes" id="" cols="30" rows="3" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="col-xs-12 text-center margin-top-separation-sm">
+                <button *ngIf="!editingPatientId" (click)="addHomeworkTemplate()" class="btn btn-sm btn-success" appCanSaveSettings>Add Template</button>
+                <button *ngIf="editingPatientId" (click)="updateHomeworkTemplate()" class="btn btn-sm btn-success" appCanSaveSettings>Update Template</button>
+                <button [routerLink]="['/settings-homework-template']" *ngIf="editingPatientId" class="btn btn-sm btn-primary margin-left-separation-sm">Add New Template</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="homework-template-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-success">Homework Templates</h4>
+        </div>
+        <div class="card-body">
+            <table id="tblHomeworkTemplates" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Template</th>
+                        <th>Date Saved</th>
+                        <th>Saved By</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let homeworkTemplate of homeworkTemplatesList">
+                        <td>{{homeworkTemplate.hospitalName}}</td>
+                        <td>
+                            {{homeworkTemplate.modifiedDate | date: 'M/d/yyyy h:mm:ss a'}}
+                        </td>
+                        <td>{{homeworkTemplate.modifiedBy}}</td>
+                        <td class="text-center">
+                            <ng-template #editActionTooltip>
+                                <b>
+                                    Edit
+                                </b>
+                            </ng-template>
+                            <ng-template #deleteActionTooltip>
+                                <b>
+                                    Delete
+                                </b>
+                            </ng-template>
+                            <a (click)="editHomeworkTemplate();" [routerLink]="['/settings-homework-template']" [queryParams]="{id: homeworkTemplate.patientId}" [ngbTooltip]="editActionTooltip">
+                                <i class="fa fa-pencil-square-o text-primary icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="openHomeworkTemplateDeleteModal(homeworkTemplateDeleteModal, homeworkTemplate);" [ngbTooltip]="deleteActionTooltip">
+                                <i class="fa fa-trash text-danger margin-left-separation-sm icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #homeworkTemplateDeleteModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Homework Template Delete Confirmation</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>
+                Template: <b>{{selectedHomeworkTemplate.hospitalName}}</b>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p>
+                Date Saved: <b>{{selectedHomeworkTemplate.modifiedDate | date: 'M/d/yyyy h:mm:ss a'}}</b>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p>
+                Saved By: <b>{{selectedHomeworkTemplate.modifiedBy}}</b>
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteHomeworkTemplate(selectedHomeworkTemplate.patientId)">Confirm</button>
+    </div>
+  </ng-template>

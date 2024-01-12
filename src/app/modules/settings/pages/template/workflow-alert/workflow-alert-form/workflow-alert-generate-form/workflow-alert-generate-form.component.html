@@ -1,0 +1,149 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+    <h4 class="text-success font-bold margin-top-2rem">GENERATE</h4>
+  </div>
+  <div class="options-container col-xs-12 col-sm-12 col-md-10 col-lg-10">
+    <div class="method-container" *ngFor="let item of methodOptions; let index = index">
+      <input type="radio" [id]="item.methodId" name="method" [value]="item" [(ngModel)]="methodOption"
+        (change)="getSelectedDeliveryMethodTemplates()">
+      <label class="bold" [htmlFor]="item.methodId">{{ item.text }}</label>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 offset-md-2 col-md-10 offset-lg-2 col-lg-10">
+    <div class="row">
+      <div *ngIf="methodOption?.name === 'Alert'" class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <label for="alertRecipientSelect" class="bold">alert recipient</label>
+        <select id="alertRecipientSelect" [(ngModel)]="workflowAlertModel.bucketId" class="form-control input-sm">
+          <option value="0">-- select alert recipient --</option>
+          <option *ngFor="let team of teamsList" [value]="team.id">{{team.name}}</option>
+        </select>
+      </div>
+      <ng-container *ngIf="methodOption?.value === 'A' || methodOption?.value === 'N'">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <label for="assignAlertToSelect" class="bold">assign alert to</label>
+          <select (change)="professionalChange($event)" [(ngModel)]="workflowAlertModel.alertStaff1"
+            id="assignAlertToSelect" class="form-control input-sm">
+            <option value="">-- n/a --</option>
+            <option *ngFor="let professional of professionalUserProviders1" [value]="professional.userId">
+              {{professional.fullName}}</option>
+          </select>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <label for="assignAlertToSelect2" class="bold">and</label>
+          <select (change)="professionalChange($event)" [(ngModel)]="workflowAlertModel.alertStaff2"
+            id="assignAlertToSelect2" class="form-control input-sm">
+            <option value="">-- n/a --</option>
+            <option *ngFor="let professional of professionalUserProviders2" [value]="professional.userId">
+              {{professional.fullName}}</option>
+          </select>
+        </div>
+      </ng-container>
+      <div *ngIf="methodOption?.value === 'E'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top-separation-sm">
+        <ng-template #alternateEmailTooltip>
+          <span class="text-white">
+            If email is absent or invalid, the message template will be sent to the email address entered below.
+          </span>
+        </ng-template>
+        <label for="txtAlternateEmail" class="bold">
+          Alternate Email Address
+        </label>
+        <a [ngbTooltip]="alternateEmailTooltip" class="margin-top-separation-sm">
+          <i class="fa fa-info-circle text-info icon-default-font-size cursor-pointer margin-left-separation-sm"
+            aria-hidden="true"></i>
+        </a>
+        <input type="text" id="txtAlternateEmail" placeholder="alternate email address" class="form-control input-sm">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div *ngIf="methodOption?.value !== 'H' && methodOption?.value !== 'N'" class="margin-top-2rem">
+          <label class="bold">
+            <span class="text-maroon">*</span>
+            Using Template
+          </label>
+          <span *ngIf="selectedMessageTemplate" class="text-success">
+            {{selectedMessageTemplate}}
+            <i (click)="workflowAlertModel.templateId = 0; selectedMessageTemplate = ''"
+              class="fa fa-times cursor-pointer text-danger" aria-hidden="true"></i>
+          </span>
+          <a class="margin-left-separation-sm decoration-none cursor-pointer"
+            (click)="openMessageTemplatesModal(templatesModal)">show available templates</a>
+        </div>
+        <ng-container *ngIf="methodOption?.value === 'H' || methodOption?.value === 'N'">
+          <div *ngIf="methodOption?.value === 'H'" class="margin-top-separation-sm">
+            <label for="handoutSelect" class="bold">Handout</label>
+            <select [ngModel]="workflowAlertModel.handoutId" id="handoutSelect" class="form-control input-sm">
+              <option value="0">-- select one --</option>
+              <option *ngFor="let handout of handoutsList" [value]="handout.seq">{{handout.description}}</option>
+            </select>
+          </div>
+          <div class="margin-top-2rem">
+            <input type="checkbox" id="checkboxAlertNavigator">
+            <label for="checkboxAlertNavigator" class="bold margin-left-separation-sm">
+              No Alert to Navigator
+            </label>
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="margin-top-separation-sm">
+          <label for="changeStatusSelect" class="bold">Change status to:</label>
+          <select [(ngModel)]="workflowAlertModel.changeStatusTo" id="changeStatusSelect" class="form-control input-sm">
+            <option value="">-- leave status unchanged --</option>
+            <option *ngFor="let status of statusCodesList" [value]="status.combinedStatus">{{status.description}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container [ngTemplateOutlet]="escalateTemplate" *ngIf="methodOption?.name === 'Alert'"></ng-container>
+</div>
+
+<ng-template #escalateTemplate>
+  <div *ngIf="methodOption?.name === 'Alert'" class="row">
+    <hr class="mt-1rem section-separator-red">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+      <h4 class="text-info font-bold margin-top-2rem">
+        ESCALATE
+      </h4>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 options-container">
+      <label for="escalateToSelect" class="bold">To</label>
+      <select (change)="professionalChange($event)" [(ngModel)]="workflowAlertModel.escalateTo" id="escalateToSelect"
+        class="form-control input-sm">
+        <option value="">-- no escalation --</option>
+        <option *ngFor="let professional of professionalsToEscalate1" [value]="professional.userId">
+          {{professional.fullName}}</option>
+      </select>
+    </div>
+    <div *ngIf="workflowAlertModel.escalateTo" class="col-xs-12 col-sm-12 col-md-3 col-lg-3 options-container">
+      <label for="escalateTo2Select" class="bold">And</label>
+      <select (change)="professionalChange($event)" [(ngModel)]="workflowAlertModel.escalateTo2" id="escalateTo2Select"
+        class="form-control input-sm">
+        <option value="">-- no escalation --</option>
+        <option *ngFor="let professional of professionalsToEscalate2" [value]="professional.userId">
+          {{professional.fullName}}</option>
+      </select>
+    </div>
+    <div *ngIf="workflowAlertModel.escalateTo" class="col-xs-12 col-sm-12 col-md-4 col-lg-4 options-container">
+      <label class="bold">after:</label>
+      <input type="number" class="form-control input-sm" (keypress)="preventInvalidValues($event)" min="0">
+      <input [(ngModel)]="workflowAlertModel.escalateIntervalType" id="escalateAfterCalendarDays"
+        name="radioEscalateDays" type="radio" value="C">
+      <label for="escalateAfterCalendarDays" class="bold">calendar days</label>
+      <input [(ngModel)]="workflowAlertModel.escalateIntervalType" id="escalateAfterBusinessDays"
+        name="radioEscalateDays" type="radio" value="B">
+      <label for="escalateAfterBusinessDays" class="bold">business days</label>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #templatesModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Available Templates</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <app-table [tableInfo]="messageTemplatesTable" (customActionEvent)="selectMessageTemplate($event)"
+      [showDefaultActions]="false"></app-table>
+  </div>
+</ng-template>

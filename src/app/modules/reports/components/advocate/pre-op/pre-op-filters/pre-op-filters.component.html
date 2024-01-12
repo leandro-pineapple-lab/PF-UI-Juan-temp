@@ -1,0 +1,72 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectSubStatus" class="bold text-white">Sub-Status:</label>
+        <select id="selectSubStatus" class="form-control input-sm" [(ngModel)]="reportFilters.subStatus.value">
+          <option value="">All</option>
+          <option *ngFor="let subStatus of subStatusList" [value]="subStatus.id">{{subStatus.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtLastContactFrom" class="bold text-white">Last Contact From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtLastContactFrom" type="text" class="form-control" [(ngModel)]="reportFilters.lastContactFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtLastContactTo" class="bold text-white">To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtLastContactTo" type="text" class="form-control" [(ngModel)]="reportFilters.lastContactTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <div>
+          <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+          <br>
+          <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+          &NonBreakingSpace;
+          <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectSurgeon" class="bold text-white">Surgeon:</label>
+        <select id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.surgeon.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectAdvocate" class="bold text-white">Advocate:</label>
+        <select id="selectAdvocate" class="form-control input-sm" [(ngModel)]="reportFilters.advocate.value">
+          <option value="">All</option>
+          <option *ngFor="let advocate of advocatesList" [value]="advocate">{{advocate}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectInsuranceCompany" class="bold text-white">Insurance Company:</label>
+        <select id="selectInsuranceCompany" class="form-control input-sm" [(ngModel)]="reportFilters.insuranceCompany.value">
+          <option value="">All</option>
+          <option *ngFor="let insuranceCompany of insuranceCompaniesList" [value]="insuranceCompany.name">{{insuranceCompany.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <button class="btn btn-sm btn-success" (click)="getReport()">Get Report</button>
+        <button (click)="openAddFavoriteReportModal()" ngbTooltip="Add as favorite" class="btn btn-sm btn-primary margin-left-separation-sm">
+          <i class="fa fa-plus text-white icon-default-font-size" aria-hidden="true"></i>
+        </button>
+        <button *ngIf="favoriteReports.length > 0" (click)="openMyFavoriteReportsModal()" ngbTooltip="My favorite Pre-Op reports"
+          class="btn btn-sm btn-warning margin-left-separation-sm">
+          <i class="fa fa-thumbs-up text-white icon-default-font-size" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+

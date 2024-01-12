@@ -1,0 +1,11 @@
+@media Print {
+    .noPrint { DISPLAY: none; }
+}
+
+.feature-title{
+    font-weight: bold;
+    font-style: italic;
+    color: white;
+    background-color: #428bca;
+    padding: 4px;
+}

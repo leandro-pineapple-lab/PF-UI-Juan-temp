@@ -1,0 +1,34 @@
+export abstract class PagesConstants {
+  public static STANDARD_TEXTS: string = "Settings Standard Texts";
+  public static WORKFLOW_ALERT: string = "Settings Workflow";
+  public static FAVORITE_REPORTS: string = "Settings Favorite Report";
+  public static REPORTS_HOMEWORK_STATUS: string = "Report Homework Status";
+  public static REPORTS_DUPLICATES_INTAKES: string = "Report Duplicates";
+  public static REPORTS_INITIAL_CONSULTS: string = "Report Initial Consults";
+  public static REPORTS_PRE_OP: string = "Report Pre-Op";
+  public static REPORTS_CLEARANCE_VISITS: string = "Report Clearance Visits";
+  public static REPORTS_INSURANCE_VERIFICATION: string = "Report Insurance Verification";
+  public static REPORTS_PATIENT_INSURANCE: string = "Report Patient Insurance";
+  public static REPORTS_STOP_PROCESS: string = "Report Stop Process";
+  public static REPORTS_PROSPECTS_BY_STATUS: string = "Report Prospects by Status";
+  public static REPORTS_PRE_D_LETTER_SENT: string = "Report Pre-D Letter Sent";
+  public static REPORTS_PATIENT_COUNT_BY_STATUS: string = "Report Patient Count By Status";
+  public static REPORTS_PULL_THROUGH: string = "Report Pull-Thru";
+  public static REPORTS_SURGICAL_SUMMARY: string = "Report Surgical Summary";
+  public static REPORTS_CASE_LOG_SUMMARY: string = "Report Case Log Summary";
+  public static REPORTS_MONTHLY_LEAD_PAYER: string = "Report Monthly Lead Payer";
+  public static REPORTS_MONTHLY_STATS: string = "Report Monthly Stats";
+  public static REPORTS_SURGICAL_HX: string = "Report Surgical Hx";
+  public static REPORTS_EMPLOYER_STATS: string = "Report Employer Stats";
+  public static REPORTS_EMPLOYERS_PATIENTS: string = "Report Employer Patients";
+  public static REPORTS_COMPLICATION_STATS: string = "Report Complication Stats";
+  public static REPORTS_CLASSES: string = "Report Classes";
+  public static REPORTS_HANDOUT_STATUS: string = "Report Handout Status";
+  public static REPORTS_LONG_HOSPITAL_STAYS: string = "Report Long Hospital Stays";
+  public static REPORTS_COMPLICATIONS: string = "Report Complications";
+  public static REPORTS_APPOINTMENTS: string = "Report Appointments";
+  public static REPORTS_WORKFLOW_EFFICIENCY: string = "Report Workflow Efficiency";
+  public static REPORTS_ADMISSIONS: string = "Report Readmissions";
+  public static REPORTS_PLANNED_SURGERIES: string = "Report Planned Surgeries";
+  public static REPORTS_DATA_ACCESS: string = "Report Data Access";
+}

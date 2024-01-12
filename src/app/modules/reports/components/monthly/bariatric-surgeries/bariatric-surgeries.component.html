@@ -1,0 +1,45 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Case Log Summary'"></app-title>
+  <div class="card margin-top-separation-sm">
+    <div class="card-header bg-gradient-secondary">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <label for="selectSurgeryYear" class="bold text-white">Surgery Year:</label>
+          <select id="selectSurgeryYear" class="form-control input-sm" [(ngModel)]="reportFilters.year.value">
+            <option *ngFor="let year of lastYearsList">{{year}}</option>
+          </select>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top-separation-md">
+          <app-report-actions title="Bariatric Surgery Monthly Report"
+            [reportFilters]="reportFilters"
+            [favoriteReport]="favoriteReport"
+            [favoriteReports]="favoriteReports"
+            (getFavoriteReportsEvent)="getMyFavoriteReports();"
+            (getReportsEvent)="getReports();"
+          ></app-report-actions>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card margin-top-separation-sm">
+    <div class="card-header">
+      <h5>{{currentSelectedYear}} YTD Monthly Surgical Figures</h5>
+    </div>
+    <div class="card-body">
+      <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports(true, 'selectedYear')"
+      [headerCssClass]="'table-dark'"
+      [tableInfo]="thisYearBariatricSurgerySummaryTable" [noDataFoundText]="'No Bariatric Surgical Summary reports found!'"></app-table>
+
+      <h5>{{previousYear}} Comparison</h5>
+      <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports(true, 'yearComparison')"
+      [headerCssClass]="'table-dark'"
+      [tableInfo]="surgerySummaryComparisonTable" [noDataFoundText]="'No Bariatric Surgical Summary for comparison reports found!'"></app-table>
+    </div>
+  </div>
+</div>
+

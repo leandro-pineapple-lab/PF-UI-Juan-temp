@@ -1,0 +1,290 @@
+<div id="settings-status-container" class="card text-center container margin-top-separation-sm">
+    <div class="card-header">
+      <ul class="nav nav-pills card-header-pills">
+        <li class="nav-item">
+          <button id="btnStatus" class="nav-link active" (click)="activateStatusCodeTab($event)">Status Codes</button>
+        </li>
+        <li class="nav-item">
+          <button id="btnSubStatus" class="nav-link" (click)="activateSubStatusCodeTab($event)">SubStatus Codes</button>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="isStatusCodeTabActivated" class="card-body">
+        <table id="tblStatus" class="table table-bordered table-striped table-sm table-responsive">
+            <thead>
+                <tr class="table-dark">
+                    <th>Code</th>
+                    <th style="width: 40%;">Description</th>
+                    <th>Sequence</th>
+                    <th>At a Glance</th>
+                    <th>Show in Handouts</th>
+                    <th appCanSaveSettings>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let status of statusesList; let i = index">
+                    <td>
+                        {{status.id}}
+                    </td>
+                    <td>
+                        <input class="form-control input-sm" [(ngModel)]="status.description" type="text">
+                    </td>
+                    <td>
+                        <input class="form-control input-sm" [(ngModel)]="status.seq" type="text">
+                    </td>
+                    <td>
+                        <input [(ngModel)]="status.ataGlance" type="checkbox">
+                    </td>
+                    <td>
+                        <input [(ngModel)]="status.showInHandouts" type="checkbox">
+                    </td>
+                    <td appCanSaveSettings>
+                        <i (click)="openUpdateStatusConfirmationModal(statusToUpdateModal, status)" style="font-size: 16px; cursor: pointer;" class="fa fa-floppy-o text-warning" aria-hidden="true"></i>
+                        <i (click)="openDeleteStatusConfirmationModal(statusToDeleteModal, status)" *ngIf="status.isDeletable" style="font-size: 18px; cursor: pointer;" class="fa fa-trash text-danger margin-left-separation-sm" aria-hidden="true"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="isSubStatusCodeTabActivated" class="card-body">
+      <table id="tblSubStatus" class="table table-bordered table-striped table-sm table-responsive">
+        <thead>
+            <tr class="table-dark">
+                <th>Code</th>
+                <th>SubCode</th>
+                <th style="width: 40%;">Description</th>
+                <th>Sequence</th>
+                <th appCanSaveSettings>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let subStatus of subStatusesList; let i = index">
+                <td>
+                    {{subStatus.status.description}}
+                </td>
+                <td>
+                    {{subStatus.subCode}}
+                </td>
+                <td>
+                    <input class="form-control input-sm" [(ngModel)]="subStatus.description" type="text">
+                </td>
+                <td>
+                    <input class="form-control input-sm" [(ngModel)]="subStatus.seq" type="text">
+                </td>
+                <td appCanSaveSettings>
+                    <i (click)="openUpdateSubStatusConfirmationModal(subStatusToUpdateModal, subStatus)" style="font-size: 16px; cursor: pointer;" class="fa fa-floppy-o text-warning" aria-hidden="true"></i>
+                    <i (click)="openDeleteSubStatusConfirmationModal(subStatusToDeleteModal, subStatus)" *ngIf="subStatus.isDeletable" style="font-size: 18px; cursor: pointer;" class="fa fa-trash text-danger margin-left-separation-sm" aria-hidden="true"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div appCanSaveSettings *ngIf="isStatusCodeTabActivated" id="add-status-container" class="container margin-top-separation-sm">
+    <div id="add-status" class="card">
+        <div class="card-header add-update-office-card-header">
+            <h2>Add Status Code</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>Code
+                        </label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedStatus.id" name="txtId" type="text" id="txtId" class="form-control" placeholder="code">
+                    <label *ngIf="selectedStatus.showIdRequiredMessage" class="text-danger">Status Code is Required and must be a number</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <span class="text-danger">*</span>
+                        <label>Description</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="selectedStatus.description" name="txtDescription" type="text" id="txtDescription" class="form-control" placeholder="description">
+                      <label *ngIf="selectedStatus.showDescriptionRequiredMessage" class="text-danger">Description is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <span class="text-danger">*</span>
+                        <label>Sequence</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedStatus.seq" name="txtSequence" type="text" id="txtSequence" class="form-control" placeholder="sequence">
+                    <label *ngIf="selectedStatus.showSequenceRequiredMessage" class="text-danger">Sequence is Required and must be a number</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>At a Glance</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="selectedStatus.ataGlance" type="checkbox">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Show in Handouts</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedStatus.showInHandouts" type="checkbox" id="txtShowInHandouts">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-center margin-top-separation-sm">
+                    <input (click)="addStatus();" type="button" value="Add Status" class="btn btn-sm btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div appCanSaveSettings *ngIf="isSubStatusCodeTabActivated" id="add-status-container" class="container margin-top-separation-sm">
+  <div id="add-status" class="card">
+      <div class="card-header add-update-office-card-header">
+          <h2>Add SubStatus Code</h2>
+      </div>
+      <div class="card-body">
+          <div class="row">
+              <div class="col-3 text-right">
+                  <b>
+                      <label>
+                          <span class="text-danger">*</span>Status
+                      </label>
+                  </b>
+              </div>
+              <div class="col-9">
+                <select [(ngModel)]="selectedSubStatus.status.id" class="form-control">
+                  <option *ngFor="let status of statusesList; let i = index" [value]="status.id">{{status.description}}</option>
+                </select>
+                <label *ngIf="selectedSubStatus.showStatusRequiredMessage" class="text-danger">Please select a status!</label>
+              </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-3 text-right">
+                <b>
+                    <span class="text-danger">*</span>
+                    <label>SubStatus Code</label>
+                </b>
+            </div>
+            <div class="col-9">
+                  <input [(ngModel)]="selectedSubStatus.subCode" name="txtSubCode" type="text" id="txtSubCode" class="form-control" placeholder="subStatus Code">
+                  <label *ngIf="selectedSubStatus.showSubCodeRequiredMessage" class="text-danger">Sub Code is Required and must be a number.</label>
+            </div>
+        </div>
+          <div class="row mt-2">
+              <div class="col-3 text-right">
+                  <b>
+                      <span class="text-danger">*</span>
+                      <label>Description</label>
+                  </b>
+              </div>
+              <div class="col-9">
+                    <input [(ngModel)]="selectedSubStatus.description" name="txtSubStatusDescription" type="text" id="txtSubStatusDescription" class="form-control" placeholder="description">
+                    <label *ngIf="selectedSubStatus.showDescriptionRequiredMessage" class="text-danger">Description is Required</label>
+              </div>
+          </div>
+          <div class="row mt-2">
+              <div class="col-3 text-right">
+                  <b>
+                      <span class="text-danger">*</span>
+                      <label>Sequence</label>
+                  </b>
+              </div>
+              <div class="col-9">
+                  <input [(ngModel)]="selectedSubStatus.seq" name="txtSubStatusSequence" type="text" id="txtSubStatusSequence" class="form-control" placeholder="sequence">
+                  <label *ngIf="selectedSubStatus.showSequenceRequiredMessage" class="text-danger">Sequence is Required and must be a number</label>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-xs-12 text-center margin-top-separation-sm">
+                  <input (click)="addSubStatus();" type="button" value="Add Sub-Status" class="btn btn-sm btn-primary">
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<ng-template #statusToDeleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Are you sure you want to delete the following status?</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+      <div class="mb-3">
+          <p>Description: {{selectedStatus.description}}</p>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="deleteStatus()">Confirm</button>
+  </div>
+</ng-template>
+
+  <ng-template #statusToUpdateModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Are you sure you want to update the following status?</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Description: {{selectedStatus.description}}</p>
+            <p *ngIf="selectedStatus.seq && selectedStatus.seq > 0">Sequence: {{selectedStatus.seq}}</p>
+            <p *ngIf="!selectedStatus.seq || selectedStatus.seq == 0">Sequence: </p>
+            <p *ngIf="selectedStatus.ataGlance" >At a Glance: Yes</p>
+            <p *ngIf="!selectedStatus.ataGlance" >At a Glance: No</p>
+            <p *ngIf="selectedStatus.showInHandouts" >Show in Handouts: Yes</p>
+            <p *ngIf="!selectedStatus.showInHandouts">Show in Handouts: No</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="updateStatus()">Confirm</button>
+    </div>
+  </ng-template>
+
+  <ng-template #subStatusToDeleteModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Are you sure you want to delete the following status?</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Status Description: {{selectedSubStatus.status.description}}</p>
+            <p>SubStatus Description: {{selectedSubStatus.description}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteSubStatus()">Confirm</button>
+    </div>
+  </ng-template>
+
+  <ng-template #subStatusToUpdateModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Are you sure you want to update the following Sub-Status?</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Status Description: {{selectedSubStatus.status.description}}</p>
+            <p>SubStatus Description: {{selectedSubStatus.description}}</p>
+            <p>Sub Code: {{selectedSubStatus.subCode}}</p>
+            <p>Sequence: {{selectedSubStatus.seq}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="updateSubStatus()">Confirm</button>
+    </div>
+  </ng-template>

@@ -1,0 +1,60 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtIntakeFrom" class="bold text-white">Intake From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtIntakeFrom" type="text" class="form-control" [(ngModel)]="reportFilters.intakeFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtIntakeTo" class="bold text-white">Intake To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtIntakeTo" type="text" class="form-control" [(ngModel)]="reportFilters.intakeTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectStatus" class="bold text-white">Status:</label>
+        <select (change)="setStatusCustomValue()" id="selectStatus" class="form-control input-sm" [(ngModel)]="reportFilters.status.value">
+          <option value="">All</option>
+          <option *ngFor="let status of statusList" [value]="status.id">{{status.description}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <app-report-actions
+          title="Status Count"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+        ></app-report-actions>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtStatusFrom" class="bold text-white">Status From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtStatusFrom" type="text" class="form-control" [(ngModel)]="reportFilters.statusFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtStatusTo" class="bold text-white">Status To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtStatusTo" type="text" class="form-control" [(ngModel)]="reportFilters.statusTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

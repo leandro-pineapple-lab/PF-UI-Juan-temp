@@ -1,0 +1,95 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+        <button *ngIf="filtersCollapsed"  (click)="filtersCollapsed = !filtersCollapsed" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="false" aria-controls="filtersCardBody">
+          <i class="fa fa-plus text-fuchsia fa-2x" aria-hidden="true"></i>
+        </button>
+        <button *ngIf="!filtersCollapsed" (click)="filtersCollapsed = !filtersCollapsed" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="false" aria-controls="filtersCardBody">
+            <i class="fa fa-minus text-fuchsia fa-2x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtIntakeFrom" class="bold text-white">Intake From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtIntakeFrom" type="text" class="form-control" [(ngModel)]="reportFilters.intakeFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtIntakeTo" class="bold text-white">Intake To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtIntakeTo" type="text" class="form-control" [(ngModel)]="reportFilters.intakeTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="useDateRangeCheck" class="bold text-white">Use Date Range:</label>
+        <br/>
+        <input type="checkbox" name="useDateRangeCheck" id="useDateRangeCheck" [(ngModel)]="reportFilters.useDateRange.value">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 margin-top-separation-md">
+        <app-report-actions
+          title="Prospects by Status"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+        >
+        </app-report-actions>
+      </div>
+    </div>
+  </div>
+  <div class="card-body collapse" id="filtersCardBody">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectStatus" class="bold">Status:</label>
+        <select (change)="setSubStatusList()" id="selectStatus" class="form-control input-sm" [(ngModel)]="reportFilters.status.value">
+          <option value="">All</option>
+          <option *ngFor="let status of statusList" [value]="status.id">{{status.description}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectStatus" class="bold">Sub-Status:</label>
+        <select (change)="setSubStatusCustomValue()" id="selectStatus" class="form-control input-sm" [(ngModel)]="reportFilters.subStatus.value">
+          <option value="">All</option>
+          <option *ngFor="let subStatus of subStatusesByStatus" [value]="subStatus.seq">{{subStatus.description}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label class="bold">Patient Type:</label>
+        <br/>
+        <input type="radio" name="patientTypeRadio" id="patientTypeAllRadio" [(ngModel)]="reportFilters.patientType.value" value="">
+        &nbsp;
+        <label for="patientTypeAllRadio" class="bold">All</label>
+        &nbsp;
+        <input type="radio" name="patientTypeRadio" id="patientTypeProspRadio" [(ngModel)]="reportFilters.patientType.value" value="Prosp">
+        &nbsp;
+        <label for="patientTypeProspRadio" class="bold">Prospects</label>
+        &nbsp;
+        <input type="radio" name="patientTypeRadio" id="patientTypePatRadio" [(ngModel)]="reportFilters.patientType.value" value="Pat">
+        &nbsp;
+        <label for="patientTypePatRadio" class="bold">Patients</label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectAdvocate" class="bold">Advocate:</label>
+        <select id="selectAdvocate" class="form-control input-sm" [(ngModel)]="reportFilters.advocate.value">
+          <option value="">All</option>
+          <option *ngFor="let advocate of advocatesList" [value]="advocate">{{advocate}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <label for="checkAnonymize" class="bold">Anonymize:</label>
+        <br>
+        <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+        &NonBreakingSpace;
+        <i class="fa fa-user-secret icon-default-font-size" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+</div>

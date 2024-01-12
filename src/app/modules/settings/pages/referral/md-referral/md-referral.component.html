@@ -1,0 +1,309 @@
+<div id="marketing-category-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12">
+                    <h3 (click)="showReferralAddBody = !showReferralAddBody" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#referralAddBody" aria-expanded="false" aria-controls="referralAddBody" class="text-success" style="cursor: pointer;">
+                        <i *ngIf="!showReferralAddBody" class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <i *ngIf="showReferralAddBody" class="fa fa-chevron-down" aria-hidden="true"></i>
+                        Add MD Referral
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div id="referralAddBody" class="collapse">
+            <div class="card-body">
+                <label class="bold">First Name</label>
+                <input [(ngModel)]="newMDReferral.firstName"  class="form-control input-sm" type="text" placeholder="first name">
+                <label class="bold">Last Name</label>
+                <input [(ngModel)]="newMDReferral.lastName" class="form-control input-sm" type="text" placeholder="last name">
+                <label class="bold">Title</label>
+                <input [(ngModel)]="newMDReferral.title" class="form-control input-sm" type="text" placeholder="title">
+                <label class="bold">Practice Name</label>
+                <input [(ngModel)]="newMDReferral.practiceName" class="form-control input-sm" type="text" placeholder="practice name">
+                <label class="bold">Specialty</label>
+                <select [(ngModel)]="newMDReferral.specialty" class="form-control input-sm" name="" id="">
+                    <option value="">-- select one --</option>
+                    <option value="Cardiologist">Cardiologist</option>
+                    <option value="Endocrinologist">Endocrinologist</option>
+                    <option value="OB/GYN">OB/GYN</option>
+                    <option value="Primary Care">Primary Care</option>
+                    <option value="Pain Management">Pain Management</option>
+                    <option value="Gastroenterologist">Gastroenterologist</option>
+                    <option value="Cardiovascular Surgeon">Cardiovascular Surgeon</option>
+                    <option value="ENT">ENT</option>
+                    <option value="FNP">FNP</option>
+                    <option value="Orthopedist">Orthopedist</option>
+                    <option value="Pediatrician">Pediatrician</option>
+                    <option value="General Surgeon">General Surgeon</option>
+                    <option value="Plastic Surgeon">Plastic Surgeon</option>
+                    <option value="Physician Assistant">Physician Assistant</option>
+                    <option value="Family Medicine">Family Medicine</option>
+                    <option value="Internal Medicine">Internal Medicine</option>
+                    <option value="Neurologist">Neurologist</option>
+                    <option value="Neurosurgeon">Neurosurgeon</option>
+                    <option value="Physical/Rehab Medicine">Physical/Rehab Medicine</option>
+                    <option value="Rheumatologist">Rheumatologist</option>
+                </select>
+                <label class="bold">Phone #</label>
+                <input [(ngModel)]="newMDReferral.phone" class="form-control input-sm" type="text" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                <label class="bold">Fax #</label>
+                <input [(ngModel)]="newMDReferral.fax" class="form-control input-sm" type="text" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                <label class="bold">Address</label>
+                <input [(ngModel)]="newMDReferral.address" class="form-control input-sm" type="text" placeholder="address">
+                <label class="bold">City</label>
+                <input [(ngModel)]="newMDReferral.city" class="form-control input-sm" type="text" placeholder="city">
+                <label class="bold">State</label>
+                <select class="form-control input-sm" [(ngModel)]="newMDReferral.state">
+                    <option value="">-- select state --</option>
+                    <option *ngFor="let state of statesList" [value]="state.stateProvinceCD" >{{state.stateProvinceName}}</option>
+                </select>
+                <label class="bold">Zip</label>
+                <input [(ngModel)]="newMDReferral.zip" class="form-control input-sm" type="text" placeholder="zip code">
+                <label class="bold">E-mail</label>
+                <input [(ngModel)]="newMDReferral.email" class="form-control input-sm" type="text" placeholder="e-mail address">
+                <label class="bold">Contact Name</label>
+                <input [(ngModel)]="newMDReferral.contactName" class="form-control input-sm" type="text" placeholder="contact name">
+                <button (click)="addMDReferral()" class="btn btn-primary margin-top-separation-sm margin-right-separation-sm">Add MD Referral</button>
+                <button (click)="cleanMDReferral()" class="btn btn-danger margin-top-separation-sm">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div class="card margin-top-separation-sm">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12">
+                    <h3 (click)="showReferralList = !showReferralList" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#referralList" aria-expanded="false" aria-controls="referralList" class="text-success" style="cursor: pointer;">
+                        <i *ngIf="!showReferralList" class="fa fa-chevron-right" aria-hidden="true"></i>
+                        <i *ngIf="showReferralList" class="fa fa-chevron-down" aria-hidden="true"></i>
+                        MD Referrals
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div id="referralList" class="collapse">
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <label class="color-white">First Name:</label>
+                        <input [(ngModel)]="firstNameFilter" class="margin-left-separation-sm" type="text">
+                        <label class="color-white margin-left-separation-sm">Last Name:</label>
+                        <input [(ngModel)]="lastNameFilter" class="margin-left-separation-sm" type="text">
+                        <button (click)="getMDReferrals()" class="btn btn-sm btn-warning float-right">Search</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table *ngIf="mdReferralsList.length > 0" id="tblReferrals" class="table table-sm table-bordered table-striped dataTable no-footer dtr-inline" role="grid" aria-describedby="tblLeads_info" style="width: 100%;">
+                        <thead>
+                            <tr class="table-info" role="row">
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Practice
+                                </th>
+                                <th>
+                                    Specialty
+                                </th>
+                                <th>
+                                    Phone #
+                                </th>
+                                <th>
+                                    Fax #
+                                </th>
+                                <th>
+                                    Address
+                                </th>
+                                <th>
+                                    City
+                                </th>
+                                <th>
+                                    State
+                                </th>
+                                <th>
+                                    Zip
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Office Contact
+                                </th>
+                                <th class="text-center" style="width: 100px;">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let mdReferral of mdReferralsList | paginate: { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.totalNumberOfRecords }">
+                                <td>
+                                    {{mdReferral.physicianName}}
+                                </td>
+                                <td>
+                                    {{mdReferral.practiceName}}
+                                </td>
+                                <td>
+                                    {{mdReferral.specialty}}
+                                </td>
+                                <td>
+                                    {{mdReferral.phone}}
+                                </td>
+                                <td>
+                                    {{mdReferral.fax}}
+                                </td>
+                                <td>
+                                    {{mdReferral.address}}
+                                </td>
+                                <td>
+                                    {{mdReferral.city}}
+                                </td>
+                                <td>
+                                    {{mdReferral.state}}
+                                </td>
+                                <td>
+                                    {{mdReferral.zip}}
+                                </td>
+                                <td>
+                                    {{mdReferral.email}}
+                                </td>
+                                <td>
+                                    {{mdReferral.contactName}}
+                                </td>
+                                <td class="text-center">
+                                    <button (click)="openUpdateConfirmationModal(mdReferralUpdateModal, mdReferral)" class="btn btn-sm btn-primary margin-top-separation-sm">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </button>
+                                    &nbsp;
+                                    <button (click)="openDeleteConfirmationModal(mdReferralDeleteModal, mdReferral)" class="btn btn-sm btn-danger margin-top-separation-sm">
+                                        <i class="fa fa-trash btn-danger" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="mdReferralsList.length > 0" class="row">
+                        <div class="col-6">
+                            Showing {{showingFrom}} to {{showingTo}} of {{pagination.totalNumberOfRecords}} entries
+                            <br>
+                            <select [(ngModel)]="pagination.tableSize" (change)="onTableSizeChange($event)">
+                                <option [value]="size" [selected]="pagination.tableSize == size" *ngFor="let size of pagination.tableSizes">
+                                    {{size}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <pagination-controls
+                                style="float: right;"
+                                previousLabel="Prev"
+                                nextLabel="Next"
+                                (pageChange)="onTableDataChange($event)"
+                            >
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #mdReferralDeleteModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">MD Referral Delete Confirmation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>MD Referral Name: {{selectedMDReferral.firstName}} {{selectedMDReferral.lastName}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteMDReferral(selectedMDReferral.id)">Confirm</button>
+    </div>
+</ng-template>
+
+
+<ng-template #mdReferralUpdateModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">MD Referral Update Confirmation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <label>First Name:</label>
+            <input type="text" [(ngModel)]="selectedMDReferral.firstName" class="form-control input-sm">
+        </div>
+        <div class="mb-3">
+            <label>Last Name:</label>
+            <input type="text" [(ngModel)]="selectedMDReferral.lastName" class="form-control input-sm">
+        </div>
+        <div class="mb-3">
+            <label>Practice:</label>
+            <input type="text" [(ngModel)]="selectedMDReferral.practiceName" class="form-control input-sm">
+        </div>
+        <div class="md-3">
+            <label>Specialty:</label>
+            <select [(ngModel)]="selectedMDReferral.specialty" class="form-control input-sm" name="" id="">
+                <option value="">-- select one --</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Endocrinologist">Endocrinologist</option>
+                <option value="OB/GYN">OB/GYN</option>
+                <option value="Primary Care">Primary Care</option>
+                <option value="Pain Management">Pain Management</option>
+                <option value="Gastroenterologist">Gastroenterologist</option>
+                <option value="Cardiovascular Surgeon">Cardiovascular Surgeon</option>
+                <option value="ENT">ENT</option>
+                <option value="FNP">FNP</option>
+                <option value="Orthopedist">Orthopedist</option>
+                <option value="Pediatrician">Pediatrician</option>
+                <option value="General Surgeon">General Surgeon</option>
+                <option value="Plastic Surgeon">Plastic Surgeon</option>
+                <option value="Physician Assistant">Physician Assistant</option>
+                <option value="Family Medicine">Family Medicine</option>
+                <option value="Internal Medicine">Internal Medicine</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="Neurosurgeon">Neurosurgeon</option>
+                <option value="Physical/Rehab Medicine">Physical/Rehab Medicine</option>
+                <option value="Rheumatologist">Rheumatologist</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Phone:</label>
+            <input type="text" [(ngModel)]="selectedMDReferral.phone" class="form-control input-sm" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+        </div>
+        <div class="mb-3">
+            <label>Fax:</label>
+            <input type="text" [(ngModel)]="selectedMDReferral.fax" class="form-control input-sm" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+        </div>
+        <div class="mb-3">
+            <label>Address:</label>
+            <input type="text" [(ngModel)]="selectedMDReferral.address" class="form-control input-sm">
+        </div>
+        <div class="mb-3">
+            <label>City:</label>
+            <input type="text" [(ngModel)]="selectedMDReferral.city" class="form-control input-sm">
+        </div>
+        <div class="mb-3">
+            <label>State:</label>
+            <select class="form-control input-sm" [(ngModel)]="selectedMDReferral.state">
+                <option value="">-- select state --</option>
+                <option *ngFor="let state of statesList" [value]="state.stateProvinceCD" >{{state.stateProvinceName}}</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Zip:</label>
+            <input type="text" [(ngModel)]="selectedMDReferral.zip" class="form-control input-sm">
+        </div>
+        <div class="mb-3">
+            <p>Email:</p>
+            <input type="text" [(ngModel)]="selectedMDReferral.email" class="form-control input-sm">
+        </div>
+        <div class="mb-3">
+            <p>Contact Name:</p>
+            <input type="text" [(ngModel)]="selectedMDReferral.contactName" class="form-control input-sm">
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="updateMDReferral()">Confirm</button>
+    </div>
+</ng-template>

@@ -1,0 +1,107 @@
+<div id="homework-template-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-success">Homework Sections</h4>
+        </div>
+        <div class="card-body">
+            <table id="tblHomeworkTemplates" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Section</th>
+                        <th>Note</th>
+                        <th>Folder</th>
+                        <th>Active</th>
+                        <th># Items</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let homework of homeworkCategoriesList">
+                        <td>{{homework.name}}</td>
+                        <td>
+                            {{homework.titleNote}}
+                        </td>
+                        <td>{{homework.folder}}</td>
+                        <td>{{homework.active === true ? 'Yes' : 'No'}}</td>
+                        <td>{{homework.homeworkCategoryDetails ? homework.homeworkCategoryDetails.length : 0}}</td>
+                        <td *ngIf="homework.active" class="text-center" appCanSaveSettings>
+                            <ng-template #detailActionTooltip>
+                                <b>
+                                    Details
+                                </b>
+                            </ng-template>
+                            <ng-template #editActionTooltip>
+                                <b>
+                                    Edit
+                                </b>
+                            </ng-template>
+                            <ng-template #disableActionTooltip>
+                                <b>
+                                    Disable
+                                </b>
+                            </ng-template>
+                            <a [ngbTooltip]="detailActionTooltip">
+                                <i class="fa fa-search text-info icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                            <a [ngbTooltip]="editActionTooltip">
+                                <i class="fa fa-pencil-square-o text-primary margin-left-separation-sm icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="openHomeworkEnableDisableModal(homeworkDisableEnableModal, homework);" [ngbTooltip]="disableActionTooltip">
+                                <i class="fa fa-minus-circle text-danger margin-left-separation-sm icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td *ngIf="!homework.active" class="text-center" appCanSaveSettings>
+                            <ng-template #enableActionTooltip>
+                                <b>
+                                    Enable
+                                </b>
+                            </ng-template>
+                            <a (click)="openHomeworkEnableDisableModal(homeworkDisableEnableModal, homework);" [ngbTooltip]="enableActionTooltip">
+                                <i class="fa fa-plus-circle text-success margin-left-separation-sm icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #homeworkDisableEnableModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">
+        {{
+            selectedHomework.active ? 'Homework Section Disable Confirmation' :
+            'Homework Section Enable Confirmation'
+        }}
+        
+    </h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>
+                Template: <b>{{selectedHomework.name}}</b>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p>
+                Note: <b>{{selectedHomework.titleNote}}</b>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p>
+                Folder: <b>{{selectedHomework.folder}}</b>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p>
+                # Items: <b>{{selectedHomework.homeworkCategoryDetails ? selectedHomework.homeworkCategoryDetails.length : 0}}</b>
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button *ngIf="selectedHomework.active" type="button" class="btn btn-danger" (click)="disableHomework(selectedHomework.id)">Confirm</button>
+      <button *ngIf="!selectedHomework.active" type="button" class="btn btn-success" (click)="enableHomework(selectedHomework.id)">Confirm</button>
+    </div>
+  </ng-template>

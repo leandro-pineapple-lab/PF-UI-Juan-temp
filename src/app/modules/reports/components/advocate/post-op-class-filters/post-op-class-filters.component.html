@@ -1,0 +1,53 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <label for="selectType" class="bold text-white">Type:</label>
+        <select id="selectType" class="form-control input-sm" [(ngModel)]="reportFilters.type.value">
+          <option value="">Pre-Op or Post-Op Class</option>
+          <option value="Pre">Pre-Op Class</option>
+          <option value="Post">Post-Op Class</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <div>
+          <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+          <br>
+          <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+          &NonBreakingSpace;
+          <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <app-report-actions
+          title="PreOp/PostOp Classes"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+        ></app-report-actions>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtClassFrom" class="bold text-white">Between:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtClassFrom" type="text" class="form-control" [(ngModel)]="reportFilters.classFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtClassTo" class="bold text-white">And:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtClassTo" type="text" class="form-control" [(ngModel)]="reportFilters.classTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

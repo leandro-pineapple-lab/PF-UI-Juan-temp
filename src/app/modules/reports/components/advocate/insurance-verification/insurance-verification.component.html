@@ -1,0 +1,36 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Insurance Verification Report'"></app-title>
+  <div class="card margin-top-separation-sm">
+    <div class="card-header bg-gradient-secondary">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+            <label for="selectAdvocate" class="bold text-white">Advocate:</label>
+            <select id="selectAdvocate" class="form-control input-sm" [(ngModel)]="advocateName">
+              <option value="">All</option>
+              <option *ngFor="let advocate of advocatesList" [value]="advocate">{{advocate}}</option>
+            </select>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 margin-top-separation-md">
+          <button class="btn btn-sm btn-success margin-left-separation-md" (click)="pagination.page = 1; getReports()">Get Report</button>
+          <button
+            (click)="openAddFavoriteReportModal()"
+            ngbTooltip="Add as favorite" class="btn btn-sm btn-primary margin-left-separation-sm">
+            <i ngbTooltip="Add as favorite" class="fa fa-plus text-white icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+          </button>
+          <button
+            *ngIf="favoriteReports.length > 0" (click)="openMyFavoriteReportsModal()"
+            ngbTooltip="My favorite Insurance Verification reports" class="btn btn-sm btn-warning margin-left-separation-sm">
+            <i class="fa fa-thumbs-up text-white icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false" [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      (paginationChangeEvent)="getReports()"
+      [pagination]="pagination" [headerCssClass]="'table-info'" [tableInfo]="table"
+      [noDataFoundText]="'No Insurance Verification Reports found!'"></app-table>
+  </div>
+</div>

@@ -1,0 +1,375 @@
+<div appCanSaveSettings id="add-prospect-container" class="container margin-top-separation-sm">
+    <div id="add-procedure" class="card">
+        <div class="card-header add-update-office-card-header">
+            <h2>Add Lead</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>First Name
+                        </label>
+                    </b>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <input [(ngModel)]="newPatient.firstName" name="txtFirstName" type="text" id="txtName" class="form-control">
+                    <label *ngIf="newPatient.showFirstNameRequiredMessage" class="text-danger">First Name is Required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>Last Name
+                        </label>
+                    </b>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <input [(ngModel)]="newPatient.lastName" name="txtLastName" type="text" id="txtName" class="form-control">
+                    <label *ngIf="newPatient.showLastNameRequiredMessage" class="text-danger">First Name is Required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
+                    <input (click)="checkForDuplicates()" type="button" value="Check for duplicates" class="btn btn-warning">
+                </div>
+            </div>
+
+            <div *ngIf="showAddProspectForm">
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <b>
+                            <label>
+                                Birthdate (mm/dd/yyyy):
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <input [(ngModel)]="newPatient.dateOfBirth" name="txtFirstName" type="text" id="txtBirthday" class="form-control" bsDatepicker>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <b>
+                            <label>
+                                Age:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <input [(ngModel)]="newPatient.age" name="txtAge" type="number" id="txtAge" class="form-control">
+                    </div>
+                </div>
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <b>
+                            <label>
+                               <span class="text-danger">*</span>Gender
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <input id="rdoGender_0" type="radio" name="rdoGender" [(ngModel)]="newPatient.gender" value="M">
+                        <b>
+                            <label for="rdoGender_0">&nbsp;Male&nbsp;&nbsp;</label>
+                        </b>
+                        <input id="rdoGender_1" type="radio" name="rdoGender" [(ngModel)]="newPatient.gender" value="F">
+                        <b>
+                            <label for="rdoGender_1">&nbsp;Female</label>
+                        </b>
+                        <br/>
+                        <label *ngIf="newPatient.showGenderRequiredMessage" class="text-danger">Please select gender</label>
+                    </div>
+                </div>
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <b>
+                            <label>
+                                Address:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <input [(ngModel)]="newPatient.address" name="txtAddress" type="text" id="txtAddress" class="form-control">
+                    </div>
+                </div>
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <b>
+                            <label>
+                                City:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <input [(ngModel)]="newPatient.city" name="txtCity" type="text" id="txtCity" class="form-control">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                State:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <select [(ngModel)]="newPatient.state" name="ddlState" id="ddlState" class="form-control">
+                            <option selected="selected" value="">-- select state --</option>
+                            <option *ngFor="let state of statesList" [value]="state.stateProvinceCD" >{{state.stateProvinceName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                Zip:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <input [(ngModel)]="newPatient.zipCode" name="txtZip" type="text" id="txtZip" class="form-control">
+                    </div>
+                </div>
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <b>
+                            <label>
+                                Home Phone:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <input [(ngModel)]="newPatient.homePhone" name="txtHomePhone" type="text" id="txtHomePhone" class="form-control" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                Cell Phone:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <input [(ngModel)]="newPatient.cellPhone" name="txtCellPhone" type="text" id="txtCellPhone" class="form-control" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                Work Phone:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <input [(ngModel)]="newPatient.workPhone" name="txtWorkPhone" type="text" id="txtWorkPhone" class="form-control" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                    </div>
+                </div>
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <b>
+                            <label>
+                                Best number to contact between 9:00am and 5:00pm:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <input id="rblBestNbrToContact_0" type="radio" name="rblBestNbrToContact" [(ngModel)]="newPatient.bestNumberToContact" value="Home">
+                        <b>
+                            <label for="rblBestNbrToContact_0">&nbsp;Home&nbsp;&nbsp;</label>
+                        </b>
+                        <input id="rblBestNbrToContact_1" type="radio" name="rblBestNbrToContact" [(ngModel)]="newPatient.bestNumberToContact" value="Work">
+                        <b>
+                            <label for="rblBestNbrToContact_1">&nbsp;Work&nbsp;&nbsp;</label>
+                        </b>
+                        <input id="rblBestNbrToContact_2" type="radio" name="rblBestNbrToContact" [(ngModel)]="newPatient.bestNumberToContact" value="Cell">
+                        <b>
+                            <label for="rblBestNbrToContact_2">&nbsp;Cell</label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                E-Mail:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <input [(ngModel)]="newPatient.email" name="txtEmail" type="text" id="txtEmail" class="form-control">
+                    </div>
+                </div>
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <b>
+                            <label>
+                                Height:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <input [(ngModel)]="newPatient.heightFt" name="txtHeightFt" type="text" id="txtHeightFt" class="form-control" placeholder="ft" maxlength="1">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <input [(ngModel)]="newPatient.heightIn" name="txtHeightIn" type="text" id="txtHeightIn" class="form-control" placeholder="in" maxlength="2">
+                    </div>
+                    <div class="col-md-1 col-lg-1"></div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                Weight:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <input [(ngModel)]="newPatient.weight" name="txtWeight" type="text" id="txtWeight" class="form-control" placeholder="lbs" maxlength="3">
+                    </div>
+                </div>
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                <span class="text-danger">*</span>Contact Method:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                        <input id="rblContactMethod_0" type="radio" name="rblContactMethod" [(ngModel)]="newPatient.preferredContact" value="Phone">
+                        <b>
+                            <label for="rblContactMethod_0">&nbsp;Call&nbsp;&nbsp;</label>
+                        </b>
+                        <input class="margin-left-separation-sm" id="rblContactMethod_1" type="radio" name="rblContactMethod" [(ngModel)]="newPatient.preferredContact" value="Voice Mail">
+                        <b>
+                            <label for="rblContactMethod_1">&nbsp;Voice Mail&nbsp;&nbsp;</label>
+                        </b>
+                        <input class="margin-left-separation-sm" id="rblContactMethod_2" type="radio" name="rblContactMethod" [(ngModel)]="newPatient.preferredContact" value="Email">
+                        <b>
+                            <label for="rblContactMethod_2">&nbsp;Email&nbsp;&nbsp;</label>
+                        </b>
+                        <input class="margin-left-separation-sm" id="rblContactMethod_3" type="radio" name="rblContactMethod" [(ngModel)]="newPatient.preferredContact" value="Existing">
+                        <b>
+                            <label for="rblContactMethod_3">&nbsp;Existing Patient&nbsp;&nbsp;</label>
+                        </b>
+                        <input class="margin-left-separation-sm" id="rblContactMethod_4" type="radio" name="rblContactMethod" [(ngModel)]="newPatient.preferredContact" value="MD Referral">
+                        <b>
+                            <label for="rblContactMethod_4">&nbsp;Provider Referral&nbsp;&nbsp;</label>
+                        </b>
+                        <input class="margin-left-separation-sm" id="rblContactMethod_5" type="radio" name="rblContactMethod" [(ngModel)]="newPatient.preferredContact" value="Internet">
+                        <b>
+                            <label for="rblContactMethod_5">&nbsp;Internet Lead</label>
+                        </b>
+                        <br/>
+                        <label *ngIf="newPatient.showContactMethodRequiredMessage" class="text-danger">Contact Method is Required</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                <span class="text-danger">*</span>Referral Source:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <select [(ngModel)]="newPatient.referralSource" name="ddlReferralSources" id="ddlReferralSources" class="form-control">
+                            <option selected="selected" value="">- how did you hear about us? -</option>
+                            <option *ngFor="let referralSource of referralSourcesList" [value]="referralSource.id" >{{referralSource.name}}</option>
+                        </select>
+                        <label *ngIf="newPatient.showReferralSourceRequiredMessage" class="text-danger">Referral Source is Required</label>
+                    </div>
+                </div>
+                <div class="row margin-top-separation-sm">
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        <b>
+                            <label>
+                                Misc. Notes:
+                            </label>
+                        </b>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-11 col-lg-11">
+                        <textarea [(ngModel)]="newPatient.miscNotes" name="txtMiscNotes" id="txtMiscNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="text-center margin-top-separation-sm">
+                    <div *ngIf="newPatient.showFirstNameRequiredMessage ||
+                    newPatient.showLastNameRequiredMessage ||
+                    newPatient.showGenderRequiredMessage ||
+                    newPatient.showContactMethodRequiredMessage ||
+                    newPatient.showReferralSourceRequiredMessage
+                    ">
+                        <label><b>You must enter a value in the following fields:</b></label>
+                        <ul style="list-style-type: none;">
+                            <li *ngIf="newPatient.showFirstNameRequiredMessage" class="text-danger">First Name is Required</li>
+                            <li *ngIf="newPatient.showLastNameRequiredMessage" class="text-danger">Last Name is Required</li>
+                            <li *ngIf="newPatient.showGenderRequiredMessage" class="text-danger">Please select gender</li>
+                            <li *ngIf="newPatient.showContactMethodRequiredMessage" class="text-danger">Contact Method is Required</li>
+                            <li *ngIf="newPatient.showReferralSourceRequiredMessage" class="text-danger">Referral Source is Required</li>
+                        </ul>
+                    </div>
+                    <button (click)="addProspect();" class="btn btn-warning">Add Prospect</button>
+                </div>
+            </div>
+
+            <div *ngIf="patientsList && patientsList.length > 0">
+                <table id="tblDuplicatedPatients" class="table table-sm table-bordered table-striped dataTable no-footer dtr-inline margin-top-separation-sm" role="grid" aria-describedby="tblLeads_info">
+                    <thead>
+                        <tr class="table-info" role="row">
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                DOB
+                            </th>
+                            <th>
+                                Address
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Date Created
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let patient of patientsList | paginate: { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.totalNumberOfRecords }">
+                            <td>
+                                {{patient.firstName}} {{patient.lastName}}
+                            </td>
+                            <td>{{patient.prospectBirthDay | date: 'M/d/yyyy'}}</td>
+                            <td>
+                                <span *ngIf="patient.address">
+                                    {{patient.address}}
+                                </span>
+                                <br *ngIf="patient.address" />
+                                <span *ngIf="patient.city">
+                                    {{patient.city}}
+                                </span>
+                                <span *ngIf="patient.state">
+                                    {{patient.state}}
+                                </span>
+                                <span *ngIf="patient.zipCode">
+                                    {{patient.zipCode}}
+                                </span>
+                            </td>
+                            <td>{{patient.email}}</td>
+                            <td>{{patient.createdOn | date: 'M/d/yyyy'}}</td>
+                            <td>
+                                <i class="fa fa-info-circle text-info" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-6">
+                        <select [(ngModel)]="pagination.tableSize" (change)="onTableSizeChange($event)">
+                            <option [value]="size" [selected]="pagination.tableSize == size" *ngFor="let size of pagination.tableSizes">
+                                {{size}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <pagination-controls
+                            style="float: right;"
+                            previousLabel="Prev"
+                            nextLabel="Next"
+                            (pageChange)="onTableDataChange($event)"
+                        >
+                        </pagination-controls>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button (click)="showAddProspectForm = !showAddProspectForm; patientsList = []" class="btn btn-success">Prospect Not Found</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

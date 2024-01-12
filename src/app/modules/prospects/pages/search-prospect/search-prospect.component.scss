@@ -1,0 +1,45 @@
+#links-items{
+    margin-right: 15px;
+    float: right;
+    margin-top: 15px;
+}
+#dashboard-patient-filter{
+    background: #6c757d linear-gradient(180deg,#828a91,#6c757d) repeat-x!important;
+}
+.dashboard-filter-label{
+    color: white;
+    font-weight: bold;
+}
+.dashboard-filter-collapsed-label{
+    font-weight: bold;
+}
+.text-fuchsia{
+    color: fuchsia;
+}
+#criteriaCard{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+#leads-patients-table-card{
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 15px;
+}
+#leads-patients-table-card b{
+    color: white;
+}
+#dashboard-patient-table-card-header{
+    background: #3d9970 linear-gradient(180deg,#5aa885,#3d9970) repeat-x!important;
+}
+#tblLeads_filter{
+    float: right;
+}
+.icon-patient-table{
+    font-size: 24px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+::ng-deep .tooltip-inner {
+    max-width: none;
+    text-align: left;
+}

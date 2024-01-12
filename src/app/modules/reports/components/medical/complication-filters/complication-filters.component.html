@@ -1,0 +1,127 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1 margin-top-separation-sm">
+        <button *ngIf="filtersCollapsed"  (click)="filtersCollapsed = !filtersCollapsed" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="false" aria-controls="filtersCardBody">
+          <i class="fa fa-plus text-fuchsia fa-2x" aria-hidden="true"></i>
+        </button>
+        <button *ngIf="!filtersCollapsed" (click)="filtersCollapsed = !filtersCollapsed" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="false" aria-controls="filtersCardBody">
+            <i class="fa fa-minus text-fuchsia fa-2x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtSurgeryFrom" class="bold text-white">Surgery Between:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtSurgeryTo" type="text" class="form-control" [(ngModel)]="reportFilters.surgeryFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtSurgeryTo" class="bold text-white">And:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtSurgeryTo" type="text" class="form-control" [(ngModel)]="reportFilters.surgeryTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtComplicationFrom" class="bold text-white">Complication Between:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtComplicationTo" type="text" class="form-control" [(ngModel)]="reportFilters.complicationFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtComplicationTo" class="bold text-white">And:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtComplicationTo" type="text" class="form-control" [(ngModel)]="reportFilters.complicationTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+        <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+        <br>
+        <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+        &NonBreakingSpace;
+        <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 margin-top-separation-md">
+        <app-report-actions
+          title="Complications"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+          ></app-report-actions>
+      </div>
+    </div>
+  </div>
+  <div class="card-body collapse" id="filtersCardBody">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <label for="selectProcedure" class="bold">Procedure:</label>
+        <select id="selectProcedure" class="form-control input-sm" [(ngModel)]="reportFilters.procedure.value">
+          <option value="">All</option>
+          <option *ngFor="let procedure of proceduresList" [value]="procedure.name">{{procedure.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label class="bold">Type:</label>
+        <br/>
+        <input type="radio" name="radioComplicationType" id="radioComplicationType30Day" [(ngModel)]="reportFilters.complicationType.value" value="S">
+        <label for="radioComplicationType30Day" class="bold">30 Day</label>
+        &nbsp;
+        <input type="radio" name="radioComplicationType" id="radioComplicationTypeLongTerm" [(ngModel)]="reportFilters.complicationType.value" value="L">
+        <label for="radioComplicationTypeLongTerm" class="bold">Long Term</label>
+        &nbsp;
+        <input type="radio" name="radioComplicationType" id="radioComplicationTypeBoth" [(ngModel)]="reportFilters.complicationType.value" value="B">
+        <label for="radioComplicationTypeBoth" class="bold">Both</label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label class="bold">Status:</label>
+        <br/>
+        <input type="radio" name="radioComplicationStatus" id="radioComplicationStatusOnGoing" [(ngModel)]="reportFilters.complicationStatus.value" value="O">
+        <label for="radioComplicationStatusOnGoing" class="bold">Ongoing</label>
+        &nbsp;
+        <input type="radio" name="radioComplicationStatus" id="radioComplicationStatusResolved" [(ngModel)]="reportFilters.complicationStatus.value" value="R">
+        <label for="radioComplicationStatusResolved" class="bold">Resolved</label>
+        &nbsp;
+        <input type="radio" name="radioComplicationStatus" id="radioComplicationStatusBoth" [(ngModel)]="reportFilters.complicationStatus.value" value="B">
+        <label for="radioComplicationStatusBoth" class="bold">Both</label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectSurgeon" class="bold">Surgeon:</label>
+        <select id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.surgeon.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectHospital" class="bold">Hospital:</label>
+        <select id="selectHospital" class="form-control input-sm" [(ngModel)]="reportFilters.hospital.value">
+          <option value="">All</option>
+          <option *ngFor="let hospital of hospitalsList" [value]="hospital.name">{{hospital.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectReferral" class="bold">MD Referral:</label>
+        <select id="selectReferral" class="form-control input-sm" [(ngModel)]="reportFilters.referral.value">
+          <option value="">All</option>
+          <option *ngFor="let referral of mdReferralsList" [value]="referral.physicianName">{{referral.physicianName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectEmployer" class="bold">Employer:</label>
+        <input type="text" class="form-control input-sm" [(ngModel)]="reportFilters.employer.value">
+      </div>
+  </div>
+</div>
+

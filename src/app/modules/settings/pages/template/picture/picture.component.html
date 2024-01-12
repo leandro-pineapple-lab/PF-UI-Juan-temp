@@ -1,0 +1,86 @@
+<div class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-success">Upload New Picture</h2>
+        </div>
+        <div class="card-body">
+            <input id="fUploadPicture" type="file" class="form-control input-sm" accept="image/png, image/jpeg">
+            <b for="txtPictureTitle">Title <span style="color: red;">*</span></b>
+            <input [(ngModel)]="newPicture.title" id="txtPictureTitle" type="text" class="form-control input-sm ">
+            <button (click)="addPicture()" class="btn btn-sm btn-success margin-top-separation-sm" appCanSaveSettings>Upload</button>
+        </div>
+    </div>
+</div>
+
+<div class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-9">
+                    <h2 class="text-success margin-top-separation-md">Set Pictures for messages</h2>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>Keyword:</b>
+                    <div class="input-group">
+                        <input [(ngModel)]="titleFilter" type="text" class="input-group-text">
+                        <button (click)="searchPictures()" class="input-group-append btn btn-sm btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="tblPicture" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Title</th>
+                        <th>File</th>
+                        <th>Upload Date</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let picture of picturesList; let i = index">
+                        <td>
+                            {{picture.title}}
+                        </td>
+                        <td>
+                            {{picture.fileName}}
+                        </td>
+                        <td>
+                            {{picture.dateUpload | date: 'MM/dd/yyyy'}}
+                        </td>
+                        <ng-template #deleteFileTooltipTemplate>
+                            <b>Delete File</b>
+                        </ng-template>
+                        <ng-template #downloadFileTooltipTemplate>
+                            <b>Download Picture</b>
+                        </ng-template>
+                        <td appCanSaveSettings class="text-center">
+                            <a (click)="openDeletePictureConfirmationModal(pictureToDeleteModal, picture)" [ngbTooltip]="deleteFileTooltipTemplate">
+                                <i style="font-size: 20px; margin-right: 5px" class="fa fa-trash text-danger" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="downloadPicture(picture.seq, picture.fileName)" [ngbTooltip]="downloadFileTooltipTemplate">
+                                <i style="font-size: 20px; margin-left: 5px" class="fa fa-download" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #pictureToDeleteModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Are you sure you want to delete the following Picture?</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Title: {{selectedPicture.title}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deletePicture()">Confirm</button>
+    </div>
+</ng-template>

@@ -1,0 +1,25 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Complication Stats Report'"></app-title>
+  <app-complication-stats-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="refreshTable();"
+  ></app-complication-stats-filters>
+
+  <div class="margin-top-separation-sm">
+      <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      [pagination]="pagination"
+      (exportExcelEvent)="getReports()"
+      [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Complication Stats reports found!'"
+      ></app-table>
+
+      <div *ngIf="table.data.length > 0" class="margin-top-separation-md">
+        <app-table [showDefaultActions]="false"
+        [headerCssClass]="'table-info'"
+        [showAlert]="false"
+        [tableInfo]="totalsTable"></app-table>
+      </div>
+  </div>
+</div>
+

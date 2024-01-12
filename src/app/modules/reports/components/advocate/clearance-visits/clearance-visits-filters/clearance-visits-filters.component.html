@@ -1,0 +1,57 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="txtLastContactFrom" class="bold text-white">Visit From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtLastContactFrom" type="text" class="form-control" [(ngModel)]="reportFilters.visitFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="txtLastContactTo" class="bold text-white">To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtLastContactTo" type="text" class="form-control" [(ngModel)]="reportFilters.visitTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectAdvocate" class="bold text-white">Advocate:</label>
+        <select id="selectAdvocate" class="form-control input-sm" [(ngModel)]="reportFilters.advocate.value">
+          <option value="">All</option>
+          <option *ngFor="let advocate of advocatesList" [value]="advocate">{{advocate}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectSurgeon" class="bold text-white">Surgeon:</label>
+        <select id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.surgeon.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div>
+          <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+          <br>
+          <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+          &NonBreakingSpace;
+          <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top-separation-md">
+        <app-report-actions
+          title="Clearance Visits"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+        ></app-report-actions>
+      </div>
+    </div>
+  </div>
+</div>

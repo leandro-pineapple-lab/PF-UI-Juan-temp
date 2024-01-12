@@ -1,0 +1,67 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <button *ngIf="formCollapsed" (click)="formCollapsed = !formCollapsed" type="button" class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#formCardBody" aria-expanded="false" aria-controls="formCardBody">
+          <i class="fa fa-chevron-right color-white fa-2x" aria-hidden="true"></i>
+        </button>
+        <button *ngIf="!formCollapsed" (click)="formCollapsed = !formCollapsed" type="button" class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#formCardBody" aria-expanded="false" aria-controls="formCardBody">
+            <i class="fa fa-chevron-down color-white fa-2x" aria-hidden="true"></i>
+        </button>
+        <h4 class="color-white bold display-inline">{{workflowAlertModel.id ? 'Update Rule' : 'Add Rule'}}</h4>
+      </div>
+    </div>
+  </div>
+  <div id="formCardBody" class="card-body collapse">
+    <div class="row">
+      <ng-container [ngTemplateOutlet]="basicInfoTemplate"></ng-container>
+      <hr class="mt-1rem section-separator-default">
+      <app-workflow-alert-when [errorsList]="errorsList" [workflowAlertModel]="workflowAlertModel" [statusCodesList]="statusCodesList"
+        [workflowRulesList]="workflowRulesList"></app-workflow-alert-when>
+      <hr class="mt-1rem">
+      <app-workflow-alert-if
+      [useNewHW]="useNewHW"
+      [statusCodesList]="statusCodesList"
+      [workflowAlertModel]="workflowAlertModel"
+      ></app-workflow-alert-if>
+      <hr class="mt-1rem">
+      <app-workflow-alert-scope [workflowAlertModel]="workflowAlertModel"></app-workflow-alert-scope>
+      <hr class="mt-1rem">
+      <app-workflow-alert-generate [workflowAlertModel]="workflowAlertModel"
+        [messageTemplatesList]="messageTemplatesList"
+        [teamsList]="teamsList" [statusCodesList]="statusCodesList"
+        [professionalUserProviders]="professionalUserProviders"
+        >
+      </app-workflow-alert-generate>
+      <hr class="mt-1rem">
+      <div class="text-center">
+        <button *ngIf="!workflowAlertModel.id" class="btn btn-sm btn-success" (click)="addRule()">Add rule</button>
+        <button *ngIf="workflowAlertModel.id" class="btn btn-sm btn-primary" (click)="updateRule()">Update rule</button>
+        <button *ngIf="workflowAlertModel.id" class="margin-left-separation-sm btn btn-sm btn-success" (click)="addNewRule()">Add new rule</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #basicInfoTemplate>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <label class="bold" for="txtName">
+      <span class="text-maroon">*</span>
+      Name:
+    </label>
+    <input [(ngModel)]="workflowAlertModel.name" type="text" id="txtName" placeholder="rule name" class="form-control input-sm">
+    <div>
+      <label class="text-danger">{{FormHelper.getError('name', ErrorConstants.IS_NOT_EMPTY, errorsList)}}</label>
+    </div>
+    <label class="bold" for="txtDescription">
+      <span class="text-maroon">
+        *
+      </span>
+      Description
+    </label>
+    <input [(ngModel)]="workflowAlertModel.description" type="text" id="txtDescription" placeholder="rule description" class="form-control input-sm">
+    <div>
+      <label class="text-danger">{{FormHelper.getError('description', ErrorConstants.IS_NOT_EMPTY, errorsList)}}</label>
+    </div>
+  </div>
+</ng-template>

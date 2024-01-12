@@ -1,0 +1,77 @@
+<div id="marketing-category-container" class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-success">Referral Categories</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body table-responsive">
+            <table width='100%' id="tblCategory" class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Category</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let category of categoriesList; let i = index">
+                        <td>
+                            <input class="form-control input-sm" type="text" [(ngModel)]="category.name" />
+                        </td>
+                        <td>
+                            <button (click)="openUpdateConfirmationModal(categoryUpdateModal, category)"  class="btn btn-sm btn-primary">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                            &nbsp;
+                            <button (click)="openDeleteConfirmationModal(categoryDeleteModal, category)" class="btn btn-sm btn-danger">
+                                <i class="fa fa-trash btn-danger" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="add-row">
+                        <td>
+                            <input [(ngModel)]="newCategory.name" class="form-control input-sm" type="text" />
+                        </td>
+                        <td>
+                            <button (click)="addCategory();" style="margin-top: 3px;" class="btn btn-sm btn-primary">
+                                Add
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #categoryDeleteModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Category Delete Confirmation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Category Name: {{selectedCategory.name}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteCategory(selectedCategory.id)">Confirm</button>
+    </div>
+</ng-template>
+
+<ng-template #categoryUpdateModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Category Update Confirmation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Category Name: {{selectedCategory.name}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="updateCategory()">Confirm</button>
+    </div>
+</ng-template>

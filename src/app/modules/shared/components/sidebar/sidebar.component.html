@@ -1,0 +1,19 @@
+<div class="d-flex" id="wrapper">
+  <div class="bg-light border-right" id="sidebar-wrapper" [ngClass]="collapsed ? 'hide' : 'show'">
+    <img src="../../assets/images/HeaderLogo.gif" alt="Logo" class="brand-image-CV" style="opacity: .8">
+    <div class="list-group list-group-flush">
+      <app-reports></app-reports>
+      <app-settings></app-settings>
+      <app-prospects></app-prospects>
+    </div>
+  </div>
+  <div id="page-content-wrapper">
+    <app-top-bar (toggleMenuEvent)="toggleMenu($event)"></app-top-bar>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9 col-lg-9 offset-md-3 offset-lg-3">
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Monthly Leads/Payer'"></app-title>
+  <app-leads-by-payer-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="refreshTable();"
+  >
+  </app-leads-by-payer-filters>
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      [headerCssClass]="'table-info'"
+      [pagination]="pagination"
+      [tableInfo]="table" [noDataFoundText]="'No Monthly Leads/Payer reports found!'"
+      (exportExcelEvent)="getReports(true)"
+      (paginationChangeEvent)="sortTableData()"
+      ></app-table>
+  </div>
+  <div *ngIf="table.data.length > 0" class="margin-top-separation-md">
+    <h5>Monthly Leads/Payer Totals</h5>
+    <app-table [showDefaultActions]="false"
+      [headerCssClass]="'table-info'"
+      [tableInfo]="totalsTable"
+      ></app-table>
+  </div>
+</div>
+

@@ -1,0 +1,50 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtAssignedFrom" class="bold text-white">Assigned From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtAssignedFrom" type="text" class="form-control" [(ngModel)]="reportFilters.assignedFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtAssignedTo" class="bold text-white">To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtAssignedTo" type="text" class="form-control" [(ngModel)]="reportFilters.assignedTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <div>
+          <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+          <br>
+          <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+          &NonBreakingSpace;
+          <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <app-report-actions
+          title="Handout Status"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+        ></app-report-actions>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <label for="selectProvider" class="bold text-white">Provider:</label>
+        <select id="selectProvider" class="form-control input-sm" [(ngModel)]="reportFilters.provider.value">
+          <option value="">All</option>
+          <option *ngFor="let provider of providersList" [value]="provider.fullName">{{provider.fullName}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-info">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <label class="color-white bold">Keyword:</label>
+        <input [(ngModel)]="workflowAlertFilter.keyword" type="text" class="form-control input-sm">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <label class="color-white bold">Method:</label>
+        <br>
+        <input [(ngModel)]="workflowAlertFilter.method" value="I" type="radio" name="radioMethod"
+          id="radioInternalMessage">
+        <label class="color-white margin-x-xs" for="radioInternalMessage">Internal Message</label>
+        <input [(ngModel)]="workflowAlertFilter.method" value="E" type="radio" id="radioEmail" name="radioMethod">
+        <label class="color-white margin-x-xs" for="radioEmail">Email</label>
+        <input *ngIf="showSMS" [(ngModel)]="workflowAlertFilter.method" value="S" type="radio" id="radioSMS" name="radioMethod">
+        <label *ngIf="showSMS" class="color-white margin-x-xs" for="radioSMS">SMS</label>
+        <input [(ngModel)]="workflowAlertFilter.method" value="A" type="radio" id="radioWorkflowAlert"
+          name="radioMethod">
+        <label class="color-white margin-x-xs" for="radioWorkflowAlert">Workflow Alert</label>
+        <br>
+        <input [(ngModel)]="workflowAlertFilter.method" value="N" type="radio" id="radioAssignmentChange"
+          name="radioMethod">
+        <label class="color-white margin-x-xs" for="radioAssignmentChange">Assignment Change</label>
+        <input [(ngModel)]="workflowAlertFilter.method" value="H" type="radio" id="radioAssignHandout"
+          name="radioMethod">
+        <label class="color-white margin-x-xs" for="radioAssignHandout">Assign Handout</label>
+        <input [(ngModel)]="workflowAlertFilter.method" value="" type="radio" id="radioAll" name="radioMethod">
+        <label class="color-white margin-x-xs" for="radioAll">All</label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <br>
+        <button class="btn btn-sm btn-warning" (click)="getWorkflowsEvent()">Search</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <app-table [tableInfo]="table" (editEvent)="editWorkflowRule($event)"
+      (tooltipActive)="onTooltipActive($event)" (deleteEvent)="deleteWorkflowAlert($event)"
+      [tooltipTemplate]="workflowAlertInfoTooltipTemplate"
+      [noDataFoundText]="'No Workflow Alerts found!'"
+      ></app-table>
+  </div>
+</div>
+
+<ng-template #workflowAlertInfoTooltipTemplate>
+  <p class='bg-warning text-center'>
+    <b>
+      {{selectedTooltip.name}}
+    </b>
+  </p>
+  <ul>
+    <li>
+      FOR: {{selectedTooltip.includeExcludeSurgeon === 'I' ?
+      'Surgeon ' + selectedTooltip.thisSurgeonOnly :
+      selectedTooltip.includeExcludeSurgeon === 'E' ?
+      'All surgeons except ' + selectedTooltip.thisSurgeonOnly :
+      'All surgeons'
+      }}
+    </li>
+    <li *ngIf="getWhenCondition(selectedTooltip)">
+      WHEN: {{selectedTooltip.whenInterval + ' days' +
+      (selectedTooltip.whenIntervalMax > 0 ? ' (and less than ' + selectedTooltip.whenIntervalMax + ' days) after ' +
+      currentWhenCondition :
+      ' after ' + currentWhenCondition)}}
+    </li>
+    <li *ngIf="getIfCondition(selectedTooltip, selectedTooltip.ifCondition, 1)">
+      IF: {{currentIfCondition}}
+    </li>
+    <li *ngIf="selectedTooltip && selectedTooltip.if2Operator.trim().length > 0">
+      {{ selectedTooltip.if2Operator.replace("A", "And").replace("O", "Or") + " " + getIfCondition(selectedTooltip,
+      selectedTooltip.if2Condition, 2)}}
+    </li>
+    <li *ngIf="selectedTooltip && selectedTooltip.if3Operator.trim().length > 0">
+      {{ selectedTooltip.if3Operator.replace("A", "And").replace("O", "Or") + " " + getIfCondition(selectedTooltip,
+      selectedTooltip.if3Condition, 3)}}
+    </li>
+    <li>
+      {{ getRuleMethod(selectedTooltip) }}
+    </li>
+    <li *ngIf="selectedTooltip.templateId > 0">
+      {{ getMessageTemplate(selectedTooltip) }}
+    </li>
+    <li *ngIf="getMessageEscalateToTemplate(selectedTooltip).length > 0">
+      {{ 'Escalate to ' + currentEscalateTo }}
+    </li>
+  </ul>
+</ng-template>

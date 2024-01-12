@@ -1,0 +1,84 @@
+<div id="settings-tag-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-9">
+                    <h1 class="text-success">Set Up Tags</h1>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <input [(ngModel)]="searchTagFilter" (ngModelChange)="searchTag()" placeholder="Search" type="text" class="form-control input-sm margin-top-separation-sm">
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="tblOffice" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Tag</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let tag of tagsList | paginate: { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.totalNumberOfRecords }">
+                        <td>
+                            {{tag.name}}
+                        </td>
+                        <td appCanSaveSettings>
+                            <a *ngIf="tag.isDeletable" class="cursor-pointer" (click)="openDeleteTagConfirmationModal(tagToDeleteModal, tag)">
+                                <i style="font-size: 20px; margin-right: 5px" class="fa fa-trash text-danger" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-6">
+                    Showing {{showingFrom}} to {{showingTo}} of {{pagination.totalNumberOfRecords}} entries
+                    <br>
+                    <select [(ngModel)]="pagination.tableSize" (change)="onTableSizeChange($event)">
+                        <option [value]="size" [selected]="pagination.tableSize == size" *ngFor="let size of pagination.tableSizes">
+                            {{size}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <pagination-controls
+                        style="float: right;"
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+                </div>
+            </div>
+            <div class="card" appCanSaveSettings class="row">
+                <div class="card-header">
+                    <h5>Add Tag</h5>
+                </div>
+                <div class="card-body row">
+                    <div class="col-xs-12 col-sm-12 col-md-11">
+                        <input [(ngModel)]="newTag.name" type="text" class="form-control input-sm" />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1">
+                        <input (click)="addTag();" style="background-color: #0d6efd;" type="button" value="Add Tag" class="btn btn-primary">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #tagToDeleteModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Are you sure you want to delete the following status?</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Name: {{selectedTag.name}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteTag()">Confirm</button>
+    </div>
+  </ng-template>

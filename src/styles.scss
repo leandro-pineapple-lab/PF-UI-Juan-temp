@@ -1,0 +1,169 @@
+body{
+  overflow-x: hidden;
+}
+.color-white{
+    color: white;
+}
+.float-right{
+    float: right;
+}
+.text-right{
+    text-align: right;
+}
+.text-bold{
+    font-weight: bold;
+}
+.toast-container{
+    position: fixed !important;
+}
+.margin-x-xs{
+  margin: 0px 5px;
+}
+.margin-top-separation-xs{
+    margin-top: 5px;
+}
+.margin-top-separation-sm{
+    margin-top: 10px;
+}
+.margin-bottom-separation-sm{
+    margin-bottom: 10px;
+}
+.margin-right-separation-sm{
+    margin-right: 10px;
+}
+.margin-left-separation-sm{
+    margin-left: 10px;
+}
+.margin-left-separation-md{
+    margin-left: 25px;
+}
+.margin-top-separation-md{
+    margin-top: 25px;
+}
+.margin-top-2rem{
+  margin-top: 2rem;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.add-row{
+    background-color: #c3e6cb;
+    border-color: #8fd19e;
+}
+.bold{
+    font-weight: bold;
+}
+::ng-deep .tooltip-inner {
+    max-width: none;
+    text-align: left;
+}
+.text-white{
+    color: white;
+}
+.order-column{
+    color: gray;
+    cursor: pointer;
+    font-size: 10px;
+    display: block;
+}
+//TODO - THIS IS NOW THE ONLY CLASS TO BE USED TO ORDER, CHANGE IT LATER
+.order-by-column{
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  display: block;
+}
+.active-order-by{
+    color: black;
+}
+.bg-gradient-secondary{
+    background: #6c757d linear-gradient(180deg,#828a91,#6c757d) repeat-x!important;
+}
+.icon-default-font-size{
+    font-size: 20px;
+}
+.text-align-center{
+    text-align: center;
+}
+.bg-gradient-info{
+    background: #17a2b8 linear-gradient(180deg,#3ab0c3,#17a2b8) repeat-x!important;
+}
+.bg-gradient-olive{
+    background: #3d9970 linear-gradient(180deg,#5aa885,#3d9970) repeat-x!important;
+}
+.bg-gradient-warning{
+    background: #ffc107 linear-gradient(180deg,#ffca2c,#ffc107) repeat-x!important;
+}
+.thead-dark{
+    background-color: black;
+    color: white;
+}
+.w-100{
+  width: 100%;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.bg-gradient-fuchsia{
+  background: #f012be linear-gradient(180deg,#f236c8,#f012be) repeat-x;
+}
+
+.font-size-24{
+  font-size: 24px;
+}
+
+.decoration-none{
+  text-decoration: none;
+}
+.padding-10{
+  padding: 10px;
+}
+
+.quote-info {
+  background: #fff;
+  margin: 1.5em 0.7rem;
+  padding: 0.5em 0.7rem;
+  border-left: 0.7rem solid #17a2b8;
+  h5{
+    color: #17a2b8;
+  }
+}
+
+.text-maroon{
+  color: #d81b60;
+}
+
+.text-blue {
+  color: blue;
+}
+
+.no-margin-x{
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.mt-1rem {
+  margin-top: 1rem;
+}
+
+.display-inline{
+  display: inline;
+}
+
+.border-none {
+  border: none;
+}
+
+.text-fuchsia {
+  color: fuchsia;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.multiselect-dropdown .dropdown-btn {
+  background-color: white;
+}

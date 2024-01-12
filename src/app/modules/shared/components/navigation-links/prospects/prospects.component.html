@@ -1,0 +1,18 @@
+<div>
+  <button id="btnProspects" class="btn-menu" data-bs-toggle="collapse" data-bs-target="#divProspects"
+    aria-expanded="false" aria-controls="divSettings">
+    <i class="fa fa-search" aria-hidden="true"></i> Prospects
+  </button>
+  <div id="divProspects" class="collapse menu-item-container">
+    <div>
+      <button [routerLink]="['/prospects/add-prospect']">
+        <i class="fa fa-plus" aria-hidden="true"></i> Add Prospect
+      </button>
+    </div>
+    <div>
+      <button [routerLink]="['/prospects/search-prospect']">
+        <i class="fa fa-search-plus" aria-hidden="true"></i> Search Prospects
+      </button>
+    </div>
+  </div>
+</div>

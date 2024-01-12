@@ -1,0 +1,48 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtAccessFrom" class="bold text-white">Access From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtAccessFrom" type="text" class="form-control" [(ngModel)]="reportFilters.accessFrom.value" bsDatepicker>
+          <div class="input-group-append">
+            <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtAccessTo" class="bold text-white">Access To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtAccessTo" type="text" class="form-control" [(ngModel)]="reportFilters.accessTo.value" bsDatepicker>
+          <div class="input-group-append">
+            <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectUser" class="bold text-white">User:</label>
+        <select id="selectUser" class="form-control input-sm" [(ngModel)]="reportFilters.user.value">
+          <option value="">All</option>
+          <option *ngFor="let user of accessedUsersList" [value]="user.value">{{user.text}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectPageAccessed" class="bold text-white">Page Accessed:</label>
+        <select id="selectPageAccessed" class="form-control input-sm" [(ngModel)]="reportFilters.pageAccessed.value">
+          <option value="">All</option>
+          <option *ngFor="let page of accessedPagesList" [value]="page.value">{{page.text}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 margin-top-separation-md">
+        <app-report-actions
+          title="Patient Data Access"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+          ></app-report-actions>
+      </div>
+    </div>
+  </div>
+</div>

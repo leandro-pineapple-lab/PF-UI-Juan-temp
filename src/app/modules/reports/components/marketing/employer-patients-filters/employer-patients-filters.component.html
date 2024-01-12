@@ -1,0 +1,55 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtEmployer" class="bold text-white">Employer:</label>
+        <input id="txtEmployer" type="text" class="form-control" [(ngModel)]="reportFilters.employer.value">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="selectZip" class="bold text-white">Zip:</label>
+        <div class="input-group date">
+          <input [(ngModel)]="zip" [disabled]="zipsList.length === maxZipFiltersAmount" id="txtZip"
+          (keypress)="FormHelper.numberValidation($event)" type="number" class="form-control">
+          <div class="input-group-append">
+              <button [disabled]="zipsList.length === maxZipFiltersAmount || !zip" class="input-group-text h-100" (click)="addZipFilter()">
+                <i class="fa fa-plus text-primary" aria-hidden="true"></i>
+              </button>
+          </div>
+        </div>
+        <ul class="margin-top-separation-sm">
+          <li *ngFor="let zip of zipsList; let i = index" class="text-white">
+            {{zip}}
+            <i (click)="removeZip(i)" class="fa fa-trash text-danger margin-left-separation-sm margin-top-separation-xs icon-default-font-size" aria-hidden="true"></i>
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="radioReportLevel" class="bold text-white">Report Level:</label>
+        <br/>
+        <input (change)="reportFilters.reportLevel.customValue = 'Details'" type="radio" name="radioReportLevel" id="radioReportLevelDetails" [(ngModel)]="reportFilters.reportLevel.value" value="D">
+        <label for="radioReportLevelDetails" class="bold text-white">Detail</label>
+        &nbsp;
+        <input (change)="reportFilters.reportLevel.customValue = 'Summary'" type="radio" name="radioReportLevel" id="radioReportLevelSummary" [(ngModel)]="reportFilters.reportLevel.value" value="S">
+        <label for="radioReportLevelSummary" class="bold text-white">Summary</label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+        <br>
+        <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+        &NonBreakingSpace;
+        <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <app-report-actions
+          title="Patients by Employer"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+          ></app-report-actions>
+      </div>
+    </div>
+  </div>
+</div>
+

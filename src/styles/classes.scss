@@ -1,0 +1,50 @@
+//// In this file we can make our own Sass functions related with material
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+$variants: 'default', 'lighter', 'darker';
+
+$color-config: null;
+
+@mixin color-maker($color, $pallette, $property, $class-prefix) {
+  @each $variant in $variants {
+    $class-name: $color;
+    @if $variant != 'default' {
+      $class-name: '#{$class-name}-#{$variant}';
+    }
+    .#{$class-prefix}-#{$class-name} {
+      #{$property}: mat.get-color-from-palette($pallette, $variant) !important;
+    }
+    .#{$class-prefix}-#{$class-name}-contrast {
+      #{$property}: mat.get-color-from-palette($pallette, '#{$variant}-contrast') !important;
+    }
+  }
+}
+
+@mixin color-maker-for-all-color($property, $class-prefix) {
+  @each $color in 'primary', 'accent', 'warn' {
+    $palette: map.get($color-config, $color);
+    @include color-maker($color, $palette, $property, $class-prefix );
+  }
+}
+
+@function get-color($pallette: 'primary', $variant: 'default', $theme: none) {
+  @if $theme == none {
+    $them-pallette: map.get($color-config, $pallette);
+    @return mat.get-color-from-palette($them-pallette, $variant);
+  }
+  @if map.get($app-themes, $theme) != null {
+    $config: mat.get-color-config( map.get($app-themes, $theme) );
+    $them-pallette: map.get($config, $pallette);
+    @return mat.get-color-from-palette($them-pallette, $variant);
+  }
+  @return null;
+}
+
+@mixin set-defined-theme-colors-classes($general-prefix: '') {
+  $color-config:    mat.get-color-config($defined-theme) !global;
+
+  @include color-maker-for-all-color( 'color', '#{$general-prefix}text' );
+  @include color-maker-for-all-color( 'background-color', '#{$general-prefix}bg' );
+  @include color-maker-for-all-color( 'border-color', '#{$general-prefix}border' );
+}

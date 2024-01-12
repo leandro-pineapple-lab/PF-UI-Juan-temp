@@ -1,0 +1,17 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Surgical Pipeline'"></app-title>
+  <app-planned-surgery-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="refreshTable()"
+  ></app-planned-surgery-filters>
+
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      [pagination]="pagination" [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Surgical Pipeline reports found!'"></app-table>
+  </div>
+
+</div>
+

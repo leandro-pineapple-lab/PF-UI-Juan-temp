@@ -1,0 +1,147 @@
+<div *ngIf="tableInfo.data.length > 0">
+  <ng-container *ngIf="showExcelAndColumnsVisibilityActions" [ngTemplateOutlet]="columnVisibility_ExcelTemplate">
+  </ng-container>
+  <table class="table table-bordered table-striped table-sm table-responsive">
+    <ng-container [ngTemplateOutlet]="headersTemplate"></ng-container>
+    <ng-container [ngTemplateOutlet]="bodyTemplate"></ng-container>
+  </table>
+  <ng-container *ngIf="pagination" [ngTemplateOutlet]="paginationTemplate"></ng-container>
+</div>
+
+<div *ngIf="tableInfo.data.length === 0 && showAlert">
+  <app-alert [text]="noDataFoundText"></app-alert>
+</div>
+
+<ng-template #columnVisibility_ExcelTemplate>
+  <div class="row margin-bottom-separation-sm">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="dt-buttons btn-group flex-wrap">
+        <div ngbDropdown class="d-inline-block">
+          <button class="table-options btn btn-secondary buttons-copy buttons-html5" id="dropdownMenuButton"
+            ngbDropdownToggle>
+            Column visibility
+          </button>
+          <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+            <ng-container *ngFor="let header of tableInfo.headers">
+              <button class="table-dropdown-item-visibility" (click)="header['hide'] = !header['hide']"
+                [ngStyle]="header['hide'] ? {'background-color': 'white', 'color': 'black'} : {'background-color': '#007bff', 'color': 'white'}"
+                ngbDropdownItem>{{header['name']}}</button>
+            </ng-container>
+          </div>
+        </div>
+        <button (click)="exportExcel();" class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+          aria-controls="tblLeads" type="button">
+          <span>Excel</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #headersTemplate>
+  <thead>
+    <tr [ngClass]="headerCssClass">
+      <ng-container *ngFor="let header of tableInfo.headers">
+        <th *ngIf="!header['applyCanSaveSettingsDirective'] && !header['hide']">
+          <div *ngIf="!pagination" class="w-100">
+            {{header["name"]}}
+          </div>
+          <div *ngIf="pagination" class="w-100 cursor-pointer"
+            (click)="header['orderColumnName'] && orderBy(header['orderColumnName'])">
+            {{header["name"]}}
+            <i *ngIf="pagination.orderBy === header['orderColumnName'] && pagination.orderDirection === 'asc'"
+              class="fa fa-arrow-down float-right" aria-hidden="true" appOrderBy></i>
+            <i *ngIf="pagination.orderBy === header['orderColumnName'] && pagination.orderDirection === 'desc'"
+              class="fa fa-arrow-up float-right" aria-hidden="true" appOrderBy></i>
+          </div>
+        </th>
+        <th [width]="actionsWidth" *ngIf="header['applyCanSaveSettingsDirective'] && !header['hide']" appCanSaveSettings>
+          {{ header["name"] }}
+        </th>
+      </ng-container>
+    </tr>
+  </thead>
+</ng-template>
+
+<ng-template #bodyTemplate>
+  <tbody>
+    <tr
+      [ngClass]="item.cssClass"
+      *ngFor="let item of pagination ? (tableInfo.data | paginate: { id: pagination.id, itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.totalNumberOfRecords }) : (tableInfo.data)">
+      <ng-container *ngFor="let header of tableInfo.headers">
+        <td *ngIf="!header['hide']">
+          <ng-container *ngIf="header.name !== 'Action'">
+            {{
+              header.pipe ? (item[header.fieldValue] | dynamic:header.pipe: header.pipeArgs) :
+              isDate(item[header.fieldValue]) ? (item[header.fieldValue] | date: 'M/d/yyyy') :
+              item[header.fieldValue]
+            }}
+          </ng-container>
+          <div *ngIf="header.name === 'Action'">
+            <ng-container *ngIf="header.tooltip">
+              <a [ngbTooltip]="tooltipTemplate" (mouseenter)="onTooltipActive(item)">
+                <i class="fa fa-info-circle text-info icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="header.actionName">
+              <button (click)="customAction(item)" class="btn btn-sm color-white"
+                [ngClass]="header.class ? header.class : ''">{{header.actionName}}</button>
+            </ng-container>
+            <ng-container *ngFor="let action of header.customActions">
+              <a *ngIf="item?.hideActionName != action.actionName" (click)="triggerCustomAction(action.actionName, item)" [ngbTooltip]="action.tooltip">
+                <i class="icon-default-font-size cursor-pointer margin-left-separation-sm"
+                  [ngClass]="[action.class ? action.class : '', action.icon ? action.icon : '']"
+                  aria-hidden="true"></i>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="showDefaultActions">
+              <a ngbTooltip="Edit" (click)="editItem(item)">
+                <i class="fa fa-pencil-square-o text-primary icon-default-font-size cursor-pointer margin-left-separation-sm"
+                  aria-hidden="true"></i>
+              </a>
+              <a ngbTooltip="Delete" (click)="openDeleteModal(deleteModal, item)">
+                <i class="fa fa-trash text-danger margin-left-separation-sm cursor-pointer icon-default-font-size"
+                  aria-hidden="true"></i>
+              </a>
+            </ng-container>
+          </div>
+        </td>
+      </ng-container>
+    </tr>
+  </tbody>
+  <ng-template #deleteModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Delete Confirmation</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div *ngFor="let header of tableInfo.headers" class="mb-3">
+        <p *ngIf="header.name !== 'Action'">
+          {{header.name}}: <b>{{selectedElement[header['fieldValue']]}}</b>
+        </p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteElement()">Confirm</button>
+    </div>
+  </ng-template>
+</ng-template>
+
+<ng-template #paginationTemplate>
+  <div class="row">
+    <div class="col-6">
+      Showing {{pagination.showingFrom}} to {{pagination.showingTo}} of {{pagination.totalNumberOfRecords}} entries
+      <br>
+      <select [(ngModel)]="pagination.tableSize" (change)="onTableSizeChange()">
+        <option [value]="size" [selected]="pagination.tableSize == size" *ngFor="let size of pagination.tableSizes">
+          {{size}}
+        </option>
+      </select>
+    </div>
+    <div class="col-6">
+      <pagination-controls [id]="pagination.id" style="float: right;" previousLabel="Prev" nextLabel="Next"
+        (pageChange)="onTableDataChange($event)">
+      </pagination-controls>
+    </div>
+  </div>
+</ng-template>

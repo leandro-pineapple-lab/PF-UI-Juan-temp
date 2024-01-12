@@ -1,0 +1,26 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Appointment Summary'"></app-title>
+  <app-appointment-summary-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="getReports()"
+  ></app-appointment-summary-filters>
+
+  <div class="card margin-top-separation-sm">
+    <div class="card-header">
+      <h5>{{currentSelectedYear}} YTD Monthly Surgical Figures</h5>
+    </div>
+    <div class="card-body">
+      <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports(true, 'selectedYear')"
+      [headerCssClass]="'table-dark'"
+      [tableInfo]="table" [noDataFoundText]="'No Appointments Summary reports found!'"></app-table>
+      <h5>{{previousYear}} Comparison</h5>
+      <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports(true, 'previousYear')"
+      [headerCssClass]="'table-dark'"
+      [tableInfo]="appointmentSummaryComparisonTable" [noDataFoundText]="'No Appointments Summary for comparison reports found!'"></app-table>
+    </div>
+  </div>
+</div>

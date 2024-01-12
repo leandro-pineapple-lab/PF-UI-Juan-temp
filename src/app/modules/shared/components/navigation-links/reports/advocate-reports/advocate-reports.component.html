@@ -1,0 +1,7 @@
+<div>
+  <div *ngFor="let navigationLink of navigationLinks">
+    <button [routerLink]="[navigationLink.router]" class="border-none">
+        <i [class]="navigationLink.icon" aria-hidden="true"></i> {{navigationLink.title}}
+    </button>
+  </div>
+</div>

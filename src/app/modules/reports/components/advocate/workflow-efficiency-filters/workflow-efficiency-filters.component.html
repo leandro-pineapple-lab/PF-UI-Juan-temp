@@ -1,0 +1,91 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtContactFrom" class="bold text-white">1st Contact From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtContactFrom" type="text" class="form-control" [(ngModel)]="reportFilters.contactFrom.value" bsDatepicker>
+          <div class="input-group-append">
+            <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="txtAssignedTo" class="bold text-white">To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtAssignedTo" type="text" class="form-control" [(ngModel)]="reportFilters.contactTo.value" bsDatepicker>
+          <div class="input-group-append">
+            <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="selectInsurance" class="bold text-white">Insurance:</label>
+        <select id="selectInsurance" class="form-control input-sm" [(ngModel)]="reportFilters.insuranceType.value">
+          <option value="">All</option>
+          <option value="Cash Pay">Cash Pay</option>
+          <option value="Other Ins.">Other Insurance</option>
+          <option value="Medicare">Medicare</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="selectSurgeon" class="bold text-white">Surgeon:</label>
+        <select id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.surgeon.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
+        <div>
+          <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+          <br>
+          <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+          &NonBreakingSpace;
+          <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <app-report-actions
+          title="Workflow Efficiency"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+          ></app-report-actions>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectPayer" class="bold text-white">Payer:</label>
+        <select id="selectPayer" class="form-control input-sm" [(ngModel)]="reportFilters.insuranceCo.value">
+          <option value="">All</option>
+          <option *ngFor="let insuranceCompany of insuranceCompaniesList" [value]="insuranceCompany.name">{{insuranceCompany.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="checkShowDetails" class="bold text-white">Show Details:</label>
+        <br/>
+        <input type="checkbox" name="checkShowDetails" id="checkShowDetails" [(ngModel)]="reportFilters.showDetails.value">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label class="bold text-white">Start:</label>
+        <br/>
+        <input type="radio" name="radioStart" id="radioStartLeadCreation"
+        [(ngModel)]="reportFilters.startType.value"
+        value="L"
+        >
+        <label for="radioStartLeadCreation" class="bold text-white">
+          Lead Creation
+        </label>
+        &nbsp;
+        <input type="radio" name="radioStart" id="radioStartConsultDate"
+        [(ngModel)]="reportFilters.startType.value"
+        value="C"
+        >
+        <label for="radioStartConsultDate" class="bold text-white">
+          Consult Date
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+

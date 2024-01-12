@@ -1,0 +1,238 @@
+<div id="marketing-budget-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-9">
+                    <h3 style="margin-top: 15px;" class="text-success">Marketing Spending</h3>
+                </div>
+                <div class="col-3">
+                    <b>
+                        <label>Year:</label>
+                    </b>
+                    <select (change)="getBudgetsByYear()" [(ngModel)]="selectedYear" class="form-control">
+                        <option *ngFor="let year of yearsList" [value]="year" >{{year}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body table-responsive">
+            <table width='100%' id="tblBudget" class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Category</th>
+                        <th>January</th>
+                        <th>February</th>
+                        <th>March</th>
+                        <th>April</th>
+                        <th>May</th>
+                        <th>June</th>
+                        <th>July</th>
+                        <th>August</th>
+                        <th>September</th>
+                        <th>October</th>
+                        <th>November</th>
+                        <th>December</th>
+                        <th>Total</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let budget of budgetsList; let i = index">
+                        <td>
+                            <input class="w-100" [(ngModel)]="budget.subCategory" type="text">
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.january" type="number"/>
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.february" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.march" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.april" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.may" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.june" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.july" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.august" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.september" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.october" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.november" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="budget.december" />
+                        </td>
+                        <td>
+                            <label class="w-100">{{budget.total | number: "1.1-1"}}</label>
+                        </td>
+                        <td class="text-center">
+                            <button (click)="openUpdateConfirmationModal(budgetUpdateModal, budget)" class="btn btn-sm btn-primary">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                            &nbsp;
+                            <button (click)="openDeleteConfirmationModal(budgetDeleteModal, budget)" class="btn btn-sm btn-danger">
+                                <i class="fa fa-trash btn-danger" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="total-budget-row" style="background-color: #c3e6cb">
+                        <td>
+                            <b>
+                                TOTAL
+                            </b>
+                        </td>
+                        <td>
+                            {{januaryBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{februaryBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{marchBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{aprilBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{mayBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{juneBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{julyBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{augustBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{septemberBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{octoberBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{novemberBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{decemberBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                            {{totalBudget | number: "1.1-1"}}
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr class="new-category-row">
+                        <td>
+                            <input class="w-100" placeholder="new category" [(ngModel)]="newBudget.subCategory" type="text">
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.january" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.february" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.march" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.april" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.may" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.june" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.july" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.august" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.september" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.october" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.november" />
+                        </td>
+                        <td>
+                            <input class="w-100" type="number" [(ngModel)]="newBudget.december" />
+                        </td>
+                        <td></td>
+                        <td class="text-center">
+                            <button (click)="addBudget();" class="btn btn-sm btn-success">
+                                Add
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <blockquote class="quote-info">
+              <h5>Tip!</h5>
+              <p class="text-maroon">All numbers in $ 1,000<br />You can create as many categories as you would like. </p>
+            </blockquote>
+        </div>
+    </div>
+</div>
+
+<ng-template #budgetDeleteModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Budget Delete Confirmation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Category Name: {{selectedBudget.subCategory}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteBudget(selectedBudget.id)">Confirm</button>
+    </div>
+  </ng-template>
+
+  <ng-template #budgetUpdateModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Budget Update Confirmation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Category Name: {{selectedBudget.subCategory}}</p>
+            <p>January: {{selectedBudget.january}}</p>
+            <p>February: {{selectedBudget.february}}</p>
+            <p>March: {{selectedBudget.march}}</p>
+            <p>April: {{selectedBudget.april}}</p>
+            <p>May: {{selectedBudget.may}}</p>
+            <p>June: {{selectedBudget.june}}</p>
+            <p>July: {{selectedBudget.july}}</p>
+            <p>August: {{selectedBudget.august}}</p>
+            <p>September: {{selectedBudget.september}}</p>
+            <p>October: {{selectedBudget.october}}</p>
+            <p>November: {{selectedBudget.november}}</p>
+            <p>December: {{selectedBudget.december}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="updateBudget()">Confirm</button>
+    </div>
+  </ng-template>

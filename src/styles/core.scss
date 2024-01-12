@@ -1,0 +1,42 @@
+@use "sass:map";
+@use '@angular/material' as mat;
+
+$app-primary: mat.define-palette(mat.$indigo-palette, A400, A100, A700);
+$app-accent: mat.define-palette(mat.$pink-palette, A400, A100, A700);
+$app-warn: mat.define-palette(mat.$deep-orange-palette, A400, A100, A700);
+$app-typography: mat.define-typography-config($font-family: Roboto);
+$defined-theme: mat.define-dark-theme( (color: ( primary: $app-primary, accent: $app-accent, warn: $app-warn, ), typography: $app-typography) );
+
+$initial-list: ();
+@if variable-exists("app-additional-themes") {
+  $initial-list: $app-additional-themes;
+}
+$app-additional-themes: $initial-list;
+$app-themes: ();
+
+@mixin add-theme(
+  $theme-name: 'light-green-blue',
+  $app-theme-config: (
+    'app-font-family': 'Open Sans',
+    'app-theme': 'dark',
+    'app-primary-palette': $app-primary,
+    'app-accent-palette': $app-accent,
+    'app-warn-palette': $app-warn
+  )
+) {
+  $app-additional-themes: map.set($app-additional-themes, $theme-name, $app-theme-config) !global;
+}
+
+$is-density-styles-generated: false;
+
+@mixin apply-material-theme($theme) {
+
+  @if $is-density-styles-generated == false {
+    @include mat.all-component-themes($theme);
+    $is-density-styles-generated: true !global;
+  } @else {
+    @include mat.all-component-colors($theme);
+    @include mat.all-component-typographies($theme);
+  }
+
+}

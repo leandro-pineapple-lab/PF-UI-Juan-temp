@@ -1,0 +1,62 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtSurgeryFrom" class="bold text-white">Surgery Between:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtSurgeryFrom" type="text" class="form-control" [(ngModel)]="reportFilters.surgeryFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtSurgeryTo" class="bold text-white">And:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtSurgeryTo" type="text" class="form-control" [(ngModel)]="reportFilters.surgeryTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label class="bold text-white">Surgery Type:</label>
+        <br/>
+        <input (change)="setSurgeryTypeCustomValue()" type="radio" name="radioSurgeryType" id="radioSurgeryTypeBariatric" [(ngModel)]="reportFilters.surgeryType.value" value="B">
+        <label for="radioSurgeryTypeBariatric" class="text-white bold">Primary Bariatric</label>
+        &nbsp;
+        <input (change)="setSurgeryTypeCustomValue()" type="radio" name="radioSurgeryType" id="radioSurgeryTypeOther" [(ngModel)]="reportFilters.surgeryType.value" value="O">
+        <label for="radioSurgeryTypeOther" class="text-white bold">Other</label>
+        &nbsp;
+        <input (change)="setSurgeryTypeCustomValue()" type="radio" name="radioSurgeryType" id="radioSurgeryTypeAll" [(ngModel)]="reportFilters.surgeryType.value" value="A">
+        <label for="radioSurgeryTypeAll" class="text-white bold">All</label>
+        &nbsp;
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <app-report-actions
+          title="Complication Stats"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+          ></app-report-actions>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <label for="selectProcedure" class="bold text-white">Procedure:</label>
+        <select id="selectProcedure" class="form-control input-sm" [(ngModel)]="reportFilters.procedure.value">
+          <option value="">All</option>
+          <option *ngFor="let procedure of proceduresList" [value]="procedure.name">{{procedure.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectSurgeon" class="bold text-white">Surgeon:</label>
+        <select id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.surgeon.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+

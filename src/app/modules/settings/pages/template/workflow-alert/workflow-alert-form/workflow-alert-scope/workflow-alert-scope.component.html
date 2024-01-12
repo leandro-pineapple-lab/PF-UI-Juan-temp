@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+    <h4 class="text-warning font-bold margin-top-2rem">SCOPE</h4>
+  </div>
+  <div class="options-container col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <input type="radio" name="radioSurgeons" id="radioOnlySurgeon"
+      [(ngModel)]="workflowAlertModel.includeExcludeSurgeon" value="O" (change)="getDefaultSurgeon()">
+    <label class="bold" for="radioOnlySurgeon">Only surgeon</label>
+    <input type="radio" name="radioSurgeons" name="radioSurgeons" id="radioAllExceptSurgeon"
+      [(ngModel)]="workflowAlertModel.includeExcludeSurgeon" value="E" (change)="getDefaultSurgeon()">
+    <label class="bold" for="radioAllExceptSurgeon">All except surgeon</label>
+    <input type="radio" name="radioSurgeons" id="radioAllSurgeons"
+      [(ngModel)]="workflowAlertModel.includeExcludeSurgeon" value="" (change)="getDefaultSurgeon()">
+    <label class="bold" for="radioAllSurgeons">All surgeons</label>
+  </div>
+  <div *ngIf="workflowAlertModel.includeExcludeSurgeon"
+    class="col-xs-12 col-sm-12 col-md-4 col-lg-4 options-container">
+    <select [(ngModel)]="workflowAlertModel.thisSurgeonOnly" class="form-control input-sm">
+      <option *ngFor="let surgeon of surgeonsList;" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+    </select>
+  </div>
+</div>
+

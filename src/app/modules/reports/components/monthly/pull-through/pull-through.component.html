@@ -1,0 +1,34 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Pull Through Report'"></app-title>
+  <div class="card margin-top-separation-sm">
+    <div class="card-header bg-gradient-secondary">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <label for="selectLeadYear" class="bold text-white">Lead Year:</label>
+          <select id="selectLeadYear" class="form-control input-sm" [(ngModel)]="reportFilters.year.value">
+            <option *ngFor="let year of lastYearsList">{{year}}</option>
+          </select>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 margin-top-separation-md">
+          <app-report-actions
+            title="Pull Through"
+            [reportFilters]="reportFilters"
+            [favoriteReport]="favoriteReport"
+            [favoriteReports]="favoriteReports"
+            (getFavoriteReportsEvent)="getMyFavoriteReports();"
+            (getReportsEvent)="getReports();"
+            ></app-report-actions>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports(true)"
+      [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Pull Through reports found!'"></app-table>
+  </div>
+</div>
+

@@ -1,0 +1,20 @@
+<div class="container margin-top-separation-sm">
+  <h4 class="text-success">Workflow Automated Alerts</h4>
+  <app-workflow-alert-form *ngIf="!loading"
+    [workflowAlertModel]="workflowAlertModel"
+    [statusCodesList]="statusCodesList"
+    [workflowRulesList]="table.data"
+    (workflowSaveEvent)="getWorkflowAlerts()"
+    [messageTemplatesList]="messageTemplatesList" [teamsList]="teamsList"
+    [useNewHW]="useNewHW"
+    [professionalUserProviders]="professionalUserProviders"
+    >
+  </app-workflow-alert-form>
+  <app-workflow-alert-list *ngIf="!loading" (workflowsListEvent)="getWorkflowAlerts()"
+    [messageTemplatesList]="messageTemplatesList" [teamsList]="teamsList" [statusCodesList]="statusCodesList"
+    (editWorkflowEvent)="editWorkflow($event)"
+    [workflowAlertFilter]="workflowAlertFilter" [table]="table"
+    [showSMS]="showSMS"
+    [professionalUserProviders]="professionalUserProviders"
+    ></app-workflow-alert-list>
+</div>

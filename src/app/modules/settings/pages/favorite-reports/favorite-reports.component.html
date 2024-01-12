@@ -1,0 +1,109 @@
+<div class="container margin-top-separation-sm">
+  <h4 class="text-success">Favorite Reports</h4>
+  <div class="card margin-top-separation-sm">
+    <div class="card-header bg-gradient-secondary">
+      <div *ngIf="selectedReportId === 0" class="row">
+        <div class="col-xs-12 col-sm-12 offset-md-3 offset-lg-3 col-md-5 col-lg-5">
+          <select [(ngModel)]="selectedProfessional" class="form-control input-sm" name="" id="">
+            <option value="">All</option>
+            <option *ngFor="let professional of professionalUserProviders" [value]="professional.userId">{{professional.fullName}}</option>
+          </select>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+          <button class="btn btn-warning"
+            (click)="pagination.page = 1;
+            getFavoriteReports();
+            "
+          >
+            Go
+          </button>
+        </div>
+      </div>
+      <div *ngIf="selectedReportId !== 0" class="row">
+        <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+          <button class="btn btn-primary margin-left-separation-sm"
+              (click)="getAllReports('/settings-favorite-reports')"
+            >
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back to List
+            </button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <app-table
+        [actionsWidth]="140"
+        [tableInfo]="table"
+        [showDeleteModalOnParent]="true"
+        (editEvent)="openUpdateDeleteModal($event, 'update')"
+        (selectedItemToDeleteEvent)="openUpdateDeleteModal($event, 'delete')"
+        (customActionEvent)="runReport($event)"
+        (paginationChangeEvent)="paginationChange()"
+        [pagination]="pagination"
+        [noDataFoundText]="'No Favorite reports found!'"
+        ></app-table>
+    </div>
+  </div>
+</div>
+
+<ng-template #updateDeleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">
+      {{action === 'delete' ? 'Delete Confirmation' : 'Update Confirmation'}}
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+      <div *ngIf="action === 'delete'" class="mb-3">
+        Report
+        <p>
+          <b>{{selectedReport.title}}</b>
+        </p>
+      </div>
+      <div *ngIf="action === 'update'" class="mb-3">
+        Report
+        <input class="input-sm form-control" [(ngModel)]="selectedReport.title" type="text">
+        <label *ngIf="!selectedReport.isReportValid" class="text-danger">Report title is required</label>
+      </div>
+      <div class="mb-3">
+        Link
+        <p>
+          <b>{{selectedReport.link}}</b>
+        </p>
+      </div>
+      <table class="table table-bordered table-striped table-sm table-responsive">
+        <thead>
+          <tr>
+            <th>
+              Parameter
+            </th>
+            <th>
+              Key
+            </th>
+            <th>
+              Value
+            </th>
+            <th *ngIf="action === 'update'">
+              Change Value To
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let param of selectedReport.params">
+            <td>{{param.description}}</td>
+            <td>{{param.key}}</td>
+            <td>{{param.displayValue && param.displayValue.length > 0 ? param.displayValue : param.value}}</td>
+            <td *ngIf="action === 'update'">
+              <select class="input-sm form-control" [(ngModel)]="param.changeValueTo">
+                <option [value]="undefined">---</option>
+                <option *ngFor="let option of changeValueToOptions" [value]="option.value">{{option.name}}</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="action === 'delete'" type="button" class="btn btn-danger" (click)="deleteFavoriteReport()">Confirm</button>
+    <button *ngIf="action === 'update'" type="button" class="btn btn-primary" (click)="updateFavoriteReport()">Confirm</button>
+  </div>
+</ng-template>

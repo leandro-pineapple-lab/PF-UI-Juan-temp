@@ -1,0 +1,71 @@
+<div id="settings-rotation-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-success">Settings Surgeon Rotation</h1>
+        </div>
+        <div class="card-body">
+            <table id="tblRotation" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Surgeons</th>
+                        <th appCanSaveSettings class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let surgeonRotation of surgeonRotationsList; let i = index">
+                        <td>
+                            {{surgeonRotation.id}}
+                        </td>
+                        <td>
+                            {{surgeonRotation.name}}
+                        </td>
+                        <td>
+                            <div *ngFor="let surgeon of surgeonRotation.surgeonsList">
+                                <label *ngIf="surgeon.fullName">{{surgeon.fullName}}</label>
+                            </div>
+                        </td>
+                        <td appCanSaveSettings class="text-center">
+                            <a (click)="openUpdateRotationConfirmationModal(rotationUpdateModal, surgeonRotation)">
+                                <i class="fa fa-2x fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #rotationUpdateModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Edit Rotation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <label>Rotation</label>
+            <select class="form-control input-sm" [(ngModel)]="selectedSurgeonRotation.name" disabled>
+                <option [value]="selectedSurgeonRotation.name">{{selectedSurgeonRotation.name}}</option>
+            </select>
+        </div>
+        <div *ngFor="let selected of selectedSurgeonRotation.surgeonsList; let i = index" class="mb-3">
+            <div class="row">
+                <div class="col-1">
+                    <label>{{i + 1}}</label>
+                </div>
+                <div class="col-11">
+                    <select class="form-control input-sm" [(ngModel)]="selected.resourceId">
+                        <option value="0">----</option>
+                        <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.resourceId">{{surgeon.fullName}}</option>
+                    </select>
+                    <label class="text-danger" *ngIf="i == 0 && selectedSurgeonRotation.showSelectedSurgeonErrorMessage">Surgeon Required.</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="updateRotation();" >Confirm</button>
+    </div>
+</ng-template>

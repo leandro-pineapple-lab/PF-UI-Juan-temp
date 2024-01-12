@@ -1,0 +1,43 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <label for="selectInsuranceCompany" class="bold text-white">Insurance Company:</label>
+        <select id="selectInsuranceCompany" class="form-control input-sm" [(ngModel)]="reportFilters.insuranceCompany.value">
+          <option value="">All</option>
+          <option *ngFor="let insuranceCompany of insuranceCompaniesList" [value]="insuranceCompany.name">{{insuranceCompany.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <div>
+          <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+          <br>
+          <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+          &NonBreakingSpace;
+          <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <button (click)="getReport()" class="btn btn-sm btn-success">Get Report</button>
+        <button (click)="openAddFavoriteReportModal()" ngbTooltip="Add as favorite" class="btn btn-sm btn-primary margin-left-separation-sm">
+          <i class="fa fa-plus text-white icon-default-font-size" aria-hidden="true"></i>
+        </button>
+        <button *ngIf="favoriteReports.length > 0" (click)="openMyFavoriteReportsModal()"
+          ngbTooltip="My favorite Patient Insurance reports" class="btn btn-sm btn-warning margin-left-separation-sm">
+          <i class="fa fa-thumbs-up text-white icon-default-font-size" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <label class="bold text-white">Status:</label>
+        <br/>
+        <ng-container *ngFor="let status of statusList; let i = index">
+          <input [id]="'statusCheck' + i" type="checkbox"
+          [value]="status.id" [checked]="status.checked"
+          (change)="changeCheckedStatus(status.id)">
+          <label [for]="'statusCheck' + i" class="bold text-white">{{status.description}}</label>
+          &nbsp;
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Add Favorite Report</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <label for="txtTitle">
+    <span class="text-danger">
+      *
+    </span>
+    Title
+  </label>
+  <input class="form-control input-sm" type="text" id="txtTitle" [(ngModel)]="favoriteReport.title">
+  <label *ngIf="!isFormValid" class="text-danger">Report title is required</label>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="addFavoriteReport()">Confirm</button>
+</div>
+

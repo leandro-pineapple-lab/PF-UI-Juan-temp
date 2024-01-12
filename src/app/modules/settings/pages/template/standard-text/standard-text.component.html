@@ -1,0 +1,200 @@
+<div class="container margin-top-separation-sm">
+  <h4 class="text-success">Set up Standard Texts</h4>
+  <div class="card margin-top-separation-sm">
+    <div class="card-header bg-gradient-secondary">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-9">
+              <label class="color-white">
+                <b>
+                  User ID:
+                </b>
+              </label>
+              <select [(ngModel)]="professionalUserFilter.id" id="selectProvider" class="form-control">
+                <option value="0">All Providers</option>
+                <option *ngFor="let professionalUser of professionalUserProviders" [value]="professionalUser.id">{{professionalUser.fullName}}</option>
+              </select>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3">
+              <br>
+              <button class="btn btn-warning" (click)="searchStandardTexts()">Search</button>
+            </div>
+        </div>
+    </div>
+    <div class="collapse show" id="messagesCardBody">
+      <div class="card-body">
+            <table id="tblStandardTexts" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-info">
+                        <th>
+                          <div class="w-100 cursor-pointer" (click)="orderBy('owner')">
+                            Owner
+                            <i *ngIf="pagination.orderBy === 'owner'" class="fa fa-arrow-down float-right" aria-hidden="true" appOrderBy></i>
+                            <i *ngIf="pagination.orderBy === 'owner_desc'" class="fa fa-arrow-up float-right" aria-hidden="true" appOrderBy></i>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="w-100 cursor-pointer" (click)="orderBy('text')">
+                            Standard Text
+                            <i *ngIf="pagination.orderBy === 'text'" class="fa fa-arrow-down float-right" aria-hidden="true" appOrderBy></i>
+                            <i *ngIf="pagination.orderBy === 'text_desc'" class="fa fa-arrow-up float-right" aria-hidden="true" appOrderBy></i>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="w-100 cursor-pointer" (click)="orderBy('hpi')">
+                            HPI
+                            <i *ngIf="pagination.orderBy === 'hpi'" class="fa fa-arrow-down float-right"  aria-hidden="true" appOrderBy></i>
+                            <i *ngIf="pagination.orderBy === 'hpi_desc'" class="fa fa-arrow-up float-right" aria-hidden="true" appOrderBy></i>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="w-100 cursor-pointer" (click)="orderBy('impression')">
+                            Impression
+                            <i *ngIf="pagination.orderBy === 'impression'" class="fa fa-arrow-down float-right" aria-hidden="true" appOrderBy></i>
+                            <i *ngIf="pagination.orderBy === 'impression_desc'" class="fa fa-arrow-up float-right" aria-hidden="true" appOrderBy></i>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="w-100 cursor-pointer" (click)="orderBy('recommendation')">
+                            Recommendation
+                            <i *ngIf="pagination.orderBy === 'recommendation'" class="fa fa-arrow-down float-right" aria-hidden="true" appOrderBy></i>
+                            <i *ngIf="pagination.orderBy === 'recommendation_desc'" class="fa fa-arrow-up float-right" aria-hidden="true" appOrderBy></i>
+                          </div>
+                        </th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let standardTextItem of standardTextsList | paginate: { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.totalNumberOfRecords }; let i = index;">
+                        <td>
+                          <select [(ngModel)]="standardTextItem.professionalResourceId" id="selectProvider" class="form-control">
+                            <option value="0">All Providers</option>
+                            <option *ngFor="let professionalUser of professionalUserProviders" [value]="professionalUser.id">{{professionalUser.fullName}}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <textarea [(ngModel)]="standardTextItem.text" class="form-control input-sm" rows="1"></textarea>
+                        </td>
+                        <td>
+                          <input type="checkbox" [(ngModel)]="standardTextItem.hpi">
+                        </td>
+                        <td>
+                          <input type="checkbox" [(ngModel)]="standardTextItem.impression">
+                        </td>
+                        <td>
+                          <input type="checkbox" [(ngModel)]="standardTextItem.recommendation">
+                        </td>
+                        <td>
+                          <ng-template #editActionTooltip>
+                              <b>
+                                  Edit
+                              </b>
+                          </ng-template>
+                          <ng-template #deleteActionTooltip>
+                              <b>
+                                  Delete
+                              </b>
+                          </ng-template>
+                          <a (click)="openStandardTextUpdateDeleteModal(standardTextUpdateDeleteModal, standardTextItem, 'update');" [ngbTooltip]="editActionTooltip">
+                            <i class="fa fa-pencil-square-o text-primary icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                          </a>
+                          <a (click)="openStandardTextUpdateDeleteModal(standardTextUpdateDeleteModal, standardTextItem, 'delete');" [ngbTooltip]="deleteActionTooltip">
+                            <i style="font-size: 20px; margin-left: 5px; cursor: pointer;" class="fa fa-trash text-danger" aria-hidden="true"></i>
+                          </a>
+                        </td>
+                    </tr>
+
+                    <tr class="table-warning">
+                      <td>
+                        <select [(ngModel)]="standardTextModel.professionalResourceId" id="selectProvider" class="form-control">
+                          <option value="0">All Providers</option>
+                          <option *ngFor="let professionalUser of professionalUserProviders" [value]="professionalUser.id">{{professionalUser.fullName}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <textarea [(ngModel)]="standardTextModel.text" class="form-control input-sm" rows="1"></textarea>
+                      </td>
+                      <td>
+                        <input [(ngModel)]="standardTextModel.hpi" type="checkbox">
+                      </td>
+                      <td>
+                        <input [(ngModel)]="standardTextModel.impression" type="checkbox">
+                      </td>
+                      <td>
+                        <input [(ngModel)]="standardTextModel.recommendation" type="checkbox">
+                      </td>
+                      <td>
+                        <button (click)="addStandardText();" class="btn btn-primary btn-sm">Add</button>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="!loading && standardTextsList.length === 0; else paging_controls" class="row margin-top-separation-sm">
+              <div class="col-xs-12 alert alert-danger alert-dismissible fade show text-center" role="alert">
+                  <span>No Standard Texts found!</span>
+              </div>
+            </div>
+            <ng-template #paging_controls>
+              <div class="row">
+                <div class="col-6">
+                    Showing {{pagination.showingFrom}} to {{pagination.showingTo}} of {{pagination.totalNumberOfRecords}} entries
+                    <br>
+                    <select [(ngModel)]="pagination.tableSize" (change)="onTableSizeChange()">
+                        <option [value]="size" [selected]="pagination.tableSize == size" *ngFor="let size of pagination.tableSizes">
+                            {{size}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <pagination-controls
+                        style="float: right;"
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+      </div>
+    </div>
+</div>
+
+<ng-template #standardTextUpdateDeleteModal let-modal>
+  <div class="modal-header">
+    <h5 *ngIf="action === 'delete'" class="modal-title" id="modal-basic-title">Standard Text Delete Confirmation</h5>
+    <h5 *ngIf="action === 'update'" class="modal-title" id="modal-basic-title">Standard Text Update Confirmation</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+      <div class="mb-3">
+          <p>
+              Owner: <b>{{getProfessionalProviderName(updateDeleteStandardTextModel.professionalResourceId)}}</b>
+          </p>
+      </div>
+      <div class="mb-3">
+          <p>
+              Standard Text: <b>{{updateDeleteStandardTextModel.text}}</b>
+          </p>
+      </div>
+      <div class="mb-3">
+          <p>
+              HPI: <b>{{updateDeleteStandardTextModel.hpi ? 'Yes' : 'No'}}</b>
+          </p>
+      </div>
+      <div class="mb-3">
+        <p>
+            Impression: <b>{{updateDeleteStandardTextModel.impression ? 'Yes' : 'No'}}</b>
+        </p>
+      </div>
+      <div class="mb-3">
+        <p>
+            Recommendation: <b>{{updateDeleteStandardTextModel.recommendation ? 'Yes' : 'No'}}</b>
+        </p>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="action === 'update'" type="button" class="btn btn-primary" (click)="updateStandardText()">Confirm</button>
+    <button *ngIf="action === 'delete'" type="button" class="btn btn-danger" (click)="deleteStandardText()">Confirm</button>
+  </div>
+</ng-template>

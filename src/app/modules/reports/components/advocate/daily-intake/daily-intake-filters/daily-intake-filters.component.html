@@ -1,0 +1,176 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1 margin-top-separation-sm">
+        <button *ngIf="filtersCollapsed"  (click)="filtersCollapsed = !filtersCollapsed" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="false" aria-controls="filtersCardBody">
+          <i class="fa fa-plus text-fuchsia fa-2x" aria-hidden="true"></i>
+        </button>
+        <button *ngIf="!filtersCollapsed" (click)="filtersCollapsed = !filtersCollapsed" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#filtersCardBody" aria-expanded="false" aria-controls="filtersCardBody">
+            <i class="fa fa-minus text-fuchsia fa-2x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtIntakeFrom" class="bold text-white">Intake From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtIntakeFrom" type="text" class="form-control" [(ngModel)]="reportFilters.intakeFrom.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtIntakeTo" class="bold text-white">Intake To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtIntakeTo" type="text" class="form-control" [(ngModel)]="reportFilters.intakeTo.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label class="bold text-white">Leads:</label>
+        <br/>
+        <input type="radio" name="leadsFilterRadio" id="allLeadsRadio" [(ngModel)]="reportFilters.activeLeadsOnly.value" [value]="false">
+        <label for="allLeadsRadio" class="bold text-white">All</label>
+        &nbsp;
+        <input type="radio" name="leadsFilterRadio" id="activeLeadsRadio" [(ngModel)]="reportFilters.activeLeadsOnly.value" [value]="true">
+        <label for="activeLeadsRadio" class="bold text-white">Active</label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <button class="btn btn-success btn-sm" (click)="getReport()">Get Report</button>
+        <button
+          (click)="openAddFavoriteReportModal()"
+          ngbTooltip="Add as favorite" class="btn btn-sm btn-primary margin-left-separation-sm">
+          <i ngbTooltip="Add as favorite" class="fa fa-plus text-white icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+        </button>
+        <button
+          *ngIf="favoriteReports.length > 0" (click)="openMyFavoriteReportsModal()"
+          ngbTooltip="My favorite Daily Intake reports" class="btn btn-sm btn-warning margin-left-separation-sm">
+          <i class="fa fa-thumbs-up text-white icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body collapse" id="filtersCardBody">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtLastContactFrom" class="bold">Last Contact From:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtLastContactFrom" type="text" class="form-control" [(ngModel)]="reportFilters.lastContactFrom.value" bsDatepicker>
+          <div class="input-group-append">
+            <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtLastContactTo" class="bold">Last Contact To:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtLastContactTo" type="text" class="form-control" [(ngModel)]="reportFilters.lastContactTo.value" bsDatepicker>
+          <div class="input-group-append">
+            <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectAdvocate" class="bold">Advocate:</label>
+        <select id="selectAdvocate" class="form-control input-sm" [(ngModel)]="reportFilters.advocate.value">
+          <option value="">All</option>
+          <option value="N/A">N/A</option>
+          <option *ngFor="let advocate of advocatesList" [value]="advocate">{{advocate}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectStatus" class="bold">Status:</label>
+        <select [disabled]="marketingOnly" id="selectStatus" class="form-control input-sm" [(ngModel)]="reportFilters.status.value">
+          <option value="">All</option>
+          <option *ngFor="let status of statusList" [value]="status.id">{{status.description}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectSurgeon" class="bold">Surgeon:</label>
+        <select [disabled]="marketingOnly" id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.surgeon.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectOffice" class="bold">Office:</label>
+        <select [disabled]="marketingOnly" id="selectOffice" class="form-control input-sm" [(ngModel)]="reportFilters.office.value">
+          <option value="">All</option>
+          <option *ngFor="let office of officesList" [value]="office.id">{{office.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtCity" class="bold">City:</label>
+        <input id="txtCity" type="text" class="form-control input-sm" [(ngModel)]="reportFilters.city.value">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectState" class="bold">State:</label>
+        <select id="selectState" class="form-control input-sm" [(ngModel)]="reportFilters.state.value">
+          <option value="">All</option>
+          <option *ngFor="let state of statesList" [value]="state.stateProvinceCD">{{state.stateProvinceName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectLeadSource" class="bold">Lead Source:</label>
+        <select id="selectLeadSource" class="form-control input-sm" [(ngModel)]="reportFilters.leadSource.value">
+          <option value="">All</option>
+          <option *ngFor="let state of leadSourcesList" [value]="state.originName">{{state.originName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectLeadType" class="bold">Lead Type:</label>
+        <select id="selectLeadType" class="form-control input-sm" [(ngModel)]="reportFilters.leadType.value">
+          <option value="">All</option>
+          <option *ngFor="let leadType of leadTypesList" [value]="leadType.name">{{leadType.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <label for="selectPlannedProcedure" class="bold">Planned procedure:</label>
+        <select id="selectPlannedProcedure" class="form-control input-sm" [(ngModel)]="reportFilters.plannedProcedure.value">
+          <option value="">All</option>
+          <option *ngFor="let procedure of proceduresList" [value]="procedure.name">{{procedure.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <label for="selectInterestedProcedure" class="bold">Interested in procedure:</label>
+        <select id="selectInterestedProcedure" class="form-control input-sm" [(ngModel)]="reportFilters.interestedProcedure.value">
+          <option value="">All</option>
+          <option *ngFor="let procedure of proceduresList" [value]="procedure.name">{{procedure.name}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label for="checkAnonymize" class="bold">Anonymize:</label>
+        <br>
+        <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+        &NonBreakingSpace;
+        <i class="fa fa-user-secret icon-default-font-size" aria-hidden="true"></i>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="checkIgnoreDataRange" class="bold">Ignore Date Range:</label>
+        <br>
+        <input [disabled]="marketingOnly" id="checkIgnoreDataRange" type="checkbox" [(ngModel)]="reportFilters.ignoreDateRange.value">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="checkShowFirstVisit" class="bold">Show 1st visit:</label>
+        <br>
+        <input id="checkShowFirstVisit" type="checkbox" (change)="showHideFirstVisit()" [(ngModel)]="reportFilters.showFirstVisit.value">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectServiceLine" class="bold">Service Line:</label>
+        <select [disabled]="marketingOnly" id="selectServiceLine" class="form-control input-sm" [(ngModel)]="reportFilters.serviceLine.value">
+          <option value="">All</option>
+          <option *ngFor="let serviceLine of serviceLinesList" [value]="serviceLine.id">{{serviceLine.trackName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 margin-top-separation-md">
+        <i *ngIf="marketingOnly"
+        ngbTooltip="To enable disabled filters. Go to your settings page and uncheck Marketing only feature"
+        class="fa fa-info-circle text-info icon-default-font-size cursor-pointer margin-left-separation-sm" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+</div>

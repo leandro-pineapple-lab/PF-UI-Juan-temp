@@ -1,0 +1,450 @@
+<div id="wrapper">
+    <div id="page-content-wrapper">
+        <div style="margin-top: 15px; margin-left: 15px;" class="row">
+            <div class="col-xs-12 col-sm-6">
+                <h1 class="text-success">Search Leads/Patients</h1>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <ol id="links-items" class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="https://www.myproconnect.com/PatientFlow/ProDashboardLeads.aspx?ID=prospects&amp;showlist=no" id="aDashboard">Home</a></li>
+                    <li class="breadcrumb-item active">Search Leads/Patients</li>
+                </ol>
+            </div>
+            <div class="row">
+                <div *ngIf="!patientsFound" class="col-xs-12 alert alert-danger alert-dismissible fade show" role="alert">
+                    <span>No prospect found!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card collapsed-card" id="criteriaCard">
+        <div id="dashboard-patient-filter" class="card-header bg-gradient-secondary">
+            <div class="row">
+                <div class="col-1">
+                    <div style="margin-top: 23px;" class="card-tools">
+                        <button *ngIf="filtersCollapsed"  (click)="filtersCollapsed = !filtersCollapsed" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#criteriaCardBody" aria-expanded="false" aria-controls="criteriaCardBody">
+                            <i class="fa fa-plus text-fuchsia fa-2x" aria-hidden="true"></i>
+                        </button>
+                        <button *ngIf="!filtersCollapsed" (click)="filtersCollapsed = !filtersCollapsed" type="button" class="btn btn-tool" data-bs-toggle="collapse" data-bs-target="#criteriaCardBody" aria-expanded="false" aria-controls="criteriaCardBody">
+                            <i class="fa fa-minus text-fuchsia fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-1">
+                    <label class="dashboard-filter-label">First Name:</label>
+                    <input [(ngModel)]="patientFilters.firstName" name="txtSearchFN" type="text" maxlength="30" id="txtSearchFN" class="textinput form-control input-sm" placeholder="First Name">
+                </div>
+                <div class="col-sm-9 col-lg-1">
+                    <label class="dashboard-filter-label">Last Name:</label>
+                    <input [(ngModel)]="patientFilters.lastName" name="txtSearchLN" type="text" maxlength="30" id="txtSearchLN" class="textinput form-control input-sm" placeholder="Last Name or MRN">
+                </div>
+                <div class="col-sm-8 col-lg-2">
+                    <div class="form-group-inline">
+                        <label class="dashboard-filter-label">DOB:</label>
+                        <div class="input-group date" data-target-input="nearest">
+                            <input [(ngModel)]="patientFilters.dateOfBirth" type="text" placeholder="Date of birth" class="form-control" bsDatepicker>
+                            <div class="input-group-append">
+                                <div style="height: 100%;" class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-2">
+                    <label class="dashboard-filter-label">Advocate:</label>
+                    <select [(ngModel)]="patientFilters.advocate" name="ddlAdvocate" id="ddlAdvocate" class="form-control">
+                        <option selected="selected" value="">All</option>
+                        <option value="N/A">N/A</option>
+                        <option *ngFor="let advocate of advocates" [value]="advocate.name" >{{advocate.name}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-8 col-lg-2">
+                    <label class="dashboard-filter-label">What's Next Until:</label>
+                    <div class="form-group-inline">
+                        <div class="input-group date" data-target-input="nearest">
+                            <input [(ngModel)]="patientFilters.whatsNextUntil" type="text" class="form-control" bsDatepicker>
+                            <div class="input-group-append">
+                                <div style="height: 100%;" class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-2">
+                    <div style="margin-top: 23px;" class="form-check form-switch">
+                        <input [(ngModel)]="patientFilters.showAllTasks" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
+                        <label class="dashboard-filter-label" for="flexSwitchCheckDefault">Show All Tasks</label>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-1 text-center">
+                    <div style="margin-top: 23px;">
+                        <input type="submit" name="BtnSearch" value="Search" (click)="search();" language="javascript" id="BtnSearch" class="btn btn-warning">
+                        <a style="float: right;" (click)="clearCriteria()">
+                            <i class="fa fa-times text-danger text-bold fa-2x" aria-hidden="true" title="clear search"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="collapse"  id="criteriaCardBody">
+              <div class="card-body" style="display: block;">
+                <div class="row">
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">Email:</label>
+                    </div>
+                    <div class="col-sm-8 col-lg-3">
+                        <input [(ngModel)]="patientFilters.email" name="txtEmailSearch" type="text" maxlength="100" id="txtEmailSearch" class="form-control crit" placeholder="Email">
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">Phone:</label>
+                    </div>
+                    <div class="col-sm-8 col-lg-3">
+                        <input name="txtPhoneSearch" type="text" id="txtPhoneSearch" class="form-control" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____" >
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">Active:</label>
+                    </div>
+                    <div class="col-sm-8 col-lg-3">
+                        <select [(ngModel)]="patientFilters.active" name="ddlActive" id="ddlActive" class="form-control">
+                            <option selected="selected" value="1">Active</option>
+                            <option value="0">Inactive</option>
+                            <option value="-1">All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3 col-lg-1 text-right"><label class="dashboard-filter-collapsed-label">Surgeon:</label></div>
+                    <div class="col-sm-8 col-lg-3">
+                        <select [(ngModel)]="patientFilters.surgeon" name="ddlSurgeon" id="ddlSurgeon" class="form-control crit">
+                            <option selected="selected" value="">All</option>
+                            <option *ngFor="let surgeon of surgeons" [value]="surgeon.fullName" >{{surgeon.fullName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right"><label class="dashboard-filter-collapsed-label">Office:</label></div>
+                    <div class="col-sm-9 col-lg-3">
+                        <select [(ngModel)]="patientFilters.officeId" name="ddlOffice" id="ddlOffice" class="form-control crit">
+                            <option selected="selected" value="">All</option>
+                            <option *ngFor="let office of offices" [value]="office.id" >{{office.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">Lead From:</label>
+                    </div>
+                    <div class="col-sm-9 col-lg-3">
+                        <div class="form-group-inline">
+                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input [(ngModel)]="patientFilters.leadFrom" name="txtLeadFrom" type="text" id="txtLeadFrom" class="form-control pull-right dtpick crit" bsDatepicker>
+                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div style="height: 100%;" class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right"><label class="dashboard-filter-collapsed-label">To:</label></div>
+                    <div class="col-sm-9 col-lg-3">
+                        <div class="form-group-inline">
+                            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                <input [(ngModel)]="patientFilters.leadTo" name="txtLeadTo" type="text" id="txtLeadTo" class="form-control pull-right dtpick crit" bsDatepicker>
+                                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                    <div style="height: 100%;" class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right"><label class="dashboard-filter-collapsed-label">Service Line:</label></div>
+                    <div class="col-sm-9 col-lg-3">
+                        <select [(ngModel)]="patientFilters.serviceLine" name="ddlServiceLine" id="ddlServiceLine" class="form-control crit">
+                            <option selected="selected" value="">All</option>
+                            <option *ngFor="let serviceLine of serviceLines" [value]="serviceLine.id" >{{serviceLine.trackName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3 col-lg-1 text-right"><label class="dashboard-filter-collapsed-label">Lead Type:</label></div>
+                    <div class="col-sm-8 col-lg-5">
+                        <select [(ngModel)]="patientFilters.leadType" name="ddlLeadType" id="ddlLeadType" class="form-control crit">
+                            <option selected="selected" value="">All</option>
+                            <option *ngFor="let leadType of leadTypes" [value]="leadType.name" >{{leadType.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">Lead Source:</label>
+                    </div>
+                    <div class="col-sm-8 col-lg-5">
+                        <select [(ngModel)]="patientFilters.leadSource" name="ddlLeadSource" id="ddlLeadSource" class="form-control crit">
+                            <option selected="selected" value="">All</option>
+                            <option *ngFor="let leadSource of leadSources" [value]="leadSource.originName" >{{leadSource.originName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3 col-lg-1 text-right"><label class="dashboard-filter-collapsed-label">Ins Co.:</label></div>
+                    <div class="col-sm-8 col-lg-6">
+                        <select [(ngModel)]="patientFilters.insuranceCompany" name="ddlInsCompany" id="ddlInsCompany" class="form-control crit">
+                            <option selected="selected" value="">All</option>
+                            <option value="0">Other</option>
+                            <option *ngFor="let insuranceCompany of insuranceCompanies" [value]="insuranceCompany.id">{{insuranceCompany.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">Group #:</label>
+                    </div>
+                    <div class="col-sm-8 col-lg-4">
+                        <input [(ngModel)]="patientFilters.groupNumber" name="txtGroupNumber" type="text" maxlength="20" id="txtGroupNumber" class="form-control crit" placeholder="Group #">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">Last Encounter From:</label>
+                    </div>
+                    <div class="col-sm-9 col-lg-3">
+                        <div class="form-group-inline">
+                            <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
+                                <input [(ngModel)]="patientFilters.lastEncounterFrom" name="txtEncounterFrom" type="text" id="txtEncounterFrom" class="form-control pull-right dtpick crit" bsDatepicker>
+                                <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                                    <div style="height: 100%;" class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">To:</label>
+                    </div>
+                    <div class="col-sm-9 col-lg-3">
+                        <div class="form-group-inline">
+                            <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                <input [(ngModel)]="patientFilters.lastEncounterTo" name="txtEncounterTo" type="text" id="txtEncounterTo" class="form-control pull-right dtpic critk" bsDatepicker>
+                                <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                    <div style="height: 100%;" class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-1 text-right">
+                        <label class="dashboard-filter-collapsed-label">Status:</label>
+                        <button *ngIf="statusCollapsed" (click)="statusCollapsed = !statusCollapsed" data-bs-toggle="collapse" data-bs-target="#rowStatusCodes" aria-expanded="false" aria-controls="rowStatusCodes" type="button" class="btn btn-tool"><i class="fa fa-plus text-info fa-lg" id="iStatCollapse"></i></button>
+                        <button *ngIf="!statusCollapsed" (click)="statusCollapsed = !statusCollapsed" data-bs-toggle="collapse" data-bs-target="#rowStatusCodes" aria-expanded="false" aria-controls="rowStatusCodes" type="button" class="btn btn-tool"><i class="fa fa-minus text-info fa-lg" id="iStatCollapse"></i></button>
+                    </div>
+                    <div class="col-sm-9 col-lg-3">
+                        <select [(ngModel)]="patientFilters.status" name="ddlBarStatus" id="ddlBarStatus" class="form-control crit">
+                            <option selected="selected" value="">All</option>
+                            <option *ngFor="let status of statuses" [value]="status.name" >{{status.description}}</option>
+                        </select>
+                        <div *ngFor="let status of patientFilters.statuses">
+                            <span *ngIf="status.selected">
+                                {{status.description}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2 collapse" id="rowStatusCodes">
+                    <div class="row">
+                        <div *ngFor="let status of statuses; let i = index" class="col-sm-12 col-md-6 col-lg-4">
+                            <span class="cbspace critcb">
+                                <input [(ngModel)]="patientFilters.statuses[i].selected" id="{{'state_checkbox' + i}}" type="checkbox" name="{{'state_checkbox' + i}}">
+                                <label for="{{'state_checkbox' + i}}">{{status.description}}</label>
+                            </span>
+                        </div>
+                    </div>                        
+                </div>
+              </div>
+          </div>
+    </div>
+
+    <div *ngIf="showPatientLeadsTable" class="card card-outline-secondary" id="leads-patients-table-card">
+        <div id="dashboard-patient-table-card-header" class="card-header bg-gradient-olive">
+            <b>Leads/Patients</b>
+        </div>
+        <div class="card-body" style="display: block;">
+            <div style="margin-bottom: 5px;" class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="dt-buttons btn-group flex-wrap">
+                        <div ngbDropdown class="d-inline-block">
+                        <button style="border-top-right-radius: unset; border-bottom-right-radius: unset" class="btn btn-secondary buttons-copy buttons-html5" id="dropdownMenuButton" ngbDropdownToggle>
+                            Column visibility
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownMenuButton">
+                            <button class="table-dropdown-item-visibility" (click)="isNameVisible = !isNameVisible" [ngStyle]="isNameVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Name</button>
+                            <button class="table-dropdown-item-visibility" (click)="isDOBVisible = !isDOBVisible" [ngStyle]="isDOBVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>DOB</button>
+                            <button class="table-dropdown-item-visibility" (click)="isStatusVisible = !isStatusVisible" [ngStyle]="isStatusVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Status</button>
+                            <button class="table-dropdown-item-visibility" (click)="isLastEncounterVisible = !isLastEncounterVisible" [ngStyle]="isLastEncounterVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Last Encounter</button>
+                            <button class="table-dropdown-item-visibility" (click)="isActionVisible = !isActionVisible" [ngStyle]="isActionVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Action</button>
+                            <button class="table-dropdown-item-visibility" (click)="isWhatsNextVisible = !isWhatsNextVisible" [ngStyle]="isWhatsNextVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>What's Next</button>
+                            <button class="table-dropdown-item-visibility" (click)="isDueDateVisible = !isDueDateVisible" [ngStyle]="isDueDateVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Due Date</button>
+                            <button class="table-dropdown-item-visibility" (click)="isAssignedToVisible = !isAssignedToVisible" [ngStyle]="isAssignedToVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Assigned To</button>
+                            <button class="table-dropdown-item-visibility" (click)="isAdvocateVisible = !isAdvocateVisible" [ngStyle]="isAdvocateVisible ? {'background-color': '#007bff', 'color': 'white'} : {'background-color': 'white', 'color': 'black'}" ngbDropdownItem>Advocate</button>
+                        </div>
+                        </div>
+                        <button (click)="exportExcel();" class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="tblLeads" type="button">
+                            <span>Excel</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <table id="tblLeads" class="table table-sm table-bordered table-striped dataTable no-footer dtr-inline" role="grid" aria-describedby="tblLeads_info" style="width: 1588px;">
+                <thead>
+                    <tr class="table-info" role="row">
+                        <th *ngIf="isNameVisible" class="sorting_asc" tabindex="0" aria-controls="tblLeads" rowspan="1" colspan="1" style="width: 187.2px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">
+                            Name
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'name')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up active-order-by order-column float-right" (click)="orderBy($event, 'name')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="isDOBVisible" class="sorting_disabled" rowspan="1" colspan="1" style="width: 109.4px;" aria-label="DOB">
+                            DOB
+                        </th>
+                        <th *ngIf="isStatusVisible" class="sorting" tabindex="0" aria-controls="tblLeads" rowspan="1" colspan="1" style="width: 349.2px;" aria-label="Status: activate to sort column ascending">
+                            Status
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'status')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'status')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="isLastEncounterVisible" class="sorting" tabindex="0" aria-controls="tblLeads" rowspan="1" colspan="1" style="width: 113.2px;" aria-label="LastEncounter: activate to sort column ascending">
+                            Last<br>Encounter
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'lastEncounter')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'lastEncounter')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="isActionVisible" style="white-space: nowrap; width: 127.4px;" class="sorting_disabled" rowspan="1" colspan="1" aria-label="Action">
+                            Action
+                        </th>
+                        <th *ngIf="isWhatsNextVisible" class="sorting" tabindex="0" aria-controls="tblLeads" rowspan="1" colspan="1" style="width: 160.2px;" aria-label="What's Next: activate to sort column ascending">
+                            What's Next
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'whatsNext')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'whatsNext')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="isDueDateVisible" class="sorting" tabindex="0" aria-controls="tblLeads" rowspan="1" colspan="1" style="width: 110.2px;" aria-label="Due Date: activate to sort column ascending">
+                            Due Date
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'dueDate')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'dueDate')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="isAssignedToVisible" class="sorting" tabindex="0" aria-controls="tblLeads" rowspan="1" colspan="1" style="width: 127.2px;" aria-label="Assigned To: activate to sort column ascending">
+                            Assigned To
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'assignedTo')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'assignedTo')" aria-hidden="true"></i>
+                        </th>
+                        <th *ngIf="isAdvocateVisible" class="sorting" tabindex="0" aria-controls="tblLeads" rowspan="1" colspan="1" style="width: 102.2px;" aria-label="Advocate: activate to sort column ascending">
+                            Advocate
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'advocate')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'advocate')" aria-hidden="true"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let patient of patientsList | paginate: { itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.totalNumberOfRecords }">
+                        <ng-template #fullNameTooltipTemplate>
+                            <p class='bg-warning text-center'>
+                                <b>{{patient.fullName}}
+                                    <span *ngIf="patient.dateOfBirth.length > 3"> DOB: {{patient.dateOfBirth}}</span>
+                                    <span *ngIf="patient.dateOfBirth && patient.dateOfBirth.length <= 3">Age: {{patient.dateOfBirth}}</span>
+                                </b>
+                            </p>
+                            Preferred contact: {{patient.preferredContact}}
+                            <br/>
+                            Home phone: {{patient.homePhone}}
+                            <br/>
+                            Work phone: {{patient.workPhone}}
+                            <br/>
+                            Cell phone: {{patient.cellPhone}}
+                            <span *ngIf="patient.cellPhone && patient.smsConsent">- sms OK</span>
+                            <span *ngIf="patient.cellPhone && !patient.smsConsent">- NO sms</span>
+                            <br/>
+                            Email: {{patient.email}}
+                            <span *ngIf="patient.email && patient.emailConsent">- email OK</span>
+                            <span *ngIf="patient.email && !patient.emailConsent">- NO email</span>
+                            <br/>
+                            City: <span *ngIf="patient.city">{{patient.city}}</span><span *ngIf="patient.state">, {{patient.state}}</span>
+                            <br/>
+                            Gender: 
+                            <span *ngIf="patient.gender.length == 0 || patient.gender == 'm' || patient.gender == 'M'">male</span>
+                            <span *ngIf="patient.gender == 'F' || patient.gender == 'f'">female</span>
+                            <br/>
+                            Surgeon: <span *ngIf="patient.surgeon">{{patient.surgeon}}</span>
+                            <br/>
+                            Advocate: <span *ngIf="patient.advocate">{{patient.advocate}}</span>
+                            <br/>
+                            Facility: <span *ngIf="patient.facilityName">{{patient.facilityName}}</span>
+                            <br/>
+                            <span *ngIf="patient.mrn">Account #: {{patient.mrn}}</span>
+                            <br *ngIf="patient.mrn"/>
+                            <!-- TODO: JUAN - WHAT TO DO HERE - IS THIS NECESSARY?
+                                'If sitename = "LiveLighter" Then - CODE FROM OLD PROJECT
+                                If showCRMID = "yes" Then - CODE FROM OLD PROJECT
+                                <span *ngIf="patient.crmid">Web MD ID: {{patient.crmid}}</span> - new code
+                            <br *ngIf="patient.crmid"/> - new code -->
+                            <!-- TODO: JUAN - WHAT TO DO HERE? -->
+                            <!--If row("ServiceLine").ToString.Length > 0 Then
+                                If showServiceLine = "yes" Then
+                                    Try
+                                        Dim slbo As ServiceLineBO = ServiceLineBO.GetServiceLineBO(row("ServiceLine"))
+                                        tip += "ServiceLine:   " & slbo.TrackName & " <br>"
+                                    Catch ex As Exception
+                                        tip += "ServiceLine:   " & row("ServiceLine") & " <br>"
+                                    End Try
+                                End If
+                            End If-->
+                            Created on: {{patient.createdOn | date: 'M/d/yyyy'}}
+                        </ng-template>
+                        
+                        <td *ngIf="isNameVisible">
+                            <span placement="top" data-container="body" [ngbTooltip]="fullNameTooltipTemplate">
+                                {{patient.fullName}}
+                            </span>
+                        </td>
+                        <td *ngIf="isDOBVisible">{{patient.dateOfBirth}}</td>
+                        <td *ngIf="isStatusVisible">{{patient.status}}</td>
+                        <td *ngIf="isLastEncounterVisible">{{patient.lastEncounterDate | date: 'M/d/yyyy'}}</td>
+                        <td style="white-space:nowrap" *ngIf="isActionVisible">
+                            <i title="Advocate Record" class="fa fa-file icon-patient-table text-warning" aria-hidden="true"></i>
+                            <i title="Send Message" class="fa fa-paper-plane-o icon-patient-table " aria-hidden="true"></i>
+                            <i *ngIf="patient.id" title="Homework" class="fa fa-cog icon-patient-table text-danger" aria-hidden="true"></i>
+                            <i *ngIf="patient.id" title="Hospital stay" class="fa fa-hospital-o icon-patient-table text-info" aria-hidden="true"></i>
+                            <i *ngIf="patient.id" title="Patient Dashboard" class="fa fa-user icon-patient-table text-success" aria-hidden="true"></i>
+                            <i *ngIf="patient.id" title="Intake & Registration" class="fa fa-info-circle icon-patient-table text-info" aria-hidden="true"></i>
+                            <i *ngIf="patient.id" title="Patient Summary" class="fa fa-list icon-patient-table text-warning" aria-hidden="true"></i>
+                            <i *ngIf="patient.id" title="Dietitian Module" class="fa fa-pencil-square-o icon-patient-table text-info" aria-hidden="true"></i>
+                            <i *ngIf="patient.id" title="link to EMR" class="fa fa-link icon-patient-table text-danger" aria-hidden="true"></i>
+                            <i title="Add Appointment" class="fa fa-calendar-plus-o icon-patient-table" aria-hidden="true"></i>
+                            <i class="fa fa-phone icon-patient-table text-success" title="Call Log" aria-hidden="true"></i>
+                        </td>
+                        <td *ngIf="isWhatsNextVisible">{{patient.whatsNext}}</td>
+                        <ng-template #whatsNextTooltipTemplate>
+                            <p class="bg-warning text-center"><b>{{patient.fullName}}</b></p>
+                            <p *ngIf="patient.taskTitle && patient.taskNotes">{{patient.taskNotes}}</p>
+                            <hr/>
+                            <b>created by: </b>
+                            {{patient.taskCreatedBy}}
+                            <br/>
+                            <b>on: </b>
+                            {{patient.taskCreatedOn | date: 'M/d/yyyy'}}
+                            <br/>
+                        </ng-template>
+                        <td *ngIf="isDueDateVisible">
+                            {{patient.dueDate | date: 'M/d/yyyy'}}
+                            <i *ngIf="patient.dueDate" placement="top" [ngbTooltip]="whatsNextTooltipTemplate" class="fa fa-info-circle" aria-hidden="true"></i>
+                        </td>
+                        <td *ngIf="isAssignedToVisible">{{patient.assignedTo}}</td>
+                        <td *ngIf="isAdvocateVisible">{{patient.advocate}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-6">
+                    Showing {{showingFrom}} to {{showingTo}} of {{pagination.totalNumberOfRecords}} entries
+                    <br>
+                    <select [(ngModel)]="pagination.tableSize" (change)="onTableSizeChange($event)">
+                        <option [value]="size" [selected]="pagination.tableSize == size" *ngFor="let size of pagination.tableSizes">
+                            {{size}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <pagination-controls
+                        style="float: right;"
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <div class="container-fluid row">
+    <div class="col-xs-12 col-sm-12 col-md-4">
+      <button class="btn btn-primary" (click)="toggleMenu()">
+        <i class="fa fa-bars icon-default-font-size" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-3 margin-top-separation-sm">
+      <div class="input-group mb-3">
+        <input (keyup.enter)="searchPatientByLastName();" [(ngModel)]="lastNamePatientFilter" type="text"
+          class="form-control" placeholder="lead/patient name" aria-label="lead/patient name"
+          aria-describedby="basic-addon2">
+        <button (click)="searchPatientByLastName();" class="btn btn-success" type="button">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 float-right">
+      <div class="d-flex float-right">
+        <div class="margin-top-separation-sm">
+          <i class="fa fa-level-up icon-default-font-size cursor-pointer text-warning" aria-hidden="true"></i>
+          <i [routerLink]="['/prospects/search-prospect']"
+            class="fa fa-search icon-default-font-size cursor-pointer margin-left-separation-sm text-danger"
+            aria-hidden="true"></i>
+          <i class="fa fa-comments-o icon-default-font-size cursor-pointer margin-left-separation-sm"
+            aria-hidden="true"></i>
+          <i class="fa fa-bell-o icon-default-font-size cursor-pointer margin-left-separation-md"
+            aria-hidden="true"></i>
+        </div>
+        <div ngbDropdown class="d-inline-block float_right" placement="bottom-right" display="dynamic">
+          <button ngbDropdownToggle id="userMenuButton" class="btn btn-primary margin-left-separation-sm"
+            type="button">
+            {{userFullName}}
+          </button>
+          <div ngbDropdownMenu aria-labelledby="userMenuButton">
+            <button [routerLink]="['/settings/account']" ngbDropdownItem>
+              <i class="fa fa-cogs" aria-hidden="true"></i> My Settings
+            </button>
+            <button (click)="openChangePasswordModal()" ngbDropdownItem>
+              <i class="fa fa-key" aria-hidden="true"></i> Change Password
+            </button>
+            <!-- <button ngbDropdownItem>
+                                <i class="fa fa-info" aria-hidden="true"></i> Help
+                            </button> -->
+            <button (click)="signOut();" ngbDropdownItem>
+              <i class="fa fa-sign-out" aria-hidden="true"></i> Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

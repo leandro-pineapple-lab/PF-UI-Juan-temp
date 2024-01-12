@@ -1,0 +1,162 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+    <h4 class="text-blue font-bold margin-top-2rem">IF</h4>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+    <label class="bold" for="ifStatus1Select">
+      Status
+    </label>
+    <select (change)="changeStatus($event)" id="statusCodesSelect" [(ngModel)]="workflowAlertModel.ifCondition"
+      class="form-control input-sm">
+      <option *ngFor="let status of ifStatus1List" [value]="status.value">{{status.name}}</option>
+    </select>
+    <ng-container [ngTemplateOutlet]="ifConditions1Template"></ng-container>
+  </div>
+  <ng-container *ngIf="workflowAlertModel.ifCondition">
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+      <label class="bold" for="ifStatus2Select">
+        Status
+      </label>
+      <div class="input-group">
+        <select id="ifOperator2Select" (change)="changeIfOperator($event)" [(ngModel)]="workflowAlertModel.if2Operator"
+          class="form-control input-sm">
+          <option value="">??</option>
+          <option value="A">AND</option>
+          <option value="O">OR</option>
+        </select>
+        <select id="statusCodes2Select" (change)="changeStatus($event)" [disabled]="!workflowAlertModel.if2Operator"
+          [(ngModel)]="workflowAlertModel.if2Condition" class="form-control input-sm">
+          <option *ngFor="let status of ifStatus2List" [value]="status.value">{{status.name}}</option>
+        </select>
+      </div>
+      <ng-container [ngTemplateOutlet]="ifConditions2Template"></ng-container>
+    </div>
+    <div *ngIf="workflowAlertModel.if2Operator && workflowAlertModel.if2Condition"
+      class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+      <label class="bold" for="ifStatus3Select">
+        Status
+      </label>
+      <div class="input-group">
+        <select id="ifOperator3Select" (change)="changeIfOperator($event)" [(ngModel)]="workflowAlertModel.if3Operator"
+          class="form-control input-sm">
+          <option value="">??</option>
+          <option value="A">AND</option>
+          <option value="O">OR</option>
+        </select>
+        <select id="statusCodes3Select" (change)="changeStatus($event)" [disabled]="!workflowAlertModel.if3Operator"
+          [(ngModel)]="workflowAlertModel.if3Condition" class="form-control input-sm">
+          <option *ngFor="let status of ifStatus3List" [value]="status.value">{{status.name}}</option>
+        </select>
+      </div>
+      <ng-container [ngTemplateOutlet]="ifConditions3Template"></ng-container>
+    </div>
+    <div class="col-xs-12 col-sm-12 offset-md-2 col-md-10 offset-lg-2 col-lg-10">
+      <blockquote class="quote-info no-margin-x">
+        <h5>Tip!</h5>
+        <p class="text-maroon">Do not mix operators 'AND' and 'OR' on a rule. </p>
+      </blockquote>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #ifConditions1Template>
+  <div class="margin-top-separation-sm">
+    <ng-container *ngIf="workflowAlertModel.ifCondition === 'NOCTL'">
+      <label class="bold" for="txtIfConditionDays">days</label>
+      <input class="form-control input-sm" id="txtIfConditionDays" [(ngModel)]="workflowAlertModel.ifStatusCodes" type="text" (keypress)="preventInvalidValues($event)">
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.ifCondition === 'Stat'">
+      <label class="bold" for="statusCode1Select">Status Code</label>
+      <select [(ngModel)]="workflowAlertModel.ifStatusCodes" class="form-control input-sm" id="statusCode1Select">
+        <option value="">-- select one --</option>
+        <option *ngFor="let status of statusCodesList" [value]="status.combinedStatus">{{status.description}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.ifCondition === 'ITAG'">
+      <label class="bold" for="hasTag1Select">Has Tag</label>
+      <select id="hasTag1Select" (change)="changeSelectedTags('hasTag1Select')" [(ngModel)]="workflowAlertModel.selectedIfIncludeTag" class="form-control input-sm" multiple>
+        <option *ngFor="let tag of tagsList" [value]="tag.name">{{tag.name}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.ifCondition === 'ETAG'">
+      <label class="bold" for="hasNotTag1Select">Has not Tag</label>
+      <select (change)="changeSelectedTags('hasNotTag1Select')" [(ngModel)]="workflowAlertModel.selectedIfExcludeTag" class="form-control input-sm" id="hasNotTag1Select" multiple>
+        <option *ngFor="let tag of tagsList" [value]="tag.name">{{tag.name}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.ifCondition === 'INSCO'">
+      <label class="bold" for="ifInsCo1Select">Insurance Companies</label>
+      <select (change)="changeSelectedInsCo('ifInsCo1Select')" [(ngModel)]="workflowAlertModel.selectedInsCo1" class="form-control input-sm" id="ifInsCo1Select" multiple>
+        <option *ngFor="let insuranceCompany of insuranceCompaniesList" [value]="insuranceCompany">{{insuranceCompany}}</option>
+      </select>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #ifConditions2Template>
+  <div class="margin-top-separation-sm">
+    <ng-container *ngIf="workflowAlertModel.if2Condition === 'NOCTL'">
+      <label class="bold" for="txtIf2ConditionDays">days</label>
+      <input class="form-control input-sm" id="txtIf2ConditionDays" [(ngModel)]="workflowAlertModel.if2StatusCodes" type="text" (keypress)="preventInvalidValues($event)">
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.if2Condition === 'Stat'">
+      <label class="bold" for="statusCode2Select">Status Code</label>
+      <select [(ngModel)]="workflowAlertModel.if2StatusCodes" class="form-control input-sm" id="statusCode2Select">
+        <option value="">-- select one --</option>
+        <option *ngFor="let status of statusCodesList" [value]="status.combinedStatus">{{status.description}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.if2Condition === 'ITAG'">
+      <label class="bold" for="hasTag2Select">Has Tag</label>
+      <select (change)="changeSelectedTags('hasTag2Select')" [(ngModel)]="workflowAlertModel.selectedIf2IncludeTag" class="form-control input-sm" id="hasTag2Select" multiple>
+        <option *ngFor="let tag of tagsList" [value]="tag.name">{{tag.name}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.if2Condition === 'ETAG'">
+      <label class="bold" for="hasNotTag2Select">Has not Tag</label>
+      <select (change)="changeSelectedTags('hasNotTag2Select')" [(ngModel)]="workflowAlertModel.selectedIf2ExcludeTag" class="form-control input-sm" id="hasNotTag2Select" multiple>
+        <option *ngFor="let tag of tagsList" [value]="tag.name">{{tag.name}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.if2Condition === 'INSCO'">
+      <label class="bold" for="ifInsCo2Select">Insurance Companies</label>
+      <select (change)="changeSelectedInsCo('ifInsCo2Select')" [(ngModel)]="workflowAlertModel.selectedInsCo2" class="form-control input-sm" id="ifInsCo2Select" multiple>
+        <option *ngFor="let insuranceCompany of insuranceCompaniesList" [value]="insuranceCompany">{{insuranceCompany}}</option>
+      </select>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #ifConditions3Template>
+  <div class="margin-top-separation-sm">
+    <ng-container *ngIf="workflowAlertModel.if3Condition === 'NOCTL'">
+      <label class="bold" for="txtIf3ConditionDays">days</label>
+      <input class="form-control input-sm" id="txtIf3ConditionDays" [(ngModel)]="workflowAlertModel.if3StatusCodes" type="text" (keypress)="preventInvalidValues($event)">
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.if3Condition === 'Stat'">
+      <label class="bold" for="statusCode3Select">Status Code</label>
+      <select [(ngModel)]="workflowAlertModel.if3StatusCodes" class="form-control input-sm" id="statusCode3Select">
+        <option value="">-- select one --</option>
+        <option *ngFor="let status of statusCodesList" [value]="status.combinedStatus">{{status.description}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.if3Condition === 'ITAG'">
+      <label class="bold" for="hasTag3Select">Has Tag</label>
+      <select (change)="changeSelectedTags('hasTag3Select')" [(ngModel)]="workflowAlertModel.selectedIf3IncludeTag" class="form-control input-sm" id="hasTag3Select" multiple>
+        <option *ngFor="let tag of tagsList" [value]="tag.name">{{tag.name}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.if3Condition === 'ETAG'">
+      <label class="bold" for="hasNotTag3Select">Has not Tag</label>
+      <select (change)="changeSelectedTags('hasNotTag3Select')" [(ngModel)]="workflowAlertModel.selectedIf3ExcludeTag" class="form-control input-sm" id="hasNotTag3Select" multiple>
+        <option *ngFor="let tag of tagsList" [value]="tag.name">{{tag.name}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.if3Condition === 'INSCO'">
+      <label class="bold" for="ifInsCo3Select">Insurance Companies</label>
+      <select (change)="changeSelectedInsCo('ifInsCo3Select')" [(ngModel)]="workflowAlertModel.selectedInsCo3" class="form-control input-sm" id="ifInsCo3Select" multiple>
+        <option *ngFor="let insuranceCompany of insuranceCompaniesList" [value]="insuranceCompany">{{insuranceCompany}}</option>
+      </select>
+    </ng-container>
+  </div>
+</ng-template>

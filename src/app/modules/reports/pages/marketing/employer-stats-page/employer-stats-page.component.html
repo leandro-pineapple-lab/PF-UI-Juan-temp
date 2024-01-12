@@ -1,0 +1,48 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Employer Stats'"></app-title>
+  <div class="card margin-top-separation-sm">
+    <div class="card-header bg-gradient-secondary">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <label for="selectEmployer" class="bold text-white">Employer:</label>
+          <ng-multiselect-dropdown
+            [placeholder]="'Select Employer'"
+            [settings]="dropdownSettings"
+            [data]="employersListFiltered"
+            [(ngModel)]="reportFilters.employer.value"
+            (onFilterChange)="onFilterChange($event)"
+            >
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+          <app-report-actions
+            title="Employer Stats"
+            [reportFilters]="reportFilters"
+            [favoriteReport]="favoriteReport"
+            [favoriteReports]="favoriteReports"
+            (getReportsEvent)="getReports()"
+            (getFavoriteReportsEvent)="getMyFavoriteReports();"
+            ></app-report-actions>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="margin-top-separation-sm">
+      <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      [pagination]="pagination"
+      (paginationChangeEvent)="getReports()"
+      (exportExcelEvent)="getReports()"
+      [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Employer Stats reports found!'"></app-table>
+
+      <div *ngIf="table.data.length > 0" class="margin-top-separation-sm">
+        <h5>Total Stats</h5>
+        <app-table [showDefaultActions]="false"
+        [headerCssClass]="'table-info'"
+        [tableInfo]="tableTotalStats"
+        [showAlert]="false"></app-table>
+      </div>
+  </div>
+</div>

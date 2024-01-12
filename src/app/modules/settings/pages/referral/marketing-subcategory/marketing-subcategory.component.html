@@ -1,0 +1,87 @@
+<div id="marketing-category-container" class="container">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-success">Referral SubCategories</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-body table-responsive">
+            <table width='100%' id="tblSubCategory" class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Category</th>
+                        <th>SubCategory</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let subcategory of subCategoriesList; let i = index">
+                        <td>
+                            {{subcategory.category.name}}
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" type="text" [(ngModel)]="subcategory.name" />
+                        </td>
+                        <td>
+                            <button (click)="openUpdateConfirmationModal(subCategoryUpdateModal, subcategory)"  class="btn btn-sm btn-primary">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                            &nbsp;
+                            <button (click)="openDeleteConfirmationModal(subCategoryDeleteModal, subcategory)" class="btn btn-sm btn-danger">
+                                <i class="fa fa-trash btn-danger" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="add-row">
+                        <td>
+                            <select [(ngModel)]="newSubCategory.category.id" name="ddlMarketingCategory" id="ddlMarketingCategory" class="form-control">
+                                <option selected value="0">-- select category --</option>
+                                <option *ngFor="let category of categoriesList" [value]="category.id" >{{category.name}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input [(ngModel)]="newSubCategory.name" class="form-control input-sm" type="text" />
+                        </td>
+                        <td>
+                            <button (click)="addSubCategory();" style="margin-top: 3px;" class="btn btn-sm btn-primary">
+                                Add
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #subCategoryDeleteModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Category Delete Confirmation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>SubCategory Name: {{selectedSubCategory.name}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteSubCategory(selectedSubCategory.id)">Confirm</button>
+    </div>
+</ng-template>
+
+<ng-template #subCategoryUpdateModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Category Update Confirmation</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>SubCategory Name: {{selectedSubCategory.name}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="updateSubCategory()">Confirm</button>
+    </div>
+</ng-template>

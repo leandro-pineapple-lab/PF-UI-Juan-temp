@@ -1,0 +1,17 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Patients by Employer'"></app-title>
+  <app-employer-patients-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="pagination.page = 1; getReports()"
+  ></app-employer-patients-filters>
+
+  <div class="margin-top-separation-sm">
+      <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      [pagination]="pagination"
+      (paginationChangeEvent)="getReports()"
+      (exportExcelEvent)="getReports()"
+      [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Employer Patients reports found!'"></app-table>
+  </div>
+</div>

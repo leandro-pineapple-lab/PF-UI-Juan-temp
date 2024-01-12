@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+    <h4 class="text-maroon font-bold margin-top-2rem">WHEN</h4>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+    <label class="bold" for="txtInterval">
+      <span class="text-maroon">*</span>
+      Interval
+    </label>
+    <ng-template #workflowAlertIntervalTooltipTemplate>
+      <span class="text-white">
+        If you enter a value in this field, it will set a maximum value to the number of days considered.
+        This is helpful when you start a new rule<br />For example, you may enter 30 in the 'after' text box and 35 in
+        the '( < )' to limit the range to no more than 35 days after your condition. </span>
+    </ng-template>
+    <a [ngbTooltip]="workflowAlertIntervalTooltipTemplate" class="margin-top-separation-sm float-right">
+      <i class="fa fa-info-circle text-info icon-default-font-size cursor-pointer float-right" aria-hidden="true"></i>
+    </a>
+    <div class="input-group">
+      <input [(ngModel)]="workflowAlertModel.whenInterval" id="txtInterval" type="number" class="form-control" (keypress)="preventInvalidValues($event)" min="0">
+      <select [(ngModel)]="workflowAlertModel.whenIntervalType" class="form-control input-sm">
+        <option value="C">calendar days</option>
+        <option value="B">business days</option>
+      </select>
+      <input [(ngModel)]="workflowAlertModel.whenIntervalMax" type="number" placeholder="(<)" class="form-control input-sm" (keypress)="preventInvalidValues($event)" min="0">
+    </div>
+    <div>
+      <label class="text-danger">{{FormHelper.getError('whenInterval', ErrorConstants.IS_NOT_EMPTY, errorsList)}}</label>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+    <label for="afterIntervalSelect" class="bold">
+      <span class="text-maroon">*</span>
+      After
+    </label>
+    <ng-template #workflowAlertAfterIntervalTooltipTemplate>
+      <span class="text-white">
+        Option 'First Visit' is based on appointments on the calendar entered manually or through EHR
+        integration.<br><br>
+        Option 'Initial Consult' is based on date entered on patient record when status is changed to 'initial consult'
+        or equivalent
+      </span>
+    </ng-template>
+    <a [ngbTooltip]="workflowAlertAfterIntervalTooltipTemplate" class="margin-top-separation-sm float-right">
+      <i class="fa fa-info-circle text-info icon-default-font-size cursor-pointer float-right" aria-hidden="true"></i>
+    </a>
+    <select [(ngModel)]="workflowAlertModel.whenCondition" (change)="changeWhenCondition()" class="form-control input-sm" id="afterIntervalSelect">
+      <option *ngFor="let interval of whenAfterConditionsList" [value]="interval.value">{{interval.name}}</option>
+    </select>
+    <div>
+      <label class="text-danger">{{FormHelper.getError('whenCondition', ErrorConstants.IS_NOT_EMPTY, errorsList)}}</label>
+    </div>
+  </div>
+  <ng-container [ngTemplateOutlet]="whenConditionsTemplate"></ng-container>
+</div>
+
+<ng-template #whenConditionsTemplate>
+  <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5 offset-md-2 offset-lg-2 margin-top-separation-sm">
+    <ng-container *ngIf="workflowAlertModel.whenCondition === 'Stat'">
+      <label class="bold" for="txtInterval">
+        Status Code
+      </label>
+      <select [(ngModel)]="workflowAlertModel.whenStatusCode" class="form-control input-sm">
+        <option value="">-- select one --</option>
+        <option *ngFor="let statusCode of statusCodesList" [value]="statusCode.combinedStatus">{{statusCode.description}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.whenCondition === 'RULE'">
+      <label class="bold" for="txtInterval">
+        Workflow Rule
+      </label>
+      <select [(ngModel)]="workflowAlertModel.whenRule" class="form-control input-sm">
+        <option value="0">-- select one --</option>
+        <option *ngFor="let workflowRule of workflowRulesList" [value]="workflowRule.id">{{workflowRule.name}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.whenCondition === 'VSIT'">
+      <label class="bold" for="whenVisitTypesSelect">
+        Visit
+      </label>
+      <select id="whenVisitTypesSelect" [(ngModel)]="workflowAlertModel.selectedWhenVisitTypes" (change)="changeVisitType()" class="form-control input-sm" multiple>
+        <option value="ALL">ALL</option>
+        <option *ngFor="let defaultText of defaultTextsList" [value]="defaultText.categValue">{{defaultText.categValue}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.whenCondition === 'APPT'">
+      <label class="bold" for="appointmentSelect">
+        Appointment
+      </label>
+      <select id="appointmentSelect" [(ngModel)]="workflowAlertModel.selectedWhenVisitTypes" (change)="changeVisitType()" class="form-control input-sm" multiple>
+        <option value="ALL">ALL</option>
+        <option *ngFor="let appointment of appointmentsList" [value]="appointment.name">{{appointment.name}}</option>
+      </select>
+    </ng-container>
+    <ng-container *ngIf="workflowAlertModel.whenCondition === 'SURG'">
+      <label class="bold" for="surgerySelect">
+        Surgery
+      </label>
+      <select id="surgerySelect" [(ngModel)]="workflowAlertModel.selectedWhenSurgery" (change)="changeWhenSurgery()" class="form-control input-sm" multiple>
+        <option value="ALL">ALL</option>
+        <option *ngFor="let surgery of surgeriesList" [value]="surgery.name">{{surgery.name}}</option>
+      </select>
+    </ng-container>
+  </div>
+</ng-template>

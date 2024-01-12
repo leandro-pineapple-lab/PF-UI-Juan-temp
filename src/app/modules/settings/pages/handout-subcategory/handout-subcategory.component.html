@@ -1,0 +1,86 @@
+<div id="settings-handout-subcategory-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-success">Handout SubCategories</h1>
+        </div>
+        <div class="card-body">
+            <table id="tblOffice" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Handout Type</th>
+                        <th>Category</th>
+                        <th>SubCategory</th>
+                        <th class="text-center">Enabled</th>
+                        <th appCanSaveSettings class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let handoutSubCategory of handoutSubCategoriesList;">
+                        <td>
+                            {{handoutSubCategory.category.handoutType}}
+                        </td>
+                        <td>
+                            {{handoutSubCategory.category.name}}
+                        </td>
+                        <td>
+                            {{handoutSubCategory.name}}
+                        </td>
+                        <td class="text-center">
+                            {{handoutSubCategory.isActive ? 'Yes' : 'No'}}
+                        </td>
+                        <td appCanSaveSettings class="text-center cursor-pointer">
+                            <a (click)="openUpdateProcedureConfirmationModal(handoutSubCategoryToUpdateModal, handoutSubCategory)" class="cursor-pointer">
+                                <i style="font-size: 20px;" class="fa fa-pencil-square-o text-primary" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr appCanSaveSettings class="table-success">
+                        <td></td>
+                        <td>
+                            <select [(ngModel)]="newHandoutSubCategory.category.id" name="dgCategs:_ctl8:ddlFtHandoutType" id="dgCategs__ctl8_ddlFtHandoutType" class="form-control">
+                                <option value="0">--- Select one ---</option>
+                                <option *ngFor="let category of handoutCategoriesList" [value]="category.id">{{category.name}}</option>
+                            </select>
+                        </td>
+                        <td colspan="2">
+                            <input [(ngModel)]="newHandoutSubCategory.name" name="dgCategs:_ctl8:txtFtCategory" type="text" maxlength="100" id="dgCategs__ctl8_txtFtCategory" class="form-control">
+                        </td>
+                        <td class="text-center">
+                            <input (click)="addHandoutCategory();" type="submit" name="dgCategs:_ctl8:btnFtAdd" value="Add" id="dgCategs__ctl8_btnFtAdd" class="btn bnt-sm btn-secondary">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #handoutSubCategoryToUpdateModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Update SubCategory</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <label>Name:</label>
+            <input type="text" [(ngModel)]="selectedHandoutSubCategory.name" class="form-control input-sm">
+            <label *ngIf="selectedHandoutSubCategory.showNameRequiredMessage" class="text-danger">Name is Required</label>
+            <br *ngIf="selectedHandoutSubCategory.showNameRequiredMessage" />
+            <br/>
+            <label>Enabled:</label>
+            <div style="float: right;">
+                <input id="rdoUpdateIsActive_0" type="radio" name="rdoUpdateHandoutSubCategory" [(ngModel)]="selectedHandoutSubCategory.isActive" [value]="false">
+                <b>
+                    <label for="rdoUpdateIsActive_0">&nbsp;No&nbsp;&nbsp;</label>
+                </b>
+                <input id="rdoUpdateIsActive_1" type="radio" name="rdoUpdateHandoutSubCategory" [(ngModel)]="selectedHandoutSubCategory.isActive" [value]="true" checked="checked">
+                <b>
+                    <label for="rdoUpdateIsActive_1">&nbsp;Yes</label>
+                </b>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="updateHandoutSubCategory()">Confirm</button>
+    </div>
+</ng-template>

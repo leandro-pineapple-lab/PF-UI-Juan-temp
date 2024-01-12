@@ -1,0 +1,211 @@
+<div appCanSaveSettings id="add-office-login-container" class="container margin-top-separation-sm">
+    <div *ngIf="generatedPassword && generatedPassword.length > 0" class="alert alert-success" role="alert">
+        <b>
+            Your password is: {{generatedPassword}}
+        </b>
+    </div>
+    <div id="add-office-login" class="card">
+        <div class="card-header add-update-office-card-header bg-primary">
+            <h2 class="text-white" (click)="showOfficeLoginAddBody = !showOfficeLoginAddBody" data-bs-toggle="collapse" data-bs-target="#officeLoginAddBody" aria-expanded="false" aria-controls="officeLoginAddBody" style="cursor: pointer;">
+                <i *ngIf="!showOfficeLoginAddBody" class="fa fa-chevron-right" aria-hidden="true"></i>
+                <i *ngIf="showOfficeLoginAddBody" class="fa fa-chevron-down" aria-hidden="true"></i>
+                Add User Account
+            </h2>
+        </div>
+        <div [formGroup]="addOfficeLoginForm" id="officeLoginAddBody" class="card-body collapse">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtFirstName">
+                            <span class="text-danger">*</span>First Name:
+                        </label>
+                    </b>
+                    <input formControlName="addOfficeLoginFirstName" [(ngModel)]="officeLoginModel.firstName" name="txtFirstName" type="text" id="txtFirstName" class="form-control">
+                    <label *ngIf="addOfficeLoginFirstName && addOfficeLoginFirstName.invalid && addOfficeLoginFirstName.touched" class="text-danger">First Name is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtLastName">
+                            <span class="text-danger">*</span>Last Name:
+                        </label>
+                    </b>
+                    <input formControlName="addOfficeLoginLastName" [(ngModel)]="officeLoginModel.lastName" name="txtLastName" type="text" id="txtLastName" class="form-control">
+                    <label *ngIf="addOfficeLoginLastName && addOfficeLoginLastName.invalid && addOfficeLoginLastName.touched" class="text-danger">Last Name is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtEmail">Email:</label>
+                    </b>
+                    <input formControlName="addOfficeLoginEmail" [(ngModel)]="officeLoginModel.email" name="txtEmail" type="text" id="txtEmail" class="form-control" email="true">
+                    <label *ngIf="addOfficeLoginEmail && addOfficeLoginEmail.invalid && addOfficeLoginEmail.touched && addOfficeLoginEmail.errors?.['email']" class="text-danger">
+                        Incorrect email address
+                    </label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>User Name:
+                        </label>
+                    </b>
+                    <input formControlName="addOfficeLoginUserName" [(ngModel)]="officeLoginModel.userName" name="txtUserName" type="text" id="txtUserName" class="form-control">
+                    <label *ngIf="addOfficeLoginUserName && addOfficeLoginUserName.invalid && addOfficeLoginUserName.touched && addOfficeLoginUserName.errors?.['required']" class="text-danger">
+                        User Name is required
+                    </label>
+                </div>
+                <div class="col-xs-12 margin-top-separation-sm text-center">
+                    <button (click)="addAccount()" class="btn btn-success btn-sm">
+                        Add Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div appSecurityAccessSettings class="container">
+    <div class="card margin-top-separation-sm">
+        <div class="card-header bg-gradient-secondary">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="txtUserIdFilter" class="text-white">
+                       <b>User ID:</b>
+                    </label>
+                    <input [(ngModel)]="officeLoginFilterModel.userId" type="text" id="txtUserIdFilter" class="form-control input-sm">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="txtNameFilter" class="text-white">
+                       <b>Name:</b>
+                    </label>
+                    <input [(ngModel)]="officeLoginFilterModel.name" type="text" id="txtNameFilter" class="form-control input-sm">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="txtUserIdFilter" class="text-white">
+                       <b>Team:</b>
+                    </label>
+                    <select [(ngModel)]="officeLoginFilterModel.teamId" id="ddlTeam" class="form-control input-sm">
+                        <option value="0">All</option>
+                        <option *ngFor="let team of teamsList" [value]="team.id" >{{team.name}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="ddlStatus" class="text-white">
+                       <b>Status:</b>
+                    </label>
+                    <select [(ngModel)]="officeLoginFilterModel.status" id="ddlStatus" class="form-control input-sm">
+                        <option value="2">All</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                        <option value="3">Emergency Access</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2">
+                    <label for="ddlAccountState" class="text-white">
+                       <b>Disabled:</b>
+                    </label>
+                    <select [(ngModel)]="officeLoginFilterModel.disabled" id="ddlAccountState" class="form-control input-sm">
+                        <option value="2">All</option>
+                        <option value="0">Enabled</option>
+                        <option value="1">Disabled</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 margin-top-separation-md">
+                    <button (click)="searchUsers();" class="btn btn-warning">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="tblUserAccounts" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-info">
+                        <th>
+                            First Name
+                        </th>
+                        <th>
+                            Last Name
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            User Name
+                        </th>
+                        <th class="text-center">
+                            Alert
+                        </th>
+                        <th class="text-center" appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of usersList; let i = index">
+                        <td>
+                            {{user.firstName}}
+                        </td>
+                        <td>
+                            {{user.lastName}}
+                        </td>
+                        <td>
+                            {{user.email}}
+                        </td>
+                        <td>
+                            {{user.userName}}
+                        </td>
+                        <ng-template #consecutiveFailedLoginTooltipTemplate>
+                            <b>{{user.maxLoginAttemptsPassedAlert}}</b>
+                        </ng-template>
+                        <ng-template #expiredPasswordTooltipTemplate>
+                            <b>{{user.expiredPasswordAlert}}</b>
+                        </ng-template>
+                        <td class="text-center">
+                            <i *ngIf="user.maxLoginAttemptsPassedAlert && user.maxLoginAttemptsPassedAlert.length > 0" [ngbTooltip]="consecutiveFailedLoginTooltipTemplate" class="fa fa-exclamation text-danger icon-default-font-size" aria-hidden="true"></i>
+                            &nbsp;
+                            <i *ngIf="user.expiredPasswordAlert && user.expiredPasswordAlert.length > 0" [ngbTooltip]="expiredPasswordTooltipTemplate" class="fa fa-calendar-times-o text-danger icon-default-font-size" aria-hidden="true"></i>
+                        </td>
+                        <ng-template #disableAccountTooltipTemplate>
+                            <b>Disable</b>
+                        </ng-template>
+                        <ng-template #enableAccountTooltipTemplate>
+                            <b>Enable</b>
+                        </ng-template>
+                        <ng-template #activateAccountTooltipTemplate>
+                            <b>Activate</b>
+                        </ng-template>
+                        <ng-template #editAccountTooltipTemplate>
+                            <b>Edit</b>
+                        </ng-template>
+                        <td appCanSaveSettings class="text-center">
+                            <i (click)="openEnableDisableUserAccountConfirmationModal(userEnableDisableModal, user, 'disable')" *ngIf="user.activeInd" class="fa fa-trash text-danger icon-default-font-size margin-left-separation-sm cursor-pointer" aria-hidden="true" [ngbTooltip]="disableAccountTooltipTemplate"></i>
+                            <i (click)="openEnableDisableUserAccountConfirmationModal(userEnableDisableModal, user, 'enable')" *ngIf="!user.activeInd" class="fa fa-check icon-default-font-size margin-left-separation-sm cursor-pointer text-success" aria-hidden="true" [ngbTooltip]="enableAccountTooltipTemplate"></i>
+                            <i (click)="openEnableDisableUserAccountConfirmationModal(userEnableDisableModal, user, 'activate')" *ngIf="(user.expiredPasswordAlert && user.expiredPasswordAlert.length > 0) || (user.maxLoginAttemptsPassedAlert && user.maxLoginAttemptsPassedAlert.length > 0)" class="fa fa-history text-success icon-default-font-size margin-left-separation-sm cursor-pointer" aria-hidden="true" [ngbTooltip]="activateAccountTooltipTemplate"></i>
+                            <i (click)="editUserAccountInformation(user.userName);" class="fa fa-pencil-square-o text-primary icon-default-font-size margin-left-separation-sm cursor-pointer" aria-hidden="true" [ngbTooltip]="editAccountTooltipTemplate"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #userEnableDisableModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">
+            Are you sure you want to {{enableDisableUserModalAction}} the following user?
+        </h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <label>
+                Name: <b class="float-right">{{selectedUser.firstName}} {{selectedUser.lastName}}</b>
+            </label>
+            <label>
+                User Name: <b class="float-right">{{selectedUser.userName}}</b>
+            </label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button (click)="enableDisableUserAccount();" type="button" class="btn" [ngClass]="{'btn-success': enableDisableUserModalAction === 'enable' || enableDisableUserModalAction === 'activate',
+                                                                                            'btn-danger': enableDisableUserModalAction === 'disable'}">
+            Confirm
+        </button>
+    </div>
+</ng-template>

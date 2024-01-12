@@ -1,0 +1,15 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Stop Process Report'"></app-title>
+  <app-stop-process-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="pagination.page = 1; getReports()"
+  >
+  </app-stop-process-filters>
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      (paginationChangeEvent)="getReports()" [pagination]="pagination" [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Stop Process reports found!'"></app-table>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectAppointmentYear" class="bold text-white">Year:</label>
+        <select id="selectAppointmentYear" class="form-control input-sm" [(ngModel)]="reportFilters.year.value">
+          <option *ngFor="let year of lastYearsList">{{year}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectSurgeon" class="bold text-white">Provider:</label>
+        <select (change)="setProviderDisplayValue()" id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.provider.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.id">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="selectAppointmentType" class="bold text-white">Type:</label>
+        <select id="selectAppointmentType" class="form-control input-sm" [(ngModel)]="reportFilters.type.value">
+          <option value="">All</option>
+          <option value="Initial Nutrition">Initial Nutrition</option>
+          <option value="f/u Nutrition">f/u Nutrition</option>
+          <option value="Initial Consult">Initial Consult</option>
+          <option value="Completed all testing">Completed all testing</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <app-report-actions title="Appointment Summary"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"></app-report-actions>
+      </div>
+    </div>
+  </div>
+</div>
+

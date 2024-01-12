@@ -1,0 +1,508 @@
+<div class="container margin-top-separation-sm">
+    <div id="add-update-insurance-template-card" class="card">
+        <div class="card-header bg-success">
+            <h4 (click)="showInsuranceTemplateAddBody = !showInsuranceTemplateAddBody" class="text-white" data-bs-toggle="collapse" data-bs-target="#insuranceTemplateAddUpdateBody" aria-expanded="false" aria-controls="insuranceTemplateAddUpdateBody" style="cursor: pointer;">
+                <i *ngIf="!showInsuranceTemplateAddBody" class="fa fa-chevron-right" aria-hidden="true"></i> 
+                <i *ngIf="showInsuranceTemplateAddBody" class="fa fa-chevron-down" aria-hidden="true"></i> 
+                {{newInsuranceTemplate.id === undefined || newInsuranceTemplate.id === null || newInsuranceTemplate.id === 0 ?
+                    'Add Template' : 'Update Template - ' + newInsuranceTemplate.description
+                }}
+            </h4>
+        </div>
+        <div id="insuranceTemplateAddUpdateBody" class="card-body collapse">
+            <div [formGroup]="addInsuranceTemplateForm" class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <b>
+                        <label for="txtInsuranceTemplateDescription">
+                            <span class="text-danger">*</span>
+                            Template Description:
+                        </label>
+                    </b>
+                    <input formControlName="addInsuranceTemplateDescription" [(ngModel)]="newInsuranceTemplate.description" id="txtInsuranceTemplateDescription" class="form-control input-sm" type="text">
+                    <label *ngIf="addInsuranceTemplateDescription && addInsuranceTemplateDescription.invalid && addInsuranceTemplateDescription.touched" class="text-danger">
+                        Template description is required
+                    </label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtInsuranceName">
+                            <span class="text-danger">*</span>
+                            Insurance Name:
+                        </label>
+                    </b>
+                    <select formControlName="addInsuranceName" [(ngModel)]="newInsuranceTemplate.insuranceCompany.id" class="form-control input-sm">
+                        <option [ngValue]="undefined">-- select insurance --</option>
+                        <option [ngValue]="0">Other</option>
+                        <option *ngFor="let insuranceCompany of insuranceCompaniesList" [value]="insuranceCompany.id">
+                            {{insuranceCompany.name}}
+                        </option>
+                    </select>
+                    <label *ngIf="addInsuranceName && addInsuranceName.invalid && addInsuranceName.touched" class="text-danger">
+                        Please select an insurance company
+                    </label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <div *ngIf="newInsuranceTemplate.insuranceCompany.id == 0">
+                        <b>
+                            <label for="txtInsuranceTemplateOther">
+                                Other:
+                            </label>
+                        </b>
+                        <input formControlName="addInsuranceNameOther" [(ngModel)]="newInsuranceTemplate.insuranceCompany.other" id="txtInsuranceName" class="form-control input-sm" type="text">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtInsuranceTemplateOther">
+                            Group Number:
+                        </label>
+                    </b>
+                    <input formControlName="addInsuranceTemplateGroupNumber" [(ngModel)]="newInsuranceTemplate.groupNumber" id="txtInsuranceTemplateGroupNumber" class="form-control input-sm" type="text">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtInsuranceTemplatePlanType">
+                            <span class="text-danger">*</span>
+                            Plan Type:
+                        </label>
+                    </b>
+                    <select formControlName="addInsuranceTemplatePlanType" [(ngModel)]="newInsuranceTemplate.planType" id="txtInsuranceTemplatePlanType" class="form-control input-sm">
+                        <option value="">- Please Select -</option>
+                        <option value="EPO">EPO</option>
+                        <option value="HMO">HMO</option>
+                        <option value="IPA">IPA</option>
+                        <option value="Medicare">Medicare</option>
+                        <option value="Medicaid">Medicaid</option>
+                        <option value="POS">POS</option>
+                        <option value="PPO">PPO</option>
+                        <option value="Self Funded">Self Funded</option>
+                        <option value="Self Pay">Self Pay</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <label *ngIf="addInsuranceTemplatePlanType && addInsuranceTemplatePlanType.invalid && addInsuranceTemplatePlanType.touched" class="text-danger">
+                        Please select a Plan Type
+                    </label>
+                </div>
+            </div>
+
+            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs justify-content-center margin-top-separation-md col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink>
+                        COVERAGE
+                        <i *ngIf="newInsuranceTemplate.showCoverageCheckIcon" class="fa fa-check-circle-o text-success" aria-hidden="true"></i>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-align-center">
+                            <label class="text-bold">
+                                Benefits Phone #
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.benefitsPhone" type="text" class="form-control input-sm" [inputMask]="phoneMask" placeholder="___-___-____">
+                            </label>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-align-center">
+                            <label class="text-bold">
+                                Pre-Cert Phone #
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.preCertPhone" type="text" class="form-control input-sm" [inputMask]="phoneMask" placeholder="___-___-____">
+                            </label>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-align-center">
+                            <label class="text-bold">
+                                Pre-D Fax #
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.preDFax" type="text" class="form-control input-sm" [inputMask]="phoneMask" placeholder="___-___-____">
+                            </label>
+                        </div>
+                        <div class="row mt-2 bg-gradient-info margin-top-separation-sm">
+                            <div class="col-6 text-bold text-right text-white">COVERAGE&nbsp;</div>
+                            <div class="col-6 text-bold text-white">&nbsp;AMOUNT</div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    Specialist co-pay
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                    </span>
+                                    <input [(ngModel)]="newInsuranceTemplate.coverage.specialistCoPay"  type="number" id="txtSpecialistCoPay" class="form-control input-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    IN Network Individual Deductible
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                    </span>
+                                    <input [(ngModel)]="newInsuranceTemplate.coverage.innIndividualDeductible" type="number" id="txtINNIndividualDeductible" class="form-control input-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    IN Network Max OOP
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                    </span>
+                                    <input [(ngModel)]="newInsuranceTemplate.coverage.innMaxOOP" type="number" id="txtINMaxOOP" class="form-control input-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    Deductible applied to the OOP
+                                </label>
+                            </div>
+                            <div class="col-6 margin-top-separation-xs">
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.isDeductibleAppliedToOOP" [value]="false" name="radioDeductibleApplied" type="radio">
+                                &nbsp;
+                                <label class="bold">
+                                    No
+                                </label>
+                                &nbsp;
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.isDeductibleAppliedToOOP" [value]="true" name="radioDeductibleApplied" type="radio">
+                                &nbsp;
+                                <label class="bold">
+                                    Yes
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    IN Network Co-Ins %
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <input [(ngModel)]="newInsuranceTemplate.coverage.innCoInsurance" type="number" id="txtINNCoIns" class="form-control input-sm">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-percent" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    Out Of Network Deductible
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                    </span>
+                                    <input [(ngModel)]="newInsuranceTemplate.coverage.oonDeductible" type="number" id="txtOONDeductible" class="form-control input-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    Out Of Network Max OOP
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                    </span>
+                                    <input [(ngModel)]="newInsuranceTemplate.coverage.oonOutOfPocketMax" type="number" id="txtOONMaxOOP" class="form-control input-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    Out Of Network Co-Ins %
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <input [(ngModel)]="newInsuranceTemplate.coverage.oonCoInsurance" type="number" id="txtOONCoIns" class="form-control input-sm">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-percent" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right margin-top-separation-xs">
+                                    Lifetime Max
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                    </span>
+                                    <input [(ngModel)]="newInsuranceTemplate.coverage.lifetimeMax" type="number" id="txtLifetimeMax" class="form-control input-sm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2 bg-gradient-olive margin-top-separation-sm">
+                            <div class="col-12 text-center text-bold text-white">COVERAGE DETAILS</div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right">
+                                    Bariatric Coverage
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.bariatricCoverage" [value]="false" name="radioBariatricCoverage" type="radio">
+                                &nbsp;
+                                <label class="bold">
+                                    No
+                                </label>
+                                &nbsp;
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.bariatricCoverage" [value]="true" name="radioBariatricCoverage" type="radio">
+                                &nbsp;
+                                <label class="bold">
+                                    Yes
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right">
+                                    OON Bariatric Benefits
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.oonBariatricBenefits" [value]="false" name="radioOONBariatricBenefits" type="radio">
+                                &nbsp;
+                                <label class="bold">
+                                    No
+                                </label>
+                                &nbsp;
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.oonBariatricBenefits" [value]="true" name="radioOONBariatricBenefits" type="radio">
+                                &nbsp;
+                                <label class="bold">
+                                    Yes
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row margin-top-separation-sm">
+                            <div class="col-6">
+                                <label class="text-bold float-right">
+                                    COE required
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.coeRequired" [value]="false" name="radioCOERequired" type="radio">
+                                &nbsp;
+                                <label class="bold">
+                                    No
+                                </label>
+                                &nbsp;
+                                <input [(ngModel)]="newInsuranceTemplate.coverage.coeRequired" [value]="true" name="radioCOERequired" type="radio">
+                                &nbsp;
+                                <label class="bold">
+                                    Yes
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row mt-2 bg-gradient-warning margin-top-separation-sm">
+                            <div class="col-12 text-center text-bold">NOTES</div>
+                        </div>
+                        <div class="col-12 margin-top-separation-sm">
+                            <textarea [(ngModel)]="newInsuranceTemplate.coverage.notes" cols="30" rows="5" class="form-control"></textarea>
+                        </div>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                    <a ngbNavLink>
+                        REQUIREMENTS
+                        <i *ngIf="newInsuranceTemplate.showRequirementsCheckIcon" class="fa fa-check-circle-o text-success" aria-hidden="true"></i>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <table id="tblNewHW" class="table table-sm table-bordered table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Required</th>
+                                    <th>Requirement</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let category of homeworkCategoriesList">
+                                    <td>
+                                        {{category.name}}
+                                    </td>
+                                    <td class="text-center">
+                                        <input (click)="setCategoryText(category)" type="checkbox" [(ngModel)]="category.selected" >
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control" [attr.disabled]="!category.selected ? true : null" [(ngModel)]="category.requirementText" cols="52" rows="2" placeholder="no requirement."></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="3">
+                    <a ngbNavLink>
+                        ALLOWABLES
+                        <i *ngIf="newInsuranceTemplate.showAllowablesCheckIcon" class="fa fa-check-circle-o text-success" aria-hidden="true"></i>
+                    </a>
+                    <ng-template ngbNavContent>
+                        <table id="tblAllowable" class="table table-bordered table-striped table-sm table-responsive">
+                            <thead>
+                                <tr class="table-dark">
+                                    <th style="width: 50%;">Procedure</th>
+                                    <th>Allowable</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Sleeve
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-usd" aria-hidden="true"></i>
+                                            </span>
+                                            <input [(ngModel)]="newInsuranceTemplate.allowable.sleeve" type="number" id="txtSleeveAllowable" class="form-control input-sm">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        LRYGB
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-usd" aria-hidden="true"></i>
+                                            </span>
+                                            <input [(ngModel)]="newInsuranceTemplate.allowable.lrygb" type="number" id="txtLRYGBAllowable" class="form-control input-sm">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </li>
+            </ul>
+            
+            <div [ngbNavOutlet]="nav" class="col-xs-12 col-sm-10 col-md-8 col-lg-6 offset-sm-1 offset-md-2 offset-lg-3 justify-content-center margin-top-separation-sm"></div>
+
+            <div class="col-xs-12 text-center margin-top-separation-sm">
+                <button *ngIf="newInsuranceTemplate.id === undefined || newInsuranceTemplate.id === null || newInsuranceTemplate.id === 0" (click)="addTemplate()" class="btn btn-sm btn-success">Add Template</button>
+                <button *ngIf="newInsuranceTemplate.id !== undefined && newInsuranceTemplate.id !== null && newInsuranceTemplate.id !== 0" (click)="updateTemplate()" class="btn btn-sm btn-primary">Update Template</button>
+                <button *ngIf="newInsuranceTemplate.id !== undefined && newInsuranceTemplate.id !== null && newInsuranceTemplate.id !== 0" (click)="addNewInsuranceTemplate();" class="btn btn-sm btn-success margin-left-separation-sm">Add New Template</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="insurance-company-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-success">Insurance Templates</h4>
+        </div>
+        <div class="card-body">
+            <table id="tblInsCo" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Description</th>
+                        <th>Payer</th>
+                        <th>Group #</th>
+                        <th>Plan Type</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let insuranceCompanyTemplate of insuranceCompanyTemplatesList">
+                        <td>{{insuranceCompanyTemplate.description}}</td>
+                        <td>{{insuranceCompanyTemplate.insuranceCompany.name}}</td>
+                        <td>{{insuranceCompanyTemplate.groupNumber}}</td>
+                        <td>{{insuranceCompanyTemplate.planType}}</td>
+                        <td class="text-center">
+                            <ng-template #printActionTooltip>
+                                <b>
+                                    Print
+                                </b>
+                            </ng-template>
+                            <ng-template #viewPatientsActionTooltip>
+                                <b>
+                                    View Patients
+                                </b>
+                            </ng-template>
+                            <ng-template #editActionTooltip>
+                                <b>
+                                    Edit
+                                </b>
+                            </ng-template>
+                            <ng-template #deleteActionTooltip>
+                                <b>
+                                    Delete
+                                </b>
+                            </ng-template>
+                            <a (click)="redirectToPrintPage(insuranceCompanyTemplate)" target="_blank" [ngbTooltip]="printActionTooltip">
+                                <i class="fa fa-print text-warning icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="searchInsurancePatients(insuranceCompanyTemplate.insuranceCompany.id, insuranceCompanyTemplate.groupNumber)" [ngbTooltip]="viewPatientsActionTooltip">
+                                <i class="fa fa-users margin-left-separation-sm text-info icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="editInsuranceTemplate(insuranceCompanyTemplate);" href="settings-insurance-template#insuranceTemplateAddUpdateBody" [ngbTooltip]="editActionTooltip">
+                                <i class="fa fa-pencil-square-o text-primary margin-left-separation-sm icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="openInsuranceTemplateDeleteModal(insuranceTemplateDeleteModal, insuranceCompanyTemplate);" [ngbTooltip]="deleteActionTooltip">
+                                <i class="fa fa-trash text-danger margin-left-separation-sm icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #insuranceTemplateDeleteModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Insurance Template Delete Confirmation</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>
+                Description: <b>{{selectedInsuranceTemplate.description}}</b>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p>
+                Payer: <b>{{selectedInsuranceTemplate.payer}}</b>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p>
+                Group Number: <b>{{selectedInsuranceTemplate.groupNumber}}</b>
+            </p>
+        </div>
+        <div class="mb-3">
+            <p>
+                Plan Type: <b>{{selectedInsuranceTemplate.planType}}</b>
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteInsuranceTemplate(selectedInsuranceTemplate.id)">Confirm</button>
+    </div>
+  </ng-template>

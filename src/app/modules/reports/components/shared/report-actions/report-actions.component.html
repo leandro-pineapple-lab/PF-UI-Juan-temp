@@ -1,0 +1,16 @@
+
+<div>
+  <button
+    (click)="getReport()"
+    class="btn btn-sm btn-success">Get Report</button>
+  <button
+    (click)="openAddFavoriteReportModal()"
+    ngbTooltip="Add as favorite" class="btn btn-sm btn-primary margin-left-separation-sm">
+    <i class="fa fa-plus text-white icon-default-font-size" aria-hidden="true"></i>
+  </button>
+  <button
+    *ngIf="favoriteReports.length > 0" (click)="openMyFavoriteReportsModal()"
+    [ngbTooltip]="'My favorite ' + title + ' Reports'" class="btn btn-sm btn-warning margin-left-separation-sm">
+    <i class="fa fa-thumbs-up text-white icon-default-font-size" aria-hidden="true"></i>
+  </button>
+</div>

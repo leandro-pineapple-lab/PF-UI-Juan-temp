@@ -1,0 +1,185 @@
+////////// don't change this file!!!  ///////////
+@use "sass:map";
+@use "sass:meta";
+@use '@angular/material' as mat;
+@import './theme.scss';
+@import './core.scss';
+@import './classes.scss';
+@import 'additional-themes/additional-themes.scss';
+
+@include mat.core();
+
+@mixin apply-theme($theme-name: 'default') {
+  $theme: 'dark';
+  $warn-palette: mat.$deep-orange-palette;
+  $app-typography: mat.define-typography-config($font-family: Roboto);
+
+  @if variable-exists("app-warn-palette") {
+    $warn-palette: $app-warn-palette;
+  }
+  @if variable-exists("app-theme") {
+    $theme: $app-theme;
+  }
+
+  @if variable-exists("app-font-family") {
+    
+    $app-typography: mat.define-typography-config(
+      $font-family: $app-font-family,
+      $headline: mat.define-typography-level(
+        $font-size: 96px,
+        $line-height: 112px,
+        $font-weight: normal,
+        $font-family: Uni Sans Bold,
+        $letter-spacing: -1.44px
+      ),
+      $title: mat.define-typography-level(
+        $font-size: 60px,
+        $line-height: 72px,
+        $font-weight: normal,
+        $font-family: Uni Sans Light,
+        $letter-spacing: -0.3px
+      ),
+      $subheading-2: mat.define-typography-level(
+        $font-size: 48px,
+        $line-height: 56px,
+        $font-weight: normal,
+        $font-family: Uni Sans Book,
+        $letter-spacing: 0px
+      ),
+      $subheading-1: mat.define-typography-level(
+        $font-size: 34px,
+        $line-height: 40px,
+        $font-weight: normal,
+        $font-family: Uni Sans Book,
+        $letter-spacing: 0.88px
+      ),
+      $body-1: mat.define-typography-level(
+        $font-size: 16px,
+        $line-height: 28px,
+        $font-weight: normal,
+        $font-family: Roboto,
+        $letter-spacing: 0.24px
+      ),
+      $body-2: mat.define-typography-level(
+        $font-size: 16px,
+        $line-height: 24px,
+        $font-weight: normal,
+        $font-family: Roboto,
+        $letter-spacing: 0px
+      ),
+      $caption: mat.define-typography-level(
+        $font-size: 12px,
+        $line-height: 16px,
+        $font-weight: normal,
+        $font-family: Roboto,
+        $letter-spacing: 0.4px
+      ),
+    );
+
+    $subtitle-1: mat.define-typography-level(
+      $font-size: 16px,
+      $line-height: 24px,
+      $font-weight: normal,
+      $font-family: Uni Sans Book,
+      $letter-spacing: 0.32px
+    )!global;
+
+    $subtitle-2: mat.define-typography-level(
+      $font-size: 16px,
+      $line-height: 24px,
+      $font-weight: normal,
+      $font-family: Uni Sans SemiBold,
+      $letter-spacing: 0.16px
+    )!global;
+    $overline: mat.define-typography-level(
+      $font-size: 10px,
+      $line-height: 16px,
+      $font-weight: medium,
+      $font-family: Roboto,
+      $letter-spacing: 1.5px
+    )!global;
+
+    $h5Title: mat.define-typography-level(
+      $font-size: 24px,
+      $line-height: 32px,
+      $font-weight: normal,
+      $font-family: Uni Sans Book,
+      $letter-spacing: 0px
+    )!global;
+
+    $button-1: mat.define-typography-level(
+      $font-size: 14px,
+      $line-height: 16px,
+      $font-weight: medium,
+      $font-family: Roboto,
+      $letter-spacing: 1.25px
+    )!global;
+
+  }
+
+  $app-primary: mat.define-palette($app-primary-palette, A400, A100, A700);
+  $app-accent: mat.define-palette($app-accent-palette, A400, A100, A700);
+  $app-warn: mat.define-palette($warn-palette, A400, A100, A700);
+
+  $defined-theme: mat.define-dark-theme( (color: ( primary: $app-primary, accent: $app-accent, warn: $app-warn, ), typography: $app-typography) ) !global;
+  @if $theme == 'light' {
+    $defined-theme: mat.define-light-theme( (color: ( primary: $app-primary, accent: $app-accent, warn: $app-warn, ), typography: $app-typography) ) !global;
+  }
+
+  $app-themes: map.set($app-themes, $theme-name, $defined-theme) !global;
+  @include apply-material-theme($defined-theme);
+  @include set-defined-theme-colors-classes();
+
+
+  @if variable-exists("subtitle-1") {
+    $app-typography: map.set( $app-typography, "subtitle-1", $subtitle-1 );
+    .subtitle-1 {
+      @include mat.typography-level($app-typography, 'subtitle-1');
+    }
+  }
+  
+  @if variable-exists("subtitle-2") {
+    $app-typography: map.set( $app-typography, "subtitle-2", $subtitle-2 );
+    .subtitle-2 {
+      @include mat.typography-level($app-typography, 'subtitle-2');
+    }
+  }
+  
+  @if variable-exists("overline") {
+    $app-typography: map.set( $app-typography, "overline", $overline );
+    .overline {
+      @include mat.typography-level($app-typography, 'overline');
+    }
+  }
+
+  @if variable-exists("h5Title") {
+    $app-typography: map.set( $app-typography, "h5Title", $h5Title );
+    .h5 {
+      @include mat.typography-level($app-typography, 'h5Title');
+    }
+  }
+
+  @if variable-exists("button-1") {
+    $app-typography: map.set( $app-typography, "button-1", $button-1 );
+    .button-1 {
+      @include mat.typography-level($app-typography, 'button-1');
+    }
+  }
+
+
+}
+
+@include apply-theme();
+@include set-defined-theme-colors-classes('default-');
+
+@each $name, $config in $app-additional-themes {
+  $app-font-family: map.get( $config, 'app-font-family' );
+  $app-theme: map.get( $config, 'app-theme' );
+  $app-primary-palette: map.get( $config, 'app-primary-palette' );
+  $app-accent-palette: map.get( $config, 'app-accent-palette' );
+  $app-warn-palette: map.get( $config, 'app-warn-palette' );
+
+  .theme-#{$name} {
+    @include apply-theme($name);
+  }
+}

@@ -1,0 +1,39 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Workflow Efficiency Report'"></app-title>
+  <app-workflow-efficiency-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="refreshTable()"
+  >
+  </app-workflow-efficiency-filters>
+
+
+  <div *ngIf="reportFilters.showDetails.value === true && detailsTable.data.length > 0" class="row margin-top-separation-md">
+    <h5>DETAILS</h5>
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      [pagination]="detailsPagination" [headerCssClass]="'table-info'"
+      [tableInfo]="detailsTable" [noDataFoundText]="'No Workflow Efficiency Details reports found!'"></app-table>
+  </div>
+
+  <div class="row margin-top-separation-md">
+    <h5>SURGEONS SUMMARY</h5>
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      [pagination]="summarySurgeonPagination"
+      [headerCssClass]="'table-info'"
+      [tableInfo]="summarySurgeonTable" [noDataFoundText]="'No Workflow Efficiency Surgeons Summary reports found!'"></app-table>
+  </div>
+
+  <div class="row margin-top-separation-md">
+    <h5>INSURANCE COMPANIES SUMMARY</h5>
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      [pagination]="summaryInsCoPagination"
+      [headerCssClass]="'table-info'"
+      [tableInfo]="summaryInsCoTable" [noDataFoundText]="'No Workflow Efficiency Insurance Companies Summary reports found!'"></app-table>
+  </div>
+
+</div>

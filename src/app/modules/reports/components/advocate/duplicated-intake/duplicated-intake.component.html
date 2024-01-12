@@ -1,0 +1,38 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Duplicates'"></app-title>
+  <div class="card margin-top-separation-sm">
+    <div class="card-header bg-gradient-secondary">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="float-right">
+            <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+            <br>
+            <input id="checkAnonymize" type="checkbox" [(ngModel)]="anonymize">
+            &NonBreakingSpace;
+            <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 margin-top-separation-md">
+          <button class="btn btn-success btn-sm" (click)="pagination.page = 1; getReports()">Get Report</button>
+          <button
+            (click)="openAddFavoriteReportModal()"
+            ngbTooltip="Add as favorite" class="btn btn-sm btn-primary margin-left-separation-sm">
+            <i ngbTooltip="Add as favorite" class="fa fa-plus text-white icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+          </button>
+          <button
+            *ngIf="favoriteReports.length > 0" (click)="openMyFavoriteReportsModal()"
+            ngbTooltip="My favorite Duplicated reports" class="btn btn-sm btn-warning margin-left-separation-sm">
+            <i class="fa fa-thumbs-up text-white icon-default-font-size cursor-pointer" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false" [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      (paginationChangeEvent)="getReports()"
+      [pagination]="pagination" [headerCssClass]="'table-info'" [tableInfo]="table"
+      [noDataFoundText]="'No Duplicated Intakes found!'"></app-table>
+  </div>
+</div>

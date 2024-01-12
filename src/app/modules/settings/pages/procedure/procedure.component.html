@@ -1,0 +1,300 @@
+<div id="settings-procedure-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <h1 class="text-success">Procedures</h1>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-5">
+                    <span for="txtSearchProcedure">Search procedure: </span>
+                    <input [(ngModel)]="nameFilter" type="text" id="txtSearchProcedure" class="input-sm form-control">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <button (click)="search();" style="margin-top: 27px;" class="btn btn-sm btn-warning">Go</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <button (click)="exportExcel();" class="btn btn-secondary buttons-excel buttons-html5 margin-bottom-separation-sm" tabindex="0" aria-controls="tblLeads" type="button">
+                <span>Excel</span>
+            </button>
+            <table id="tblProcedure" class="table table-bordered table-striped table-sm table-responsive container">
+                <thead>
+                    <tr class="table-dark">
+                        <th>
+                            <span>
+                                Procedure
+                            </span>
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'name')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up active-order-by order-column float-right" (click)="orderBy($event, 'name')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            <span>
+                                CPT Code
+                            </span>
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'cptCode')" aria-hidden="true"></i>
+                            <i  class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'cptCode')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            <span>
+                                Procedure Type
+                            </span>
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'procedureType')" aria-hidden="true"></i>
+                            <i  class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'procedureType')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            <span>
+                                SubType
+                            </span>
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'subType')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'subType')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            <span>
+                                Pos-op reminder
+                            </span>
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'posOpReminder')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'posOpReminder')" aria-hidden="true"></i>
+                        </th>
+                        <th>
+                            <span>
+                                Show On Intake
+                            </span>
+                            <i class="fa fa-arrow-down order-column float-right" (click)="orderBy($event, 'showOnIntake')" aria-hidden="true"></i>
+                            <i class="fa fa-arrow-up order-column float-right" (click)="orderBy($event, 'showOnIntake')" aria-hidden="true"></i>
+                        </th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let procedure of proceduresList | paginate: {itemsPerPage: pagination.tableSize, currentPage: pagination.page, totalItems: pagination.totalNumberOfRecords}; let i = index">
+                        <td>
+                            {{procedure.name}}
+                        </td>
+                        <td>
+                            {{procedure.cptCode}}
+                        </td>
+                        <td>
+                            {{procedure.category == 'NSP' ? 'Diagnostic' : procedure.bariatricSurgery ? 'Bariatric' : 'General'}}
+                        </td>
+                        <td>
+                            {{procedure.subCategory}}
+                        </td>
+                        <td>
+                            {{procedure.postOpReminder ? 'Yes' : 'No'}}
+                        </td>
+                        <td>
+                            {{procedure.showOnIntake ? 'Yes' : 'No'}}
+                        </td>
+                        <td appCanSaveSettings class="text-center">
+                            <a (click)="openUpdateProcedureConfirmationModal(procedureToUpdateModal, procedure)" class="cursor-pointer">
+                                <i style="font-size: 20px;" class="fa fa-pencil-square-o text-primary" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="openDeleteProcedureConfirmationModal(procedureToDeleteModal, procedure)" class="cursor-pointer">
+                                <i style="font-size: 20px; margin-left: 5px;" class="fa fa fa-trash text-danger" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-6">
+                    <select [(ngModel)]="pagination.tableSize" (change)="onTableSizeChange($event)">
+                        <option [value]="size" [selected]="pagination.tableSize == size" *ngFor="let size of pagination.tableSizes">
+                            {{size}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <pagination-controls
+                        style="float: right;"
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        (pageChange)="getPage($event)"
+                    >
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div appCanSaveSettings id="add-procedure-container" class="container margin-top-separation-sm">
+    <div id="add-procedure" class="card">
+        <div class="card-header add-update-office-card-header">
+            <h2>Add Procedure</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>Procedure Name
+                        </label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="newProcedure.name" name="txtName" type="text" id="txtName" class="form-control">
+                    <label *ngIf="newProcedure.showNameRequiredMessage" class="text-danger">Procedure Name is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Procedure Type</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <select [(ngModel)]="newProcedure.category" name="ddlProcType" id="ddlProcType" name="ddlState" id="ddlState" class="form-control">
+                        <option selected="true" value="B">Bariatric</option>
+                        <option value="G">General</option>
+                        <option value="D">Diagnostic</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Procedure SubType</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <select [(ngModel)]="newProcedure.subCategory" name="ddlProcSubType" id="ddlProcSubType" name="ddlState" id="ddlState" class="form-control">
+                        <option selected="true" value="Primary bariatric">Primary bariatric</option>
+                        <option value="Revision bariatric">Revision bariatric</option>
+                        <option value="Balloon">Balloon</option>
+                        <option value="General">General surgery</option>
+                        <option value="Trial Intervention">Trial Intervention</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>CPT Code</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="newProcedure.cptCode" name="txtCptCode" type="text" id="txtCptCode" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3">
+                    <b>
+                        <label>Show On Intake</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input id="rdoActive_0" type="radio" name="rdoActive" [(ngModel)]="newProcedure.showOnIntake" [value]="false">
+                    <b>
+                        <label for="rdoActive_0">&nbsp;No&nbsp;&nbsp;</label>
+                    </b>
+                    <input id="rdoActive_1" type="radio" name="rdoActive" [(ngModel)]="newProcedure.showOnIntake" [value]="true" checked="checked">
+                    <b>
+                        <label for="rdoActive_1">&nbsp;Yes</label>
+                    </b>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3">
+                    <b>
+                        <label>Post-Op Reminder</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input id="rdoPOR_0" type="radio" name="rdoPostOpReminder" [(ngModel)]="newProcedure.postOpReminder" [value]="false">
+                    <b>
+                        <label for="rdoPOR_0">&nbsp;No&nbsp;&nbsp;</label>
+                    </b>
+                    <input id="rdoPOR_1" type="radio" name="rdoPostOpReminder" [(ngModel)]="newProcedure.postOpReminder" [value]="true" checked="checked">
+                    <b>
+                        <label for="rdoPOR_1">&nbsp;Yes</label>
+                    </b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-center margin-top-separation-sm">
+                    <input (click)="addProcedure();" type="button" value="Add" class="btn btn-sm btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #procedureToDeleteModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Are you sure you want to delete the following procedure?</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Name: {{selectedProcedure.name}}</p>
+            <p>Procedure Type: {{selectedProcedure.category == 'NSP' ? 'Diagnostic' : selectedProcedure.bariatricSurgery ? 'Bariatric' : 'General'}}</p>
+            <p>Procedure SubType: {{selectedProcedure.subCategory}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteProcedure()">Confirm</button>
+    </div>
+</ng-template>
+
+<ng-template #procedureToUpdateModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="modal-basic-title">Update Procedure</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <label>Name:</label>
+            <input type="text" [(ngModel)]="selectedProcedure.name" class="form-control input-sm" disabled>
+            <label *ngIf="selectedProcedure.showNameRequiredMessage" class="text-danger">Procedure Name is Required</label>
+            <br *ngIf="selectedProcedure.showNameRequiredMessage" />
+            <label>Procedure Type:</label>
+            <select [(ngModel)]="selectedProcedure.category" name="ddlProcType" id="ddlProcType" name="ddlState" id="ddlState" class="form-control">
+                <option value="B">Bariatric</option>
+                <option value="G">General</option>
+                <option value="D">Diagnostic</option>
+            </select>
+            <label>Procedure SubType:</label>
+            <select [(ngModel)]="selectedProcedure.subCategory" name="ddlProcSubType" id="ddlProcSubType" name="ddlState" id="ddlState" class="form-control">
+                <option value="Primary bariatric">Primary bariatric</option>
+                <option value="Revision bariatric">Revision bariatric</option>
+                <option value="Balloon">Balloon</option>
+                <option value="General">General surgery</option>
+                <option value="Trial Intervention">Trial Intervention</option>
+                <option value="Other">Other</option>
+            </select>
+            <label>CPT Code:</label>
+            <input type="text" [(ngModel)]="selectedProcedure.cptCode" class="form-control input-sm">
+            <br/>
+            <label>Show On Intake</label>
+            <div style="float: right;">
+                <input id="rdoUpdateShowOnIntake_0" type="radio" name="rdoUpdateShowOnIntake" [(ngModel)]="selectedProcedure.showOnIntake" [value]="false">
+                <b>
+                    <label for="rdoUpdateShowOnIntake_0">&nbsp;No&nbsp;&nbsp;</label>
+                </b>
+                <input id="rdoUpdateShowOnIntake_1" type="radio" name="rdoUpdateShowOnIntake" [(ngModel)]="selectedProcedure.showOnIntake" [value]="true" checked="checked">
+                <b>
+                    <label for="rdoUpdateShowOnIntake_1">&nbsp;Yes</label>
+                </b>
+            </div>
+            <br/>
+            <br/>
+            <label>Post-Op Reminder</label>
+            <div style="float: right;">
+                <input id="rdoPOR_0" type="radio" name="rdoUpdatePostOpReminder" [(ngModel)]="selectedProcedure.postOpReminder" [value]="false">
+                <b>
+                    <label for="rdoPOR_0">&nbsp;No&nbsp;&nbsp;</label>
+                </b>
+                <input id="rdoPOR_1" type="radio" name="rdoUpdatePostOpReminder" [(ngModel)]="selectedProcedure.postOpReminder" [value]="true" checked="checked">
+                <b>
+                    <label for="rdoPOR_1">&nbsp;Yes</label>
+                </b>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="updateProcedure()">Confirm</button>
+    </div>
+</ng-template>

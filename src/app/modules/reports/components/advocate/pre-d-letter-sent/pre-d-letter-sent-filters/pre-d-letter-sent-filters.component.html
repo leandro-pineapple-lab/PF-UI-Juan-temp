@@ -1,0 +1,76 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label class="bold text-white">Date Range:</label>
+        <br/>
+        <input type="radio" name="preDStatusRadio" id="preDSentRadio" [(ngModel)]="reportFilters.rangeType.value" value="S">
+        &nbsp;
+        <label for="preDSentRadio" class="bold text-white">Sent</label>
+        &nbsp;
+        <input type="radio" name="preDStatusRadio" id="preDAuthorizedRadio" [(ngModel)]="reportFilters.rangeType.value" value="A">
+        &nbsp;
+        <label for="preDAuthorizedRadio" class="bold text-white">Authorized</label>
+        &nbsp;
+        <input type="radio" name="preDStatusRadio" id="preDDeniedRadio" [(ngModel)]="reportFilters.rangeType.value" value="D">
+        &nbsp;
+        <label for="preDDeniedRadio" class="bold text-white">Denied</label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtFrom" class="bold text-white">Between:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtFrom" type="text" class="form-control" [(ngModel)]="reportFilters.from.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label for="txtLastContactTo" class="bold text-white">And:</label>
+        <div class="input-group date" data-target-input="nearest">
+          <input id="txtLastContactTo" type="text" class="form-control" [(ngModel)]="reportFilters.to.value" bsDatepicker>
+          <div class="input-group-append">
+              <div class="input-group-text h-100"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 margin-top-separation-md">
+        <app-report-actions
+          title="Pre-D Letter Sent"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"
+        ></app-report-actions>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectSurgeon" class="bold text-white">Surgeon:</label>
+        <select id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.surgeon.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectAdvocate" class="bold text-white">Advocate:</label>
+        <select id="selectAdvocate" class="form-control input-sm" [(ngModel)]="reportFilters.advocate.value">
+          <option value="">All</option>
+          <option *ngFor="let advocate of advocatesList" [value]="advocate">{{advocate}}</option>
+        </select>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div>
+          <label for="checkAnonymize" class="bold text-white">Anonymize:</label>
+          <br>
+          <input id="checkAnonymize" type="checkbox" [(ngModel)]="reportFilters.anonymize.value">
+          &NonBreakingSpace;
+          <i class="fa fa-user-secret icon-default-font-size text-white" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

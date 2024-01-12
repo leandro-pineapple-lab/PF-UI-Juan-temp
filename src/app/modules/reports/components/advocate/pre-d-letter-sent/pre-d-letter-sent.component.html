@@ -1,0 +1,15 @@
+<div class="container margin-top-separation-sm">
+  <app-title [title]="'Pre-D Letter Sent Report'"></app-title>
+  <app-pre-d-letter-sent-filters
+    [reportFilters]="reportFilters"
+    (getReportsEvent)="pagination.page = 1; getReports()"
+  >
+  </app-pre-d-letter-sent-filters>
+  <div class="row margin-top-separation-md">
+    <app-table [showDefaultActions]="false"
+      [showExcelAndColumnsVisibilityActions]="showColumnVisibilityAndExcelButton"
+      (exportExcelEvent)="getReports()"
+      (paginationChangeEvent)="getReports()" [pagination]="pagination" [headerCssClass]="'table-info'"
+      [tableInfo]="table" [noDataFoundText]="'No Pre-D Letter Sent reports found!'"></app-table>
+  </div>
+</div>

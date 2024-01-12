@@ -1,0 +1,48 @@
+<div>
+  <button id="btnReports" class="btn-menu" data-bs-toggle="collapse" data-bs-target="#divReports" aria-expanded="false"
+    aria-controls="divReports">
+    <i class="fa fa-list-alt" aria-hidden="true"></i> Reports
+  </button>
+  <div id="divReports" class="collapse menu-item-container">
+    <div>
+      <button (click)="showAdvocateReports = !showAdvocateReports" id="btnAdvocateReports" data-bs-toggle="collapse"
+        data-bs-target="#divAdvocateReports" aria-expanded="false" aria-controls="divAdvocateReports">
+        <i *ngIf="!showAdvocateReports" class="fa fa-chevron-right" aria-hidden="true">Advocate Reports</i>
+        <i *ngIf="showAdvocateReports" class="fa fa-chevron-down" aria-hidden="true">Advocate Reports</i>
+        <div id="divAdvocateReports" class="collapse">
+          <app-advocate-reports></app-advocate-reports>
+        </div>
+      </button>
+    </div>
+    <div>
+      <button (click)="showMarketingReports = !showMarketingReports" id="btnMarketingReports" data-bs-toggle="collapse"
+        data-bs-target="#divMarketingReports" aria-expanded="false" aria-controls="divMarketingReports">
+        <i *ngIf="!showMarketingReports" class="fa fa-chevron-right" aria-hidden="true">Marketing Reports</i>
+        <i *ngIf="showMarketingReports" class="fa fa-chevron-down" aria-hidden="true">Marketing Reports</i>
+        <div id="divMarketingReports" class="collapse">
+          <app-marketing-reports></app-marketing-reports>
+        </div>
+      </button>
+    </div>
+    <div>
+      <button (click)="showMedicalReports = !showMedicalReports" id="btnMedicalReports" data-bs-toggle="collapse"
+        data-bs-target="#divMedicalReports" aria-expanded="false" aria-controls="divMedicalReports">
+        <i *ngIf="!showMedicalReports" class="fa fa-chevron-right" aria-hidden="true">Medical Reports</i>
+        <i *ngIf="showMedicalReports" class="fa fa-chevron-down" aria-hidden="true">Medical Reports</i>
+        <div id="divMedicalReports" class="collapse">
+          <app-medical-reports></app-medical-reports>
+        </div>
+      </button>
+    </div>
+    <div>
+      <button (click)="showMonthlyReports = !showMonthlyReports" id="btnMonthlyReports" data-bs-toggle="collapse"
+        data-bs-target="#divMonthlyReports" aria-expanded="false" aria-controls="divMonthlyReports">
+        <i *ngIf="!showMonthlyReports" class="fa fa-chevron-right" aria-hidden="true">Monthly Reports</i>
+        <i *ngIf="showMonthlyReports" class="fa fa-chevron-down" aria-hidden="true">Monthly Reports</i>
+        <div id="divMonthlyReports" class="collapse">
+          <app-monthly-reports></app-monthly-reports>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

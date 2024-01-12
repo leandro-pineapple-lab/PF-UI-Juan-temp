@@ -1,0 +1,28 @@
+#tblBudget thead tr th{
+    background-color: #bee5eb;
+    border-color: #86cfda;
+    color: black;
+    // width: 100%;
+}
+
+.total-budget-row{
+    background-color: #c3e6cb;
+    border-color: #8fd19e;
+}
+
+.new-category-row{
+    background-color: #ffeeba;
+    border-color: #ffdf7e;
+}
+
+#tblBudget {
+  th {
+    width: 100px;
+  }
+  th:first-child {
+    width: 200px;
+  }
+  th:last-child {
+    width: 150px;
+  }
+}

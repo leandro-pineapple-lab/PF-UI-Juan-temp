@@ -1,0 +1,27 @@
+<div class="card margin-top-separation-sm">
+  <div class="card-header bg-gradient-secondary">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectSurgeryYear" class="bold text-white">Surgery Year:</label>
+        <select id="selectSurgeryYear" class="form-control input-sm" [(ngModel)]="reportFilters.year.value">
+          <option *ngFor="let year of lastYearsList">{{year}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <label for="selectSurgeon" class="bold text-white">Surgeon:</label>
+        <select id="selectSurgeon" class="form-control input-sm" [(ngModel)]="reportFilters.surgeon.value">
+          <option value="">All</option>
+          <option *ngFor="let surgeon of surgeonsList" [value]="surgeon.fullName">{{surgeon.fullName}}</option>
+        </select>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top-separation-md">
+        <app-report-actions title="Monthly Leads/Payer"
+          [reportFilters]="reportFilters"
+          [favoriteReport]="favoriteReport"
+          [favoriteReports]="favoriteReports"
+          (getFavoriteReportsEvent)="getMyFavoriteReports();"
+          (getReportsEvent)="getReportsEvent.emit()"></app-report-actions>
+      </div>
+    </div>
+  </div>
+</div>

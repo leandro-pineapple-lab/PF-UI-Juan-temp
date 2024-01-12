@@ -1,0 +1,71 @@
+<div id="settings-advocate-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-success">Set up Patient Advocates</h1>
+        </div>
+        <div class="card-body">
+            <table id="tblAdvocate" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Advocate Name</th>
+                        <th>Phone</th>
+                        <th>Ext.</th>
+                        <th>Email</th>
+                        <th>Show on Homework Sheet</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let advocate of advocatesList; let i = index">
+                        <td>
+                            <input [(ngModel)]="advocate.name" type="text">
+                        </td>
+                        <td>
+                            <input [(ngModel)]="advocate.phone" type="text" maxlength="12" id="txtAdvocatePhone" class="form-control" [inputMask]="phoneMask" placeholder="___-___-____">
+                        </td>
+                        <td>
+                            <input [(ngModel)]="advocate.ext" type="text">
+                        </td>
+                        <td>
+                            <input [(ngModel)]="advocate.email" type="text">
+                        </td>
+                        <td>
+                            <span id="rptNavigator__ctl1_rboShowHomework">
+                                <input [(ngModel)]="advocate.showOnHomeworkSheet" [value]="true" id="rptNavigator__ctl{{i}}_rboShowHomework_0" type="radio" name="rptNavigator:_ctl{{i}}:rboShowHomework" value="1">
+                                <label for="rptNavigator__ctl{{i}}_rboShowHomework_0" style="margin-right: 10px;">Yes</label>
+                                <input [(ngModel)]="advocate.showOnHomeworkSheet" [value]="false" id="rptNavigator__ctl{{i}}_rboShowHomework_1" type="radio" name="rptNavigator:_ctl{{i}}:rboShowHomework" value="0" checked="checked">
+                                <label for="rptNavigator__ctl{{i}}_rboShowHomework_1">No</label>
+                            </span>
+                        </td>
+                        <td appCanSaveSettings class="text-center">
+                            <a class="position-update-delete-advocate" (click)="updateAdvocate(advocate);">
+                                <i style="font-size: 20px; margin-right: 5px; cursor: pointer" class="fa fa-floppy-o text-success" aria-hidden="true"></i>
+                            </a>
+                            <a class="position-update-delete-advocate" (click)="deleteAdvocate(advocate);">
+                                <i style="font-size: 20px; cursor: pointer;" class="fa fa-trash text-danger" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr appCanSaveSettings class="table-warning">
+                        <td colspan="4">
+                            <select [(ngModel)]="newAdvocate.name" name="rptNavigator:_ctl12:ddlFtAdvoName" id="rptNavigator__ctl12_ddlFtAdvoName" class="form-control">
+                                <option selected="selected" value="">-- select staff --</option>
+                                <option *ngFor="let staffUser of staffUsersList" [value]="staffUser.userId">{{staffUser.fullName}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <span id="rptNavigator__ctl12_rboFtShowHomework">
+                            <input id="rptNavigator__ctl12_rboFtShowHomework_0" type="radio" name="rptNavigator:_ctl12:rboFtShowHomework" [(ngModel)]="newAdvocate.showOnHomeworkSheet" [value]="true">
+                            <label for="rptNavigator__ctl12_rboFtShowHomework_0">&nbsp;Yes&nbsp;&nbsp;</label>
+                            <input id="rptNavigator__ctl12_rboFtShowHomework_1" type="radio" name="rptNavigator:_ctl12:rboFtShowHomework" [(ngModel)]="newAdvocate.showOnHomeworkSheet" [value]="false">
+                            <label for="rptNavigator__ctl12_rboFtShowHomework_1">&nbsp;No</label></span>
+                        </td>
+                        <td>
+                            <input (click)="addAdvocate();" type="button" name="rptNavigator:_ctl12:btnAdd" value="Add" id="rptNavigator__ctl12_btnAdd" class="btn btn-sm btn-primary">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

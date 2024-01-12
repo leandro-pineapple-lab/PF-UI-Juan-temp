@@ -1,0 +1,397 @@
+<div appCanSaveSettings id="account-settings-container" class="container margin-top-separation-sm">
+    <div id="account-settings" class="card">
+        <div class="card-header add-update-office-card-header">
+            <h2>
+               {{editMyUserSettings ? 'My Settings' : 'Settings ' + editingUserFullName}}
+            </h2>
+        </div>
+        <div [formGroup]="userAccountSettingsForm" class="card-body">
+            <p *ngIf="editMyUserSettings" class="text-danger">
+                You can edit your contact information below if it is incorrect. Portions of this information are seen by your PatientFlow patients, so accuracy is important for good communications.
+                Edit below and click save at the bottom of the page to store edits.
+            </p>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtAccountSettingsFirstName">
+                            <span class="text-danger">*</span>
+                            First Name:
+                        </label>
+                    </b>
+                    <input formControlName="userAccountFirstName" [(ngModel)]="userModel.firstName" id="txtAccountSettingsFirstName" type="text" class="form-control input-sm">
+                    <label *ngIf="userAccountFirstName && userAccountFirstName.invalid && userAccountFirstName.touched" class="text-danger">First Name is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtAccountSettingsMiddleName">Middle Name: </label>
+                    </b>
+                    <input formControlName="userAccountMiddleName" [(ngModel)]="userModel.middleName" id="txtAccountSettingsMiddleName" type="text" class="form-control input-sm">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtAccountSettingsLastName">
+                            <span class="text-danger">*</span>
+                            Last Name:
+                        </label>
+                    </b>
+                    <input formControlName="userAccountLastName" [(ngModel)]="userModel.lastName" id="txtAccountSettingsLastName" type="text" class="form-control input-sm">
+                    <label *ngIf="userAccountLastName && userAccountLastName.invalid && userAccountLastName.touched" class="text-danger">Last Name is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtAccountSettingsSalutation">Salutation:</label>
+                    </b>
+                    <input formControlName="userAccountSalutation" [(ngModel)]="userModel.salutation" id="txtAccountSettingsSalutation" type="text" class="form-control input-sm" maxlength="10">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtAccountSettingsTitle">Title:</label>
+                    </b>
+                    <input formControlName="userAccountTitle" [(ngModel)]="userModel.title" id="txtAccountSettingsTitle" type="text" class="form-control input-sm" maxlength="50">
+                </div>
+                <ng-template #extensionTooltipTemplate>
+                    <p class="text-center">
+                        <b>Extension</b>
+                    </p>
+                </ng-template>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>
+                        <label for="txtAccountSettingsPhone">Phone #:</label>
+                    </b>
+                    <div class="input-group">
+                        <input formControlName="userAccountPhone" [(ngModel)]="userModel.phone" type="text" id="txtAccountSettingsPhone" class="form-control input-sm" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                        <input placeholder="Extension" formControlName="userAccountPhoneExt" [(ngModel)]="userModel.phoneExt" type="text" id="txtAccountSettingsPhoneExt" class="form-control input-sm">
+                        <span class="input-group-text" [ngbTooltip]="extensionTooltipTemplate">Ext.</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>
+                        <label for="txtAccountSettingsAfterHoursPhone">After Hours Phone #:</label>
+                    </b>
+                    <div class="input-group">
+                        <input formControlName="userAccountAfterHoursPhone" [(ngModel)]="userModel.afterHoursPhone" type="text" id="txtAccountSettingsAfterHoursPhone" class="form-control input-sm" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                        <input placeholder="Extension" formControlName="userAccountAfterHoursPhoneExt" [(ngModel)]="userModel.afterHoursPhoneExt" type="text" id="txtAccountSettingsAfterHoursPhoneExt" class="form-control input-sm">
+                        <span class="input-group-text" [ngbTooltip]="extensionTooltipTemplate">Ext.</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>
+                        <label for="txtAccountSettingsCellPhone">Cell Phone #:</label>
+                    </b>
+                    <input formControlName="userAccountCellPhone" [(ngModel)]="userModel.cellPhone" type="text" id="txtAccountSettingsCellPhone" class="form-control input-sm" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>
+                        <label for="txtAccountSettingsFax">Fax #:</label>
+                    </b>
+                    <div class="input-group">
+                        <input formControlName="userAccountFax" [(ngModel)]="userModel.fax" type="text" id="txtAccountSettingsFax" class="form-control input-sm" maxlength="12" [inputMask]="phoneMask" placeholder="___-___-____">
+                        <input placeholder="Extension" formControlName="userAccountFaxExt" [(ngModel)]="userModel.faxExt" type="text" id="txtAccountSettingsFaxExt" class="form-control input-sm">
+                        <span class="input-group-text" [ngbTooltip]="extensionTooltipTemplate">Ext.</span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtAccountSettingsAddress1">
+                            <span class="text-danger">*</span>
+                            Address Line 1:
+                        </label>
+                    </b>
+                    <input formControlName="userAccountAddress1" [(ngModel)]="userModel.address1" id="txtAccountSettingsAddress1" type="text" class="form-control input-sm">
+                    <label *ngIf="userAccountAddress1 && userAccountAddress1.invalid && userAccountAddress1.touched" class="text-danger">Address Line 1 is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <b>
+                        <label for="txtAccountSettingsAddress2">Address Line 2:</label>
+                    </b>
+                    <input formControlName="userAccountAddress2" [(ngModel)]="userModel.address2" id="txtAccountSettingsAddress2" type="text" class="form-control input-sm">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>
+                        <label for="txtAccountSettingsCity">
+                            <span class="text-danger">*</span>
+                            City:
+                        </label>
+                    </b>
+                    <input formControlName="userAccountCity" [(ngModel)]="userModel.city" id="txtAccountSettingsCity" type="text" class="form-control input-sm">
+                    <label *ngIf="userAccountCity && userAccountCity.invalid && userAccountCity.touched" class="text-danger">City is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>
+                        <label for="txtAccountSettingsState">
+                            <span class="text-danger">*</span>
+                            State:
+                        </label>
+                    </b>
+                    <select formControlName="userAccountState" appForbiddenName="-1" [(ngModel)]="userModel.state" id="txtAccountSettingsState" class="form-control input-sm">
+                        <option value="">-- Select state --</option>
+                        <option *ngFor="let state of statesList" [value]="state.stateProvinceCD">{{state.stateProvinceCD}}</option>
+                    </select>
+                    <label *ngIf="userAccountState && userAccountState.invalid && userAccountState.touched" class="text-danger">Please select a state</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>
+                        <label for="txtAccountSettingsZip">
+                            <span class="text-danger">*</span>
+                            Zip:
+                        </label>
+                    </b>
+                    <input formControlName="userAccountZip" [(ngModel)]="userModel.zip" type="text" id="txtAccountSettingsZip" class="form-control input-sm">
+                    <label *ngIf="userAccountZip && userAccountZip.invalid && userAccountZip.touched" class="text-danger">Zip is required</label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3">
+                    <b>
+                        <label for="txtAccountSettingsCountry">Country:</label>
+                    </b>
+                    <input formControlName="userAccountCountry" [(ngModel)]="userModel.country" type="text" id="txtAccountSettingsCountry" maxlength="3" class="form-control input-sm">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtAccountSettingsEmail">E-Mail Address:</label>
+                    </b>
+                    <input formControlName="userAccountEmail" [(ngModel)]="userModel.email" type="text" id="txtAccountSettingsEmail" class="form-control input-sm">
+                    <label *ngIf="userAccountEmail && userAccountEmail.invalid && userAccountEmail.touched && userAccountEmail.errors?.['email']" class="text-danger">
+                        Incorrect email address
+                    </label>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtAccountSettingsTeam">Team:</label>
+                    </b>
+                    <select formControlName="userAccountTeam" [(ngModel)]="userModel.teamId" id="txtAccountSettingsTeam" class="form-control input-sm">
+                        <option value="0">-- select team --</option>
+                        <option *ngFor="let team of teamsList" [value]="team.id">{{team.name}}</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="txtAccountSettingsOffice">Office:</label>
+                    </b>
+                    <select formControlName="userAccountOffice" [(ngModel)]="userModel.officeId" id="txtAccountSettingsOffice" class="form-control input-sm">
+                        <option value="">-- select office --</option>
+                        <option *ngFor="let office of officesList" [value]="office.id">{{office.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row margin-top-separation-sm">
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label for="radioAccountSettingsLandingPage">Landing Page:</label>
+                    </b>
+                    <div>
+                        <input formControlName="userAccountLandingPage" name="userAccountLandingPage" [value]="0" [(ngModel)]="userModel.landingPage" type="radio">
+                        <span>
+                            Prospect List
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountLandingPage" name="userAccountLandingPage" [value]="2" [(ngModel)]="userModel.landingPage" type="radio">
+                        <span>
+                            Patient List
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountLandingPage" name="userAccountLandingPage" [value]="1" [(ngModel)]="userModel.landingPage" type="radio">
+                        <span>
+                            Dashboard
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label>is Scheduled:</label>
+                    </b>
+                    <div>
+                        <input formControlName="userAccountIsScheduled" name="userAccountIsScheduled" [(ngModel)]="userModel.isScheduled" [value]="false" type="radio">
+                        <span>
+                            No
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountIsScheduled" name="userAccountIsScheduled" [(ngModel)]="userModel.isScheduled" [value]="true" type="radio">
+                        <span>
+                            Yes
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4">
+                    <b>
+                        <label>is Surgeon:</label>
+                    </b>
+                    <div>
+                        <input formControlName="userAccountIsSurgeon" name="userAccountIsSurgeon" [(ngModel)]="userModel.isSurgeon" [value]="false" type="radio">
+                        <span>
+                            No
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountIsSurgeon" name="userAccountIsSurgeon" [(ngModel)]="userModel.isSurgeon" [value]="true" type="radio">
+                        <span>
+                            Yes
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-4" appSecurityAccessSettings>
+                    <b>
+                        <label>Access to Patient Files:</label>
+                    </b>
+                    <div>
+                        <input formControlName="userAccountCanAccessPatientFiles" name="userAccountCanAccessPatientFiles"
+                                [(ngModel)]="userModel.canAccessPatientFiles" [value]="false" type="radio">
+                        <span>
+                            No
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountCanAccessPatientFiles" name="userAccountCanAccessPatientFiles"
+                                [(ngModel)]="userModel.canAccessPatientFiles" [value]="true" type="radio">
+                        <span>
+                            Yes
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4" appSecurityAccessSettings>
+                    <b>
+                        <label>Patient Can Message:</label>
+                    </b>
+                    <div>
+                        <input formControlName="userAccountCanPatientMessage" name="userAccountCanPatientMessage"
+                                [(ngModel)]="userModel.canPatientMessage" [value]="false" type="radio">
+                        <span>
+                            No
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountCanPatientMessage" name="userAccountCanPatientMessage"
+                                [(ngModel)]="userModel.canPatientMessage" [value]="true" type="radio">
+                        <span>
+                            Yes
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4" appSecurityAccessSettings>
+                    <b>
+                        <label>Marketing Only:</label>
+                    </b>
+                    <div>
+                        <input formControlName="userAccountMarketingOnly" name="userAccountMarketingOnly"
+                                [(ngModel)]="userModel.marketingOnly" [value]="false" type="radio">
+                        <span>
+                            No
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountMarketingOnly" name="userAccountMarketingOnly"
+                                [(ngModel)]="userModel.marketingOnly" [value]="true" type="radio">
+                        <span>
+                            Yes
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-8" appSecurityAccessSettings>
+                    <b>
+                        <label>Security Access:</label>
+                    </b>
+                    <div>
+                        <input formControlName="userAccountSecurityAccess" name="userAccountSecurityAccess"
+                                [(ngModel)]="userModel.securityAccess" [value]="0" type="radio">
+                        <span>
+                            No Access
+                        </span>
+                        &nbsp;
+                        <input [attr.disabled]="true" formControlName="userAccountSecurityAccess" name="userAccountSecurityAccess"
+                                [(ngModel)]="userModel.securityAccess" [value]="1" type="radio">
+                        <span>
+                            Primary Access
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountSecurityAccess" name="userAccountSecurityAccess"
+                                [(ngModel)]="userModel.securityAccess" [value]="2" type="radio">
+                        <span>
+                            Secondary Access (delegate)
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountSecurityAccess" name="userAccountSecurityAccess"
+                                [(ngModel)]="userModel.securityAccess" [value]="3" type="radio">
+                        <span>
+                            Limited Access (reactivate only)
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4" *ngIf="showDietitianModule" appSecurityAccessSettings>
+                    <b>
+                        <label>Is Dietitian:</label>
+                    </b>
+                    <div>
+                        <input formControlName="userAccountIsDietitian" name="userAccountIsDietitian"
+                                [(ngModel)]="userModel.isDietitian" [value]="false" type="radio">
+                        <span>
+                            No
+                        </span>
+                        &nbsp;
+                        <input formControlName="userAccountIsDietitian" name="userAccountIsDietitian"
+                                [(ngModel)]="userModel.isDietitian" [value]="true" type="radio">
+                        <span>
+                            Yes
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4" *ngIf="showCanSaveSettings" appSecurityAccessSettings>
+                  <b>
+                      <label>Can Save Settings:</label>
+                  </b>
+                  <div>
+                      <input formControlName="userAccountCanSaveSettings" name="userAccountCanSaveSettings"
+                              [(ngModel)]="userModel.canSaveSettings" [value]="false" type="radio">
+                      <span>
+                          No
+                      </span>
+                      &nbsp;
+                      <input formControlName="userAccountCanSaveSettings" name="userAccountCanSaveSettings"
+                              [(ngModel)]="userModel.canSaveSettings" [value]="true" type="radio">
+                      <span>
+                          Yes
+                      </span>
+                  </div>
+              </div>
+            </div>
+            <div class="card-footer text-center margin-top-separation-md">
+                <div class="margin-top-separation-sm">
+                    <button (click)="updateUserAccountInformation();" class="btn btn-sm btn-primary">
+                        Update Information
+                    </button>
+                    <button *ngIf="editMyUserSettings" (click)="openChangePasswordModal()" class="btn btn-sm btn-danger margin-left-separation-sm">
+                        Change Password
+                    </button>
+                    <button *ngIf="!editMyUserSettings" (click)="openChangePasswordModal()" class="btn btn-sm btn-danger margin-left-separation-sm">
+                        Reset Password
+                    </button>
+                    <button *ngIf="!editMyUserSettings" [routerLink]="['/settings-office-login']" class="btn btn-sm btn-secondary margin-left-separation-sm">
+                        Back To List
+                    </button>
+                    <button *ngIf="!editMyUserSettings" (click)="openChangePasswordModal()" class="btn btn-sm btn-info margin-left-separation-sm text-white">
+                        Login History
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="editMyUserSettings" appCanSaveSettings id="account-settings-container" class="container margin-top-separation-sm">
+    <div id="account-settings" class="card">
+        <div class="card-header add-update-office-card-header bg-success">
+            <h2 class="text-white">Upload my picture</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-11">
+                    <input type="file" id="fUploadMyPicture" class="form-control" accept="image/png, image/jpeg">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-1">
+                    <button (click)="updateAvatarPicture();" class="btn btn-primary" appCanSaveSettings>Upload</button>
+                </div>
+                <div class="col-xs-12 margin-top-separation-sm">
+                    <p class="text-success">
+                        Your picture will be used on the patient dashboard to identify the messages you send to the patient.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+<div class="margin-left-separation-md margin-top-separation-sm">
+    <div class="row">
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+            <h5 class="text-center">Insurance Template Summary</h5>
+        </div>
+        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 noPrint">
+            <button onclick="javascript:window.print()" class="btn btn-sm btn-secondary margin-left-separation-sm">
+                <i class="fa fa-print" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-sm btn-danger margin-left-separation-sm" onclick="javascript: window.open('','_self', ''); window.close()" alt="close window" title="close window">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row margin-top-separation-md">
+        <div *ngIf="insuranceTemplate.description && insuranceTemplate.description.trim().length > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                Template Name
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                <b>
+                    {{insuranceTemplate.description}}
+                </b>
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.insuranceCompany && insuranceTemplate.insuranceCompany.name && insuranceTemplate.insuranceCompany.name.trim().length > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                Payer
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.insuranceCompany.name}}
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.groupNumber && insuranceTemplate.groupNumber.trim().length > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                Group Number
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.groupNumber}}
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.planType && insuranceTemplate.planType.trim().length > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                Plan Type
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.planType}}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="insuranceTemplate.coverage" class="row margin-top-separation-md">
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+            <h5 class="feature-title">
+                COVERAGE
+            </h5>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.specialistCoPay && insuranceTemplate.coverage.specialistCoPay > 0" class="row margin-top-separation-sm">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                Specialist co-pay
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.specialistCoPay | currency}}
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.innIndividualDeductible && insuranceTemplate.coverage.innIndividualDeductible > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                IIN Individual Deductible
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.innIndividualDeductible | currency}}
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.innMaxOOP && insuranceTemplate.coverage.innMaxOOP > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                IIN Max OOP
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.innMaxOOP | currency}}
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.deductibleAppliesToOOP && insuranceTemplate.coverage.deductibleAppliesToOOP.length > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                Deductible applied to OOP
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.deductibleAppliesToOOP}}
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.innCoInsurance && insuranceTemplate.coverage.innCoInsurance > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                IIN Co-Ins %
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.innCoInsurance | number : '1.2'}}%
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.oonDeductible && insuranceTemplate.coverage.oonDeductible > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                OON Individual Deductible
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.oonDeductible | currency}}
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.oonOutOfPocketMax && insuranceTemplate.coverage.oonOutOfPocketMax > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                OON Max OOP
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.oonOutOfPocketMax | currency}}
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.oonCoInsurance && insuranceTemplate.coverage.oonCoInsurance > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                OON Co-Ins %
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.oonCoInsurance | number : '1.2'}}%
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.coverage.lifetimeMax && insuranceTemplate.coverage.lifetimeMax > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                Lifetime Max
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{insuranceTemplate.coverage.lifetimeMax | currency}}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="insuranceTemplate.requirements && insuranceTemplate.requirements.length > 0" class="row margin-top-separation-md">
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+            <h5 class="feature-title">
+                REQUIREMENTS
+            </h5>
+        </div>
+        <div *ngFor="let requirement of insuranceTemplate.requirements" class="row margin-top-separation-sm">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                {{requirement.categoryName}}
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                {{requirement.notes}}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="insuranceTemplate.allowable" class="row margin-top-separation-md">
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+            <h5 class="feature-title">
+                ALLOWABLES
+            </h5>
+        </div>
+        <div *ngIf="insuranceTemplate.allowable.lrygb && insuranceTemplate.allowable.lrygb > 0" class="row margin-top-separation-sm">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                LRYGB
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                <b>
+                    {{insuranceTemplate.allowable.lrygb | currency}}
+                </b>
+            </div>
+        </div>
+        <div *ngIf="insuranceTemplate.allowable.sleeve && insuranceTemplate.allowable.sleeve > 0" class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                Sleeve
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                <b>
+                    {{insuranceTemplate.allowable.sleeve | currency}}
+                </b>
+            </div>
+        </div>
+    </div>
+</div>

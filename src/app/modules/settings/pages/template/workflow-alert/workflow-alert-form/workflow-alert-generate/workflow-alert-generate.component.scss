@@ -1,0 +1,12 @@
+.method-container {
+  display: flex;
+  column-gap: 12px;
+}
+
+.options-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 1rem;
+}

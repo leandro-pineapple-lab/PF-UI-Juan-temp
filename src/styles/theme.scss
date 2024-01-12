@@ -1,0 +1,41 @@
+////////// This file must change for project  ///////////
+$app-font-family: 'Open Sans';
+$app-theme: 'dark'; // or 'light'
+
+$primary-text: #000000;
+$accent-text: #000000;
+$accent-darker-text: #ffffff;
+$warn-text: #000000;
+
+// required
+$app-primary-palette: (
+  A100: #dee4c2, // it was got in tool: https://material.io/resources/color/#!/?view.left=1&view.right=0&primary.color=acb292&secondary.color=262626
+  A400: #acb292, // default value
+  A700: #7d8364, // it was got in tool: https://material.io/resources/color/#!/?view.left=1&view.right=0&primary.color=acb292&secondary.color=262626
+  contrast: (
+    A100: $primary-text,
+    A400: $primary-text,
+    A700: $primary-text,
+  ));
+
+// required
+$app-accent-palette: (
+  A100: #A5A5A5, // it was got in tool: https://material.io/resources/color/#!/?view.left=1&view.right=0&primary.color=acb292&secondary.color=262626
+  A400: #959595, // default value
+  A700: #7F8489, // it was got in tool: https://material.io/resources/color/#!/?view.left=1&view.right=0&primary.color=acb292&secondary.color=262626
+  contrast: (
+    A100: $accent-text,
+    A400: $accent-text,
+    A700: $accent-darker-text,
+  ));
+
+// optional only in default theme (file: theme.scss), required on all additional-theme.
+$app-warn-palette: (
+  A100: #ff7f75,
+  A400: #FF4949, // default value
+  A700: #c50021,
+  contrast: (
+    A100: $warn-text,
+    A400: $warn-text,
+    A700: $warn-text,
+  ));

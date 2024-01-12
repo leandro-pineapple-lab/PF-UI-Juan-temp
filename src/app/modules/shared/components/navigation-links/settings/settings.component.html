@@ -1,0 +1,226 @@
+<div>
+  <button id="btnSettings" class="btn-menu" data-bs-toggle="collapse" data-bs-target="#divSettings"
+          aria-expanded="false" aria-controls="divSettings">
+    <i class="fa fa-cog" aria-hidden="true"></i> Settings
+  </button>
+  <div id="divSettings" class="collapse menu-item-container">
+    <div>
+      <button (click)="showUserSettings = !showUserSettings" id="btnUserSettings" data-bs-toggle="collapse" data-bs-target="#divUserSettings" aria-expanded="false" aria-controls="divUserSettings">
+          <i *ngIf="!showUserSettings" class="fa fa-chevron-right" aria-hidden="true">Users</i>
+          <i *ngIf="showUserSettings" class="fa fa-chevron-down" aria-hidden="true">Users</i>
+          <div id="divUserSettings" class="collapse">
+              <div>
+                  <button [routerLink]="['/settings/office-login']">
+                      <i class="fa fa-user-md" aria-hidden="true"></i> Office Logins
+                  </button>
+              </div>
+              <div>
+                  <button>
+                      <i class="fa fa-user" aria-hidden="true"></i> Patient Logins
+                  </button>
+              </div>
+          </div>
+      </button>
+    </div>
+    <div>
+      <button (click)="showPracticeSettings = !showPracticeSettings" id="btnPracticeSettings" data-bs-toggle="collapse" data-bs-target="#divPracticeSettings" aria-expanded="false" aria-controls="divPracticeSettings">
+          <i *ngIf="!showPracticeSettings" class="fa fa-chevron-right" aria-hidden="true"> Practice</i>
+          <i *ngIf="showPracticeSettings" class="fa fa-chevron-down" aria-hidden="true"> Practice</i>
+          <div id="divPracticeSettings" class="collapse">
+              <div>
+                  <button>
+                      <i class="fa fa-cogs" aria-hidden="true"></i> Parameters
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/insurance-company']">
+                      <i class="fa fa-money" aria-hidden="true"></i> Insurance Company
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/advocate']">
+                      <i class="fa fa-user" aria-hidden="true"></i> Advocates
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/office']">
+                      <i class="fa fa-building" aria-hidden="true"></i> Offices
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/hospital']">
+                      <i class="fa fa-hospital-o" aria-hidden="true"></i> Hospitals
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/tag']">
+                      <i class="fa fa-tag" aria-hidden="true"></i> Tags
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/status']">
+                      <i class="fa fa-location-arrow" aria-hidden="true"></i> Status Codes
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/rotation']">
+                      <i class="fa fa-refresh" aria-hidden="true"></i> Surgeon Rotation
+                  </button>
+              </div>
+              <div>
+                  <button>
+                      <i class="fa fa-briefcase" aria-hidden="true"></i> Visit Types
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/procedure']">
+                      <i class="fa fa-medkit" aria-hidden="true"></i> Procedures
+                  </button>
+              </div>
+          </div>
+      </button>
+    </div>
+    <div>
+      <button (click)="showEducationalMaterialSettings = !showEducationalMaterialSettings" id="btnEducationalMaterialSettings" data-bs-toggle="collapse" data-bs-target="#divEducationalMaterialSettings" aria-expanded="false" aria-controls="divEducationalMaterialSettings">
+          <i *ngIf="!showEducationalMaterialSettings" class="fa fa-chevron-right" aria-hidden="true">Educational Materials</i>
+          <i *ngIf="showEducationalMaterialSettings" class="fa fa-chevron-down" aria-hidden="true">Educational Materials</i>
+          <div id="divEducationalMaterialSettings" class="collapse">
+              <div>
+                  <button>
+                      <i class="fa fa-book" aria-hidden="true"></i> Educational Materials
+                  </button>
+              </div>
+              <div>
+                  <button>
+                      <i class="fa fa-file-video-o" aria-hidden="true"></i> Docola Courses
+                  </button>
+              </div>
+              <div>
+                  <a href="https://www.doco.la" target="_blank">
+                      <i class="fa fa-sign-in" aria-hidden="true"></i> Docola Log In
+                  </a>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/handout-category']">
+                      <i class="fa fa-cog" aria-hidden="true"></i> Categories
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/handout-subcategory']">
+                      <i class="fa fa-cogs" aria-hidden="true"></i> SubCategories
+                  </button>
+              </div>
+          </div>
+      </button>
+    </div>
+    <div>
+      <button>
+          <i class="fa fa-chevron-right" aria-hidden="true"></i> Plans
+      </button>
+    </div>
+    <div>
+      <button (click)="showEventsSettings = !showEventsSettings" id="btnEventsSettings" data-bs-toggle="collapse" data-bs-target="#divEventsSettings" aria-expanded="false" aria-controls="divEventsSettings">
+          <i *ngIf="!showEventsSettings" class="fa fa-chevron-right" aria-hidden="true">Events</i>
+          <i *ngIf="showEventsSettings" class="fa fa-chevron-down" aria-hidden="true">Events</i>
+          <div id="divEventsSettings" class="collapse">
+              <div>
+                  <button [routerLink]="['/settings/event-seminar']">
+                      <i class="fa fa-television" aria-hidden="true"></i> Seminars
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/event-support-group']">
+                      <i class="fa fa-cog" aria-hidden="true"></i> Support Groups
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/event-virtual-group']">
+                      <i class="fa fa-cogs" aria-hidden="true"></i> Virtual Groups
+                  </button>
+              </div>
+          </div>
+      </button>
+    </div>
+    <div>
+      <button (click)="showReferralsSettings = !showReferralsSettings" id="btnReferralsSettings" data-bs-toggle="collapse" data-bs-target="#divReferralsSettings" aria-expanded="false" aria-controls="divReferralsSettings">
+          <i *ngIf="!showReferralsSettings" class="fa fa-chevron-right" aria-hidden="true">Referrals</i>
+          <i *ngIf="showReferralsSettings" class="fa fa-chevron-down" aria-hidden="true">Referrals</i>
+          <div id="divReferralsSettings" class="collapse">
+              <div>
+                  <button [routerLink]="['/settings/marketing-budget']">
+                      <i class="fa fa-usd" aria-hidden="true"></i> Marketing Budget
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/marketing-category']">
+                      <i class="fa fa-cog" aria-hidden="true"></i> Marketing Categories
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/marketing-subcategory']">
+                      <i class="fa fa-cogs" aria-hidden="true"></i> Marketing SubCategs
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/md-referral']">
+                      <i class="fa fa-external-link" aria-hidden="true"></i> MD Referrals
+                  </button>
+              </div>
+          </div>
+      </button>
+    </div>
+    <div>
+      <button (click)="showTemplateSettings = !showTemplateSettings" id="btnTemplateSettings" data-bs-toggle="collapse" data-bs-target="#divTemplateSettings" aria-expanded="false" aria-controls="divTemplateSettings">
+          <i *ngIf="!showTemplateSettings" class="fa fa-chevron-right" aria-hidden="true">Templates</i>
+          <i *ngIf="showTemplateSettings" class="fa fa-chevron-down" aria-hidden="true">Templates</i>
+          <div id="divTemplateSettings" class="collapse">
+              <div>
+                  <button [routerLink]="['/settings/template-message']">
+                      <i class="fa fa-comments" aria-hidden="true"></i> Message Templates
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/template-picture']">
+                      <i class="fa fa-picture-o" aria-hidden="true"></i> Pictures
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/workflow-alert']">
+                      <i class="fa fa-bell" aria-hidden="true"></i> Workflow Alerts
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/homework']">
+                      <i class="fa fa-cogs" aria-hidden="true"></i> Homework
+                  </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/homework-template']">
+                      <i class="fa fa-cogs" aria-hidden="true"></i> Homework Template
+                  </button>
+              </div>
+              <div>
+                <button [routerLink]="['/settings/standard-text']">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i> Standard Texts
+                </button>
+              </div>
+              <div>
+                  <button [routerLink]="['/settings/insurance-template']">
+                      <i class="fa fa-money" aria-hidden="true"></i> Insurance Template
+                  </button>
+              </div>
+          </div>
+      </button>
+    </div>
+    <div>
+      <button>
+          <i class="fa fa-chevron-right" aria-hidden="true"></i> PatientFlow Version
+      </button>
+    </div>
+    <div>
+      <button [routerLink]="['/settings/favorite-reports']" id="btnFavouriteReports">
+          <i class="fa fa-thumbs-up" aria-hidden="true"></i> Favorite Reports
+      </button>
+    </div>
+  </div>
+</div>

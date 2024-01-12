@@ -1,0 +1,189 @@
+<div appCanSaveSettings id="add-hospital-container" class="container margin-top-separation-sm">
+    <div id="add-hospital" class="card">
+        <div class="card-header add-update-office-card-header">
+            <h2 (click)="showHospitalAddBody = !showHospitalAddBody" data-bs-toggle="collapse" data-bs-target="#hospitalAddBody" aria-expanded="false" aria-controls="hospitalAddBody" style="cursor: pointer;">
+                <i *ngIf="!showHospitalAddBody" class="fa fa-chevron-right" aria-hidden="true"></i> 
+                <i *ngIf="showHospitalAddBody" class="fa fa-chevron-down" aria-hidden="true"></i> 
+                Add Hospital
+            </h2>
+        </div>
+        <div id="hospitalAddBody" class="card-body collapse">
+            <div class="row">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>Hospital Name
+                        </label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="newHospital.name" name="txtName" type="text" id="txtName" class="form-control">
+                    <label *ngIf="newHospital.showNameRequiredMessage" class="text-danger">Hospital Name is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Phone Number</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="newHospital.phoneNumber" name="txtPhoneNumber" type="text" id="txtPhoneNumber" class="form-control" maxlength="12" [inputMask]="phoneMask" >
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Tax ID</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="newHospital.taxId" name="txtTaxId" type="text" id="txtTaxId" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>NPI</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="newHospital.npi" name="txtNpi" type="text" id="txtNpi" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>State</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <select class="form-control input-sm" [(ngModel)]="newHospital.stateProvince">
+                        <option selected="selected" value="">??</option>
+                        <option *ngFor="let state of statesList" [value]="state.stateProvinceCD">{{state.stateProvinceCD}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3">
+                    <b>
+                        <label>Active</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input id="rdoActive_0" type="radio" name="rdoActive" [(ngModel)]="newHospital.isActive" [value]="false">
+                    <b>
+                        <label for="rdoActive_0">&nbsp;No&nbsp;&nbsp;</label>
+                    </b>
+                    <input id="rdoActive_1" type="radio" name="rdoActive" [(ngModel)]="newHospital.isActive" [value]="true" checked="checked">
+                    <b>
+                        <label for="rdoActive_1">&nbsp;Yes</label>
+                    </b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-center margin-top-separation-sm">
+                    <input (click)="addHospital();" type="button" value="Add" class="btn btn-sm btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="settings-hospital-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-success">Hospitals</h1>
+        </div>
+        <div class="card-body">
+            <table id="tblOffice" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th style="width: 30%;">Hospital Name</th>
+                        <th>Phone Number</th>
+                        <th>Tax ID</th>
+                        <th>NPI</th>
+                        <th>State</th>
+                        <th>Active</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let hospital of hospitalsList; let i = index">
+                        <td>
+                            <input class="form-control input-sm" [(ngModel)]="hospital.name" type="text" disabled>
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" [(ngModel)]="hospital.phoneNumber" type="text" maxlength="12" [inputMask]="phoneMask">
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" [(ngModel)]="hospital.taxId" type="text">
+                        </td>
+                        <td>
+                            <input class="form-control input-sm" [(ngModel)]="hospital.npi" type="text">
+                        </td>
+                        <td>
+                            <select class="form-control input-sm" [(ngModel)]="hospital.stateProvince">
+                                <option value="">??</option>
+                                <option *ngFor="let state of statesList" [value]="state.stateProvinceCD">{{state.stateProvinceCD}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control input-sm" [(ngModel)]="hospital.isActive">
+                                <option [value]="true">Yes</option>
+                                <option [value]="false">No</option>
+                            </select>
+                        </td>
+                        <td appCanSaveSettings class="text-center">
+                            <button (click)="openUpdateConfirmationModal(hospitalUpdateModal, hospital)" style="color: white;" class="btn btn-sm btn-info">
+                                <i style="font-size: 20px;" class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #hospitalUpdateModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Hospital Update</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Hospital Name: {{selectedHospital.name}}</p>
+            <p>Phone Number: {{selectedHospital.phoneNumber}}</p>
+            <p>Tax ID: {{selectedHospital.taxId}}</p>
+            <p>NPI: {{selectedHospital.npi}}</p>
+            <p>State: {{selectedHospital.stateProvince}}</p>
+            <p *ngIf="selectedHospital.isActive">Active: Yes</p>
+            <p *ngIf="!selectedHospital.isActive" >Active: No</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="updateHospital()">Confirm</button>
+    </div>
+  </ng-template>
+
+<ng-template #hospitalUpdateModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Hospital Update</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="mb-3">
+            <p>Hospital Name: {{selectedHospital.name}}</p>
+            <p>Phone Number: {{selectedHospital.phoneNumber}}</p>
+            <p>Tax ID: {{selectedHospital.taxId}}</p>
+            <p>NPI: {{selectedHospital.npi}}</p>
+            <p>State: {{selectedHospital.stateProvince}}</p>
+            <p *ngIf="selectedHospital.isActive">Active: Yes</p>
+            <p *ngIf="!selectedHospital.isActive" >Active: No</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="updateHospital()">Confirm</button>
+    </div>
+</ng-template>

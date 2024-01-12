@@ -1,0 +1,371 @@
+<div appCanSaveSettings id="add-update-office-container" class="container margin-top-separation-sm">
+    <div id="add-update-office" class="card">
+        <div (click)="showOfficeAddUpdateBody = !showOfficeAddUpdateBody" class="card-header add-update-office-card-header" data-bs-toggle="collapse" data-bs-target="#officeAddUpdateBody" aria-expanded="false" aria-controls="officeAddUpdateBody" style="cursor: pointer;">
+            <h2>
+                <i *ngIf="!showOfficeAddUpdateBody" class="fa fa-chevron-right" aria-hidden="true"></i> 
+                <i *ngIf="showOfficeAddUpdateBody" class="fa fa-chevron-down" aria-hidden="true"></i>
+                {{!selectedOffice.id ? "Add Office" : "Update Office - " + selectedOffice.name}}
+            </h2>
+        </div>
+        <div id="officeAddUpdateBody" class="card-body collapse">
+            <div class="row">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>
+                            <span class="text-danger">*</span>Office Name
+                        </label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.name" name="txtName" type="text" id="txtName" class="form-control" placeholder="office name">
+                    <label *ngIf="selectedOffice.showNameRequiredMessage" class="text-danger">Facility Name is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Contact Name</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="selectedOffice.contactName" name="txtContactName" type="text" id="txtContactName" class="form-control" placeholder="contact name">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <span class="text-danger">*</span>
+                        <label>Address Line 1</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.addressLine1" name="txtAddress1" type="text" id="txtAddress1" class="form-control" placeholder="address line 1">
+                    <label *ngIf="selectedOffice.showAddressLineRequiredMessage" class="text-danger">Address Line 1 is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Address Line 2</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                      <input [(ngModel)]="selectedOffice.addressLine2" name="txtAddress2" type="text" id="txtAddress2" class="form-control" placeholder="address line 2">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <span class="text-danger">*</span>
+                        <label>City</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.city" name="txtCity" type="text" id="txtCity" class="form-control" placeholder="city">
+                    <label *ngIf="selectedOffice.showCityRequiredMessage" class="text-danger">City is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>State/Province</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <select [(ngModel)]="selectedOffice.stateCode" name="ddlState" id="ddlState" class="form-control">
+                        <option selected="selected" value="">-- select state --</option>
+                        <option *ngFor="let state of statesList" [value]="state.stateProvinceCD" >{{state.stateProvinceName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <span class="text-danger">*</span>
+                        <label>Zip Code</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.zipCode" name="txtZip" type="text" id="txtZip" class="form-control" placeholder="zip code">
+                    <label *ngIf="selectedOffice.showZipCodeRequiredMessage" class="text-danger">Zip Code is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <span class="text-danger">*</span>
+                        <label>Primary Phone Nbr</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.primaryPhoneNbr" name="txtPrimaryPhone" type="text" maxlength="12" id="txtPrimaryPhone" class="form-control" [inputMask]="phoneMask" placeholder="___-___-____" >
+                    <label *ngIf="selectedOffice.showPrimaryPhoneRequiredMessage" class="text-danger">Primary Phone is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Toll Free Phone Nbr</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.tollFreePhoneNbr" name="txtFreeTollPhone" type="text" maxlength="12" id="txtFreeTollPhone" class="form-control" [inputMask]="phoneMask" placeholder="___-___-____" >
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Fax Nbr</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.faxNbr" name="txtFaxNbr" type="text" maxlength="12" id="txtFaxNbr" class="form-control" [inputMask]="phoneMask" placeholder="___-___-____" >
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>After Hours Phone Nbr</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.afterHoursPhoneNbr" name="txtAfterHoursPhoneNbr" type="text" maxlength="12" id="txtAfterHoursPhoneNbr" class="form-control" [inputMask]="phoneMask" placeholder="___-___-____" >
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Primary Email Address</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.primaryEmailAddress" name="txtEmail" type="text" id="txtEmail" placeholder="email" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Web Site URL</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.webSiteUrl" name="txtWebsiteUrl" type="text" id="txtWebsiteUrl" placeholder="web site" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3">
+                    <b>
+                        <label>Is Active</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input id="rdoActive_0" type="radio" name="rdoActive" [(ngModel)]="selectedOffice.isActive" [value]="false">
+                    <b>
+                        <label for="rdoActive_0">&nbsp;No&nbsp;&nbsp;</label>
+                    </b>
+                    <input id="rdoActive_1" type="radio" name="rdoActive" [(ngModel)]="selectedOffice.isActive" [value]="true" checked="checked">
+                    <b>
+                        <label for="rdoActive_1">&nbsp;Yes</label>
+                    </b>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3">
+                    <b>
+                        <label>Is COE</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input id="rdoCOE_0" type="radio" name="rdoCOE" [(ngModel)]="selectedOffice.isCOE" [value]="false">
+                    <b>
+                        <label for="rdoCOE_0">&nbsp;No&nbsp;&nbsp;</label>
+                    </b>
+                    <input id="rdoCOE_1" type="radio" name="rdoCOE" [(ngModel)]="selectedOffice.isCOE" [value]="true" checked="checked">
+                    <b>
+                        <label for="rdoCOE_1">&nbsp;Yes</label>
+                    </b>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <span class="text-danger">*</span>
+                        <label>Business Name</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.businessName" name="txtBusinessName" type="text" id="txtBusinessName" class="form-control" placeholder="business name" >
+                    <label *ngIf="selectedOffice.showBusinessNameRequiredMessage" class="text-danger">Business Name is Required</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Tax ID</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.taxId" name="txtTaxId" type="text" id="txtTaxId" class="form-control" placeholder="tax ID" >
+                    <label *ngIf="selectedOffice.showTaxIdRequiredMessage" class="text-danger">Tax ID is Required</label>
+                </div>
+            </div>
+            <!-- <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Region</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <select [(ngModel)]="selectedOffice.regionId" name="ddlState" id="ddlState" class="form-control">
+                        <option *ngFor="let region of regionsList; let i = index" [selected]="region.selected" [value]="region.id">{{region.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 text-right">
+                    <b>
+                        <label>Region Code</label>
+                    </b>
+                </div>
+                <div class="col-9">
+                    <input [(ngModel)]="selectedOffice.regionCode" name="txtRegionCode" type="text" id="txtRegionCode" class="form-control" placeholder="region code" >
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-xs-12 text-center margin-top-separation-sm">
+                    <input *ngIf="!selectedOffice.id" (click)="addUpdateOffice();" type="button" value="Add Office" class="btn btn-sm btn-primary">
+                    <input *ngIf="selectedOffice.id" (click)="addUpdateOffice();" type="button" value="Update Office" class="btn btn-sm btn-primary">
+                    <input *ngIf="selectedOffice.id" (click)="addNewOffice();" type="button" value="Add New Office" class="btn btn-sm btn-secondary margin-left-separation-sm">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="settings-office-container" class="container margin-top-separation-sm">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-success">Set up Offices</h1>
+        </div>
+        <div class="card-body">
+            <table id="tblOffice" class="table table-bordered table-striped table-sm table-responsive">
+                <thead>
+                    <tr class="table-dark">
+                        <th>Facility Name</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>COE</th>
+                        <th>Valid</th>
+                        <th appCanSaveSettings>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let office of officesList; let i = index">
+                        <ng-template class="text-center" #officeAdditionalInfoTemplate>
+                            <p *ngIf="office.contactName">
+                                Contact Name: 
+                                <b>
+                                    {{office.contactName}}
+                                </b>
+                            </p>
+                            <p>
+                                Address Line 1: 
+                                <b>
+                                    {{office.addressLine1}}
+                                </b>
+                            </p>
+                            <p *ngIf="office.addressLine2">
+                                Address Line 2: 
+                                <b>
+                                    {{office.addressLine2}}
+                                </b>
+                            </p>
+                            <p>
+                                Zip Code: 
+                                <b>
+                                    {{office.zipCode}}
+                                </b>
+                            </p>
+                            <p>
+                                Primary Phone Number: 
+                                <b>
+                                    {{office.primaryPhoneNbr}}
+                                </b>
+                            </p>
+                            <p *ngIf="office.tollFreePhoneNbr">
+                                Toll Free Phone Number: 
+                                <b>
+                                    {{office.tollFreePhoneNbr}}
+                                </b>
+                            </p>
+                            <p *ngIf="office.faxNbr">
+                                Fax Number: 
+                                <b>
+                                    {{office.faxNbr}}
+                                </b>
+                            </p>
+                            <p *ngIf="office.afterHoursPhoneNbr">
+                                After Hours Number: 
+                                <b>
+                                    {{office.afterHoursPhoneNbr}}
+                                </b>
+                            </p>
+                            <p *ngIf="office.primaryEmailAddress">
+                                Primary Email Address: 
+                                <b>
+                                    {{office.primaryEmailAddress}}
+                                </b>
+                            </p>
+                            <p *ngIf="office.webSiteUrl">
+                                WebSite URL: 
+                                <b>
+                                    {{office.webSiteUrl}}
+                                </b>
+                            </p>
+                            <p *ngIf="office.businessName">
+                                Businness Name: 
+                                <b>
+                                    {{office.businessName}}
+                                </b>
+                            </p>
+                            <p *ngIf="office.taxId">
+                                Tax Id: 
+                                <b>
+                                    {{office.taxId}}
+                                </b>
+                            </p>
+                        </ng-template>
+                        <td>
+                            <span [ngbTooltip]="officeAdditionalInfoTemplate">
+                                {{office.name}}
+                            </span>
+                        </td>
+                        <td>
+                            {{office.city}}
+                        </td>
+                        <td>
+                            {{office.stateCode}}
+                        </td>
+                        <td>
+                            {{office.isCOE ? 'Yes' : 'No'}}
+                        </td>
+                        <td>
+                            {{office.isActive ? 'Yes' : 'No'}}
+                        </td>
+                        <td appCanSaveSettings class="text-center">
+                            <a (click)="deleteOffice(office.id);">
+                                <i style="font-size: 20px; margin-right: 5px; cursor: pointer;" *ngIf="office.isActive" class="fa fa-trash text-danger" aria-hidden="true"></i>
+                            </a>
+                            <a href="settings-office#add-update-office" (click)="editOffice(office);">
+                                <i style="font-size: 20px;" class="fa fa-pencil-square-o text-primary" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="enableOffice(office.id);">
+                                <i style="font-size: 20px; margin-left: 5px; cursor: pointer;" *ngIf="!office.isActive" class="fa fa-thumbs-o-up text-success" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
